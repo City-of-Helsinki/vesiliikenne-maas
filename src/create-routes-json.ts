@@ -1,5 +1,5 @@
-const request = require("graphql-request");
-const fs = require("fs");
+import axios from 'axios';
+import fs from 'fs';
 
 const url = "https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql";
 
@@ -11,23 +11,29 @@ const query = `{
         lon
         lat
       }
-      agency{
+      agency {
         name
       }
     }
   }`;
 
-const fetchRoutes = async (url, query) => {
-  const data = await request.request(url, query);
-  return data.routes;
+const fetchRoutes = async (url: string, query: string) => {
+  const response = await axios({
+    url: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
+    method: 'post',
+    data: {
+      query: query
+    }
+  });
+  return response.data.data.routes;
 };
 
-const filterByAgencyName = (routes, name) => {
-  return routes.filter((route) => route.agency.name === name);
+const filterByAgencyName = (routes: any, name: string) => {
+  return routes.filter((route: any) => route.agency.name === name);
 };
 
-const writeJSON = (routes) => {
-  fs.writeFile("./routes.json", routes, (err) => {
+const writeJSON = (routes: any) => {
+  fs.writeFile("./routes.json", routes, (err: any) => {
     if (err) console.log(err);
     console.log("File saved");
   });
