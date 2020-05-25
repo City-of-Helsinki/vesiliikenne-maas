@@ -1,7 +1,7 @@
 import axios from 'axios';
 import fs from 'fs';
 
-const url = "https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql";
+const url = 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql';
 
 const query = `{
   routes(transportModes: FERRY) {
@@ -33,16 +33,16 @@ const filterByAgencyName = (routes: any, name: string) => {
 };
 
 const writeJSON = (routes: any) => {
-  fs.writeFile("./routes.json", routes, (err: any) => {
+  fs.writeFile('./routes.json', routes, (err: any) => {
     if (err) console.log(err);
-    console.log("File saved");
+    console.log('File saved');
   });
 };
 
 const main = async () => {
   const routes = await fetchRoutes(url, query);
-  const filteredRoutes = filterByAgencyName(routes, "JT-Line Oy");
-  writeJSON(JSON.stringify(filteredRoutes, null, " "));
+  const filteredRoutes = filterByAgencyName(routes, 'JT-Line Oy');
+  writeJSON(JSON.stringify(filteredRoutes, null, ' '));
   console.log(filteredRoutes);
 };
 
