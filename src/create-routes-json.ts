@@ -4,18 +4,18 @@ import fs from 'fs';
 const url = "https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql";
 
 const query = `{
-    routes(transportModes: FERRY) {
-        shortName
-      stops {
-        name
-        lon
-        lat
-      }
-      agency {
-        name
-      }
+  routes(transportModes: FERRY) {
+    shortName
+    stops {
+      name
+      lon
+      lat
     }
-  }`;
+    agency {
+      name
+    }
+  }
+}`;
 
 const fetchRoutes = async (url: string, query: string) => {
   const response = await axios({
