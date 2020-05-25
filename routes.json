@@ -1,0 +1,137 @@
+[
+ {
+  "shortName": "Kauppatori-Suomenlinna",
+  "stops": [
+   {
+    "name": "Kauppatori (Isosaaren laituri)",
+    "lon": 24.955411,
+    "lat": 60.167121
+   },
+   {
+    "name": "Tykistölahti",
+    "lon": 24.987642,
+    "lat": 60.145117
+   }
+  ],
+  "agency": {
+   "name": "JT-Line Oy"
+  }
+ },
+ {
+  "shortName": "Vihreä reitti",
+  "stops": [
+   {
+    "name": "Kauppatori (Kolera-allas)",
+    "lon": 24.95325,
+    "lat": 60.167408
+   },
+   {
+    "name": "Vallisaari",
+    "lon": 25.006997,
+    "lat": 60.140344
+   },
+   {
+    "name": "Tykistölahti",
+    "lon": 24.987642,
+    "lat": 60.145117
+   },
+   {
+    "name": "Lonna",
+    "lon": 24.9903145540685,
+    "lat": 60.154981995038
+   }
+  ],
+  "agency": {
+   "name": "JT-Line Oy"
+  }
+ },
+ {
+  "shortName": "Sininen reitti",
+  "stops": [
+   {
+    "name": "Kauppatori (Kolera-allas)",
+    "lon": 24.95325,
+    "lat": 60.167408
+   },
+   {
+    "name": "Tykistölahti",
+    "lon": 24.987642,
+    "lat": 60.145117
+   },
+   {
+    "name": "Kuninkaanportti",
+    "lon": 24.989867,
+    "lat": 60.139956
+   },
+   {
+    "name": "Lonna",
+    "lon": 24.9903145540685,
+    "lat": 60.154981995038
+   }
+  ],
+  "agency": {
+   "name": "JT-Line Oy"
+  }
+ },
+ {
+  "shortName": "Keltainen reitti",
+  "stops": [
+   {
+    "name": "Hakaniemen laituri",
+    "lon": 24.954964,
+    "lat": 60.177732
+   },
+   {
+    "name": "Tykistölahti",
+    "lon": 24.987642,
+    "lat": 60.145117
+   },
+   {
+    "name": "Vallisaari",
+    "lon": 25.006997,
+    "lat": 60.140344
+   },
+   {
+    "name": "Vasikkasaari",
+    "lon": 25.0159403366236,
+    "lat": 60.1524298134269
+   }
+  ],
+  "agency": {
+   "name": "JT-Line Oy"
+  }
+ },
+ {
+  "shortName": "Punainen reitti",
+  "stops": [
+   {
+    "name": "Kauppatori (Kolera-allas)",
+    "lon": 24.95325,
+    "lat": 60.167408
+   },
+   {
+    "name": "Lonna",
+    "lon": 24.9903145540685,
+    "lat": 60.154981995038
+   },
+   {
+    "name": "Tykistölahti",
+    "lon": 24.987642,
+    "lat": 60.145117
+   },
+   {
+    "name": "Kuninkaanportti",
+    "lon": 24.989867,
+    "lat": 60.139956
+   },
+   {
+    "name": "Vallisaari",
+    "lon": 25.006997,
+    "lat": 60.140344
+   }
+  ],
+  "agency": {
+   "name": "JT-Line Oy"
+  }
+ }
+]

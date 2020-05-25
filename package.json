@@ -1,0 +1,29 @@
+{
+  "name": "hki-vesiliikenne",
+  "version": "1.0.0",
+  "description": "Helsingin kaupungin vesiliikenteen MaaS: PoC",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reaktor/hki-vesiliikenne.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/reaktor/hki-vesiliikenne/issues"
+  },
+  "homepage": "https://github.com/reaktor/hki-vesiliikenne#readme",
+  "devDependencies": {
+    "@types/node": "^14.0.5",
+    "nodemon": "^2.0.4",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.9.3"
+  },
+  "dependencies": {
+    "graphql-request": "^1.8.2"
+  }
+}
