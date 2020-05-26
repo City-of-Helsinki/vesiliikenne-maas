@@ -19,11 +19,9 @@ const query = `{
 }`;
 
 const fetchRoutes = async (url: string, query: string): Promise<Route[]> => {
-  const response = await axios({
-    url,
-    method: 'post',
+  const response = await axios.post(url, {
     data: {
-      query: query
+      query
     }
   });
   return response.data.data.routes;
