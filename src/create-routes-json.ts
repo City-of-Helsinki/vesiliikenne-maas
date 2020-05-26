@@ -20,7 +20,7 @@ const query = `{
 
 const fetchRoutes = async (url: string, query: string): Promise<Route[]> => {
   const response = await axios({
-    url: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
+    url,
     method: 'post',
     data: {
       query: query
