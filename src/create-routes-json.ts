@@ -42,8 +42,7 @@ const writeJSON = (routes: any) => {
 const main = async () => {
   const routes = await fetchRoutes(url, query);
   const filteredRoutes = filterByAgencyName(routes, 'JT-Line Oy');
-  writeJSON(JSON.stringify(filteredRoutes, null, ' '));
-  console.log(filteredRoutes);
+  writeJSON(JSON.stringify(filteredRoutes, null, '  '));
 };
 
 main();
