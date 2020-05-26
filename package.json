@@ -4,7 +4,8 @@
   "repository": "git@github.com:reaktor/hki-vesiliikenne.git",
   "license": "UNLICENSED",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "fetch": "yarn build && node build/create-routes-json.js && cat routes.json"
   },
   "dependencies": {
     "axios": "^0.19.2"
