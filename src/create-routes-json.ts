@@ -26,7 +26,7 @@ const fetchRoutes = async (url: string, query: string): Promise<Route[]> => {
 };
 
 const filterByAgencyName = (routes: Route[], name: string) =>
-  routes.filter((route) => route.agency.name === name);
+  routes.filter(route => route.agency.name === name);
 
 const writeJSON = async (routes: string) => {
   await fs.writeFile('./routes.json', routes);
