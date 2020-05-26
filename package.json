@@ -5,7 +5,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "tsc",
-    "fetch": "yarn build && node build/create-routes-json.js && cat routes.json"
+    "fetch": "yarn build && node --unhandled-rejections=strict build/create-routes-json.js && cat routes.json"
   },
   "dependencies": {
     "axios": "^0.19.2"
