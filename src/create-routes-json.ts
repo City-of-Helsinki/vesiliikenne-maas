@@ -1,5 +1,6 @@
 import axios from 'axios';
 import fs from 'fs';
+import { Route } from './types';
 
 const url = 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql';
 
@@ -17,7 +18,7 @@ const query = `{
   }
 }`;
 
-const fetchRoutes = async (url: string, query: string) => {
+const fetchRoutes = async (url: string, query: string): Promise<Route[]> => {
   const response = await axios({
     url: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
     method: 'post',
@@ -28,8 +29,8 @@ const fetchRoutes = async (url: string, query: string) => {
   return response.data.data.routes;
 };
 
-const filterByAgencyName = (routes: any, name: string) => {
-  return routes.filter((route: any) => route.agency.name === name);
+const filterByAgencyName = (routes: Route[], name: string) => {
+  return routes.filter((route) => route.agency.name === name);
 };
 
 const writeJSON = (routes: any) => {
