@@ -29,8 +29,8 @@
       "Punainen reitti": 'red',
       "Sininen reitti": 'blue'
     }
-    
-    var mymap = L.map('mapid').setView([60.167121, 24.955411], 13);
+
+    let mymap = L.map('mapid').setView([60.167121, 24.955411], 13);
     L.tileLayer(
       'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
       {
@@ -43,26 +43,26 @@
         accessToken: '<access_token>'
       }
     ).addTo(mymap);
-    
+
     fetch('../routes.json')
       .then(response => response.json())
       .then(data => {
         data.forEach(route => {
-        let coords = route.stops.map(route => [route.lat, route.lon])
-        coords = [...coords, coords[0]]
-        console.log(coords)
-        var polyline = L.polyline(coords, {color: colors[route.shortName], weight: 2}).addTo(mymap);
+          let coords = route.stops.map(route => [route.lat, route.lon])
+          coords = [...coords, coords[0]]
+          L.polyline(coords, { color: colors[route.shortName], weight: 2 }).addTo(mymap);
 
-        
-        route.stops.forEach(stop => 
-          L.marker([stop.lat, stop.lon])
-            .bindTooltip(`<b>${stop.name}</b>`, 
-              {
-                permanent: true, 
-                direction: 'top'
-              }
-            ).addTo(mymap))})
-      }); 
+          route.stops.forEach(stop =>
+            L.marker([stop.lat, stop.lon])
+              .bindTooltip(`<b>${stop.name}</b>`,
+                {
+                  permanent: true,
+                  direction: 'top',
+                  opacity: 0.7,
+                }).addTo(mymap)
+          )
+        })
+      });
 
   </script>
 </body>
