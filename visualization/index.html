@@ -45,14 +45,16 @@
         accessToken: '<access_token>'
       }
     ).addTo(mymap);
-
+    const allMarkerLayers = {}
     fetch('../routes.json')
       .then(response => response.json())
       .then(data => {
         data.forEach(route => {
-          let coords = route.stops.map(route => [route.lat, route.lon])
           const routeStyle = routeStyles[route.shortName]
-          L.polyline(coords, { color: routeStyle.color, weight: 2, offset: routeStyle.offset }).addTo(mymap)
+          const coords = route.stops.map(route => [route.lat, route.lon])
+
+          const routeLine = L.polyline(coords, { color: routeStyle.color, weight: 2, offset: routeStyle.offset })
+          routeLine.addTo(mymap)
 
           L.polylineDecorator(coords, {
             patterns: [
@@ -71,17 +73,27 @@
             ]
           }).addTo(mymap)
 
-          route.stops.forEach(stop =>
-            L.marker([stop.lat, stop.lon])
-              .bindTooltip(`<b>${stop.name}</b>`,
-                {
-                  permanent: true,
-                  direction: 'top',
-                  opacity: 0.7,
-                }).addTo(mymap)
-          )
+          const markers = L.layerGroup(route.stops.map((stop, i) =>
+                  L.marker([stop.lat, stop.lon])
+                          .bindTooltip(`<b>${route.shortName} ${i + 1}<br/>${stop.name}</br>`,
+                                  {
+                                    permanent: true,
+                                    direction: 'top'
+                                  })))
+
+          routeLine.on('click', () => {
+            if (mymap.hasLayer(markers)) {
+              markers.remove()
+            } else {
+              markers.addTo(mymap)
+            }
+          })
+
+          allMarkerLayers[route.shortName] = markers
         })
-      });
+
+        L.control.layers(null, allMarkerLayers, { collapsed: false }).addTo(mymap)
+      })
 
   </script>
 </body>
