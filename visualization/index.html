@@ -15,6 +15,7 @@
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
     integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
     crossorigin=""></script>
+  <script src="lib/leaflet.polylineoffset.js"></script>
 </head>
 
 <body>
@@ -22,12 +23,12 @@
 
   <script>
 
-    const colors = {
-      "Vihreä reitti": 'green',
-      "Kauppatori-Suomenlinna": 'white',
-      "Keltainen reitti": 'yellow',
-      "Punainen reitti": 'red',
-      "Sininen reitti": 'blue'
+    const routeStyles = {
+      "Vihreä reitti": {offset: 0, color: 'green'},
+      "Kauppatori-Suomenlinna": {offset: 1, color: 'white'},
+      "Keltainen reitti": {offset: 2, color: 'yellow'},
+      "Punainen reitti": {offset: 3, color: 'red'},
+      "Sininen reitti": {offset: 4, color: 'blue'}
     }
 
     const mymap = L.map('mapid').setView([60.167121, 24.955411], 13);
@@ -50,7 +51,8 @@
         data.forEach(route => {
           let coords = route.stops.map(route => [route.lat, route.lon])
           coords = [...coords, coords[0]]
-          L.polyline(coords, { color: colors[route.shortName], weight: 2 }).addTo(mymap);
+          const routeStyle = routeStyles[route.shortName]
+          L.polyline(coords, { color: routeStyle.color, weight: 2, offset: routeStyle.offset }).addTo(mymap);
 
           route.stops.forEach(stop =>
             L.marker([stop.lat, stop.lon])

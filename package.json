@@ -8,7 +8,8 @@
     "fetch": "yarn build && node --trace-warnings --unhandled-rejections=strict build/create-routes-json.js && cat routes.json"
   },
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "leaflet-polylineoffset-lc": "^1.2.0"
   },
   "devDependencies": {
     "typescript": "^3.9.3",
