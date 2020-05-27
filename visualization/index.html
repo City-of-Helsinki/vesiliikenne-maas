@@ -16,6 +16,7 @@
     integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
     crossorigin=""></script>
   <script src="lib/leaflet.polylineoffset.js"></script>
+  <script src="lib/leaflet.polylineDecorator.js"></script>
 </head>
 
 <body>
@@ -50,9 +51,25 @@
       .then(data => {
         data.forEach(route => {
           let coords = route.stops.map(route => [route.lat, route.lon])
-          coords = [...coords, coords[0]]
           const routeStyle = routeStyles[route.shortName]
-          L.polyline(coords, { color: routeStyle.color, weight: 2, offset: routeStyle.offset }).addTo(mymap);
+          L.polyline(coords, { color: routeStyle.color, weight: 2, offset: routeStyle.offset }).addTo(mymap)
+
+          L.polylineDecorator(coords, {
+            patterns: [
+              {
+                repeat: 50, symbol: L.Symbol.arrowHead({
+                  polygon: true,
+                  pixelSize: 15,
+                  headAngle: 60,
+                  pathOptions: {
+                    stroke: true,
+                    weight: 0.5,
+                    color: routeStyle.color
+                  }
+                })
+              }
+            ]
+          }).addTo(mymap)
 
           route.stops.forEach(stop =>
             L.marker([stop.lat, stop.lon])
