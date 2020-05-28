@@ -15,7 +15,6 @@
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
     integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
     crossorigin=""></script>
-  <script src="lib/leaflet.polylineoffset.js"></script>
   <script src="lib/leaflet.polylineDecorator.js"></script>
 </head>
 
@@ -24,76 +23,104 @@
 
   <script>
 
-    const routeStyles = {
-      "Vihreä reitti": {offset: 0, color: 'green'},
-      "Kauppatori-Suomenlinna": {offset: 1, color: 'white'},
-      "Keltainen reitti": {offset: 2, color: 'yellow'},
-      "Punainen reitti": {offset: 3, color: 'red'},
-      "Sininen reitti": {offset: 4, color: 'blue'}
+    const routeColors = {
+      'Vihreä reitti': ['#05668dff', '#028090ff', '#00a896ff', '#02c39aff'],
+      'Kauppatori-Suomenlinna': ['#e9ece7ff', '#ffffffff'],
+      'Keltainen reitti': ['#fff75eff', '#ffe94eff', '#ffda3dff', '#fdb833ff'],
+      'Punainen reitti': ['#f7b267ff', '#f79d65ff', '#f4845fff', '#f27059ff', '#f25c54ff'],
+      'Sininen reitti': ['#03045eff', '#0077b6ff', '#90e0efff', '#caf0f8ff']
     }
 
-    const mymap = L.map('mapid').setView([60.167121, 24.955411], 13);
-    L.tileLayer(
-      'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
-      {
-        attribution:
-          'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        maxZoom: 18,
-        id: 'mapbox/streets-v11',
-        tileSize: 512,
-        zoomOffset: -1,
-        accessToken: '<access_token>'
-      }
-    ).addTo(mymap);
-    const allMarkerLayers = {}
-    fetch('../routes.json')
-      .then(response => response.json())
-      .then(data => {
-        data.forEach(route => {
-          const routeStyle = routeStyles[route.shortName]
-          const coords = route.stops.map(route => [route.lat, route.lon])
+    const mymap = L.map('mapid').setView([60.167121, 24.955411], 13)
 
-          const routeLine = L.polyline(coords, { color: routeStyle.color, weight: 2, offset: routeStyle.offset })
-          routeLine.addTo(mymap)
 
-          L.polylineDecorator(coords, {
-            patterns: [
+    addTiles()
+    renderContent()
+
+    function addTiles() {
+      L.tileLayer(
+              'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
               {
-                repeat: 50, symbol: L.Symbol.arrowHead({
-                  polygon: true,
-                  pixelSize: 15,
-                  headAngle: 60,
-                  pathOptions: {
-                    stroke: true,
-                    weight: 0.5,
-                    color: routeStyle.color
-                  }
-                })
+                attribution:
+                        'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 18,
+                id: 'mapbox/streets-v11',
+                tileSize: 512,
+                zoomOffset: -1,
+                accessToken: '<accessToken>'
               }
-            ]
-          }).addTo(mymap)
+      ).addTo(mymap)
+    }
 
-          const markers = L.layerGroup(route.stops.map((stop, i) =>
-                  L.marker([stop.lat, stop.lon])
-                          .bindTooltip(`<b>${route.shortName} ${i + 1}<br/>${stop.name}</br>`,
-                                  {
-                                    permanent: true,
-                                    direction: 'top'
-                                  })))
+    async function renderContent() {
+      const allMarkerLayers = {}
+      const response = await fetch('../routes.json')
+      const routeData = await response.json()
 
-          routeLine.on('click', () => {
-            if (mymap.hasLayer(markers)) {
-              markers.remove()
-            } else {
-              markers.addTo(mymap)
+
+      const maxPatterns = routeData.reduce((prev, curr) => Math.max(prev, curr.patterns.length), 0)
+      routeData.forEach((route, routeIndex) => {
+        const colors = routeColors[route.shortName]
+        route.patterns.forEach((pattern, patternIndex) => renderPattern(route.shortName, pattern, colors[patternIndex], routeIndex * maxPatterns + patternIndex))
+      })
+
+      return L.control.layers(null, allMarkerLayers, { collapsed: false }).addTo(mymap)
+
+      function renderPattern(routeName, pattern, color, offset) {
+        const coords = pattern.stops.map(stop => [stop.lat, stop.lon])
+        const routeLine = L.polyline(coords, { color, offset, weight: 2 })
+        const routeArrows = L.polylineDecorator(coords, {
+          patterns: [
+            {
+              repeat: 50, symbol: L.Symbol.arrowHead({
+                polygon: true,
+                pixelSize: 15,
+                headAngle: 60,
+                pathOptions: {
+                  color,
+                  stroke: true,
+                  weight: 0.5
+                }
+              })
             }
-          })
-
-          allMarkerLayers[route.shortName] = markers
+          ]
         })
 
-        L.control.layers(null, allMarkerLayers, { collapsed: false }).addTo(mymap)
-      })
+        const routeVisualization = L.layerGroup([routeLine, routeArrows])
+        const stopTexts = pattern.stops.map((stop, i) => ({
+          stopId: stop.id,
+          name: stop.name,
+          pos: [stop.lat, stop.lon],
+          stopIndex: i + 1
+        }))
+        const markerContents = {}
+        stopTexts.forEach(s => {
+                  const prev = markerContents[s.stopId]
+                  if (prev)
+                    prev.stopIndexes.push(s.stopIndex)
+                  else
+                    markerContents[s.stopId] = Object.assign({ stopIndexes: [s.stopIndex] }, s)
+                }
+        )
+        const combinedMarkerContents = Object.values(markerContents).map(
+                m => Object.assign(m, { content: `${m.stopIndexes.join(', ')} - ${m.name}` })
+        )
+        const markers = L.layerGroup(combinedMarkerContents.map(stop =>
+                L.marker(stop.pos)
+                        .bindTooltip(stop.content,
+                                {
+                                  permanent: true,
+                                })))
+
+        const description = `<div style="margin-bottom: 1em;"><h3>${routeName}</h3>
+${pattern.name}<br/>
+<div style="padding: 6px; border: solid 1px black; border-radius: 4px;background-color: #0077b622;  ">${pattern.headsign}</div>
+</div>
+`
+        allMarkerLayers[description] = L.layerGroup([routeVisualization, markers])
+      }
+
+    }
 
   </script>
 </body>
