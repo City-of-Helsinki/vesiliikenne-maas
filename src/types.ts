@@ -1,7 +1,9 @@
 export interface Route {
-  shortname: string;
+  shortName: string;
   stops: Stop[];
   agency: Agency;
+  id: string;
+  longName: string
 }
 
 interface Stop {
