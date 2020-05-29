@@ -1,3 +1,11 @@
+export interface QueryResponse {
+  data: QueryResponseData;
+}
+
+export interface QueryResponseData {
+  routes:  Route[];
+}
+
 export interface Route {
   shortName: string;
   stops: Stop[];

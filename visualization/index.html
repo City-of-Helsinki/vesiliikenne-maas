@@ -58,17 +58,16 @@
       const routeData = await response.json()
 
 
-      const maxPatterns = routeData.reduce((prev, curr) => Math.max(prev, curr.patterns.length), 0)
-      routeData.forEach((route, routeIndex) => {
+      routeData.forEach(route => {
         const colors = routeColors[route.shortName]
-        route.patterns.forEach((pattern, patternIndex) => renderPattern(route.shortName, pattern, colors[patternIndex], routeIndex * maxPatterns + patternIndex))
+        route.patterns.forEach((pattern, patternIndex) => renderPattern(route.shortName, pattern, colors[patternIndex]))
       })
 
       return L.control.layers(null, allMarkerLayers, { collapsed: false }).addTo(mymap)
 
-      function renderPattern(routeName, pattern, color, offset) {
+      function renderPattern(routeName, pattern, color) {
         const coords = pattern.stops.map(stop => [stop.lat, stop.lon])
-        const routeLine = L.polyline(coords, { color, offset, weight: 2 })
+        const routeLine = L.polyline(coords, { color, weight: 2 })
         const routeArrows = L.polylineDecorator(coords, {
           patterns: [
             {
@@ -87,6 +86,22 @@
         })
 
         const routeVisualization = L.layerGroup([routeLine, routeArrows])
+        const combinedMarkerContents = combineStopInformationForMarkers(pattern)
+        const markers = L
+                .layerGroup(combinedMarkerContents.map(({ pos, content }) =>
+                        L
+                                .marker(pos)
+                                .bindTooltip(content, { permanent: true })))
+
+        const description = `<div style="margin-bottom: 1em;"><h3>${routeName}</h3>
+${pattern.name}<br/>
+<div style="padding: 6px; border: solid 1px black; border-radius: 4px;background-color: #0077b622;  ">${pattern.headsign}</div>
+</div>
+`
+        allMarkerLayers[description] = L.layerGroup([routeVisualization, markers])
+      }
+
+      function combineStopInformationForMarkers(pattern) {
         const stopTexts = pattern.stops.map((stop, i) => ({
           stopId: stop.id,
           name: stop.name,
@@ -99,27 +114,13 @@
                   if (prev)
                     prev.stopIndexes.push(s.stopIndex)
                   else
-                    markerContents[s.stopId] = Object.assign({ stopIndexes: [s.stopIndex] }, s)
+                    markerContents[s.stopId] = { ...s, stopIndexes: [s.stopIndex] }
                 }
         )
-        const combinedMarkerContents = Object.values(markerContents).map(
-                m => Object.assign(m, { content: `${m.stopIndexes.join(', ')} - ${m.name}` })
+        return Object.values(markerContents).map(
+                m => ({ ...m, content: `${m.stopIndexes.join(', ')} - ${m.name}` })
         )
-        const markers = L.layerGroup(combinedMarkerContents.map(stop =>
-                L.marker(stop.pos)
-                        .bindTooltip(stop.content,
-                                {
-                                  permanent: true,
-                                })))
-
-        const description = `<div style="margin-bottom: 1em;"><h3>${routeName}</h3>
-${pattern.name}<br/>
-<div style="padding: 6px; border: solid 1px black; border-radius: 4px;background-color: #0077b622;  ">${pattern.headsign}</div>
-</div>
-`
-        allMarkerLayers[description] = L.layerGroup([routeVisualization, markers])
       }
-
     }
 
   </script>
