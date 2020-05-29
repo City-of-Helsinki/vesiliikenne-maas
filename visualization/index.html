@@ -58,17 +58,16 @@
       const routeData = await response.json()
 
 
-      const maxPatterns = routeData.reduce((prev, curr) => Math.max(prev, curr.patterns.length), 0)
-      routeData.forEach((route, routeIndex) => {
+      routeData.forEach(route => {
         const colors = routeColors[route.shortName]
-        route.patterns.forEach((pattern, patternIndex) => renderPattern(route.shortName, pattern, colors[patternIndex], routeIndex * maxPatterns + patternIndex))
+        route.patterns.forEach((pattern, patternIndex) => renderPattern(route.shortName, pattern, colors[patternIndex]))
       })
 
       return L.control.layers(null, allMarkerLayers, { collapsed: false }).addTo(mymap)
 
-      function renderPattern(routeName, pattern, color, offset) {
+      function renderPattern(routeName, pattern, color) {
         const coords = pattern.stops.map(stop => [stop.lat, stop.lon])
-        const routeLine = L.polyline(coords, { color, offset, weight: 2 })
+        const routeLine = L.polyline(coords, { color, weight: 2 })
         const routeArrows = L.polylineDecorator(coords, {
           patterns: [
             {
