@@ -1,22 +1,32 @@
-import axios from 'axios';
-import { promises as fs } from 'fs';
-import { Route } from './types';
+import axios, { AxiosResponse } from 'axios'
+import { promises as fs } from 'fs'
+import { Route } from './types'
 
 const url = 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql';
 
 const query = `{
   routes(transportModes: FERRY) {
+    id
     shortName
-    stops {
+    longName
+    patterns {
+      directionId
       name
-      lon
-      lat
+      id
+      headsign
+      stops {
+        id
+        name
+        lat
+        lon
+      }
     }
     agency {
       name
     }
   }
-}`;
+}
+`;
 
 const fetchRoutes = async (url: string, query: string): Promise<Route[]> => {
   const response = await axios.post(url, {
