@@ -87,12 +87,11 @@
 
         const routeVisualization = L.layerGroup([routeLine, routeArrows])
         const combinedMarkerContents = combineStopInformationForMarkers(pattern)
-        const markers = L.layerGroup(combinedMarkerContents.map(stop =>
-                L.marker(stop.pos)
-                        .bindTooltip(stop.content,
-                                {
-                                  permanent: true,
-                                })))
+        const markers = L
+                .layerGroup(combinedMarkerContents.map(({ pos, content }) =>
+                        L
+                                .marker(pos)
+                                .bindTooltip(content, { permanent: true })))
 
         const description = `<div style="margin-bottom: 1em;"><h3>${routeName}</h3>
 ${pattern.name}<br/>
