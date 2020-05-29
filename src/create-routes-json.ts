@@ -43,10 +43,9 @@ const writeJSON = async (routes: string) => {
   console.log('File saved');
 };
 
+export const getFilteredRoutes = async () => filterByAgencyName(await fetchRoutes(url, query), 'JT-Line Oy')
+
 const main = async () => {
-  const routes = await fetchRoutes(url, query);
-  const filteredRoutes = filterByAgencyName(routes, 'JT-Line Oy');
+  const filteredRoutes = await getFilteredRoutes()
   await writeJSON(JSON.stringify(filteredRoutes, null, '  '));
 };
-
-main();
