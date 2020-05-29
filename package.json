@@ -4,15 +4,20 @@
   "repository": "git@github.com:reaktor/hki-vesiliikenne.git",
   "license": "UNLICENSED",
   "scripts": {
+    "dev": "tsnd --respawn src/server.ts",
     "build": "tsc",
     "fetch": "yarn build && node --trace-warnings --unhandled-rejections=strict build/create-routes-json.js && cat routes.json"
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
     "leaflet-polylinedecorator": "^1.6.0"
   },
   "devDependencies": {
-    "typescript": "^3.9.3",
-    "@types/node": "^14.0.5"
+    "ts-node-dev": "^1.0.0-pre.44",
+    "@types/express": "^4.17.6",
+    "@types/node": "^14.0.5",
+    "typescript": "^3.9.3"
   }
 }
