@@ -9,8 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "leaflet-polylinedecorator": "^1.6.0",
-    "leaflet-polylineoffset-lc": "^1.2.0"
+    "leaflet-polylinedecorator": "^1.6.0"
   },
   "devDependencies": {
     "typescript": "^3.9.3",

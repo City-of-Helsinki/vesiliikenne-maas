@@ -1,1 +1,0 @@
-../../node_modules/leaflet-polylineoffset-lc/leaflet.polylineoffset.js
