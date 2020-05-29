@@ -106,3 +106,4 @@ dist
 # Project specific
 build
 .idea
+*~
