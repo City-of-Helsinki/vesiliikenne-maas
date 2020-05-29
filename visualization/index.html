@@ -86,24 +86,7 @@
         })
 
         const routeVisualization = L.layerGroup([routeLine, routeArrows])
-        const stopTexts = pattern.stops.map((stop, i) => ({
-          stopId: stop.id,
-          name: stop.name,
-          pos: [stop.lat, stop.lon],
-          stopIndex: i + 1
-        }))
-        const markerContents = {}
-        stopTexts.forEach(s => {
-                  const prev = markerContents[s.stopId]
-                  if (prev)
-                    prev.stopIndexes.push(s.stopIndex)
-                  else
-                    markerContents[s.stopId] = Object.assign({ stopIndexes: [s.stopIndex] }, s)
-                }
-        )
-        const combinedMarkerContents = Object.values(markerContents).map(
-                m => Object.assign(m, { content: `${m.stopIndexes.join(', ')} - ${m.name}` })
-        )
+        const combinedMarkerContents = combineStopInformationForMarkers(pattern)
         const markers = L.layerGroup(combinedMarkerContents.map(stop =>
                 L.marker(stop.pos)
                         .bindTooltip(stop.content,
@@ -119,6 +102,26 @@ ${pattern.name}<br/>
         allMarkerLayers[description] = L.layerGroup([routeVisualization, markers])
       }
 
+      function combineStopInformationForMarkers(pattern) {
+        const stopTexts = pattern.stops.map((stop, i) => ({
+          stopId: stop.id,
+          name: stop.name,
+          pos: [stop.lat, stop.lon],
+          stopIndex: i + 1
+        }))
+        const markerContents = {}
+        stopTexts.forEach(s => {
+                  const prev = markerContents[s.stopId]
+                  if (prev)
+                    prev.stopIndexes.push(s.stopIndex)
+                  else
+                    markerContents[s.stopId] = { ...s, stopIndexes: [s.stopIndex] }
+                }
+        )
+        return Object.values(markerContents).map(
+                m => ({ ...m, content: `${m.stopIndexes.join(', ')} - ${m.name}` })
+        )
+      }
     }
 
   </script>
