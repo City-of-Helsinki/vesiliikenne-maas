@@ -1,5 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv'
+import asyncHandler from 'express-async-handler'
 
 import { getFilteredRoutes } from './create-routes-json'
 
@@ -10,13 +11,9 @@ app.get('/api/mapbox-token', (_, res) =>
   res.json(process.env.MAPBOX_ACCESS_KEY)
 )
 
-app.get('/api/routes', async (_, res, next) => {
-  try {
-    res.json(await getFilteredRoutes())
-  } catch (e) {
-    next(e)
-  }
-})
+app.get('/api/routes', asyncHandler(async (_, res) => {
+  res.json(await getFilteredRoutes())
+}))
 
 app.use(express.static('public'))
 
