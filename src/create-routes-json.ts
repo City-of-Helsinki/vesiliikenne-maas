@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { promises as fs } from 'fs'
-import { Route } from './types'
+import { QueryResponse, Route } from './types'
 
 const url = 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql';
 
@@ -28,11 +28,11 @@ const query = `{
 }
 `;
 
-const fetchRoutes = async (url: string, query: string): Promise<Route[]> => {
-  const response = await axios.post(url, {
+const fetchRoutes = async (url: string, query: string) => {
+  const response: AxiosResponse<QueryResponse> = await axios.post(url, {
     query
-  });
-  return response.data.data.routes;
+  })
+  return response.data.data.routes
 };
 
 const filterByAgencyName = (routes: Route[], name: string) =>
