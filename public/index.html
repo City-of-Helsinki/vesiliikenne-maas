@@ -33,28 +33,29 @@
 
     const mymap = L.map('mapid').setView([60.167121, 24.955411], 13)
 
-
     addTiles()
     renderContent()
 
-    function addTiles() {
+    async function addTiles() {
+      const accessToken = await fetch('/api/mapbox-token').then(res => res.json())
+
       L.tileLayer(
-              'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
-              {
-                attribution:
-                        'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                maxZoom: 18,
-                id: 'mapbox/streets-v11',
-                tileSize: 512,
-                zoomOffset: -1,
-                accessToken: '<accessToken>'
-              }
+        'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: 'mapbox/streets-v11',
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken
+        }
       ).addTo(mymap)
     }
 
     async function renderContent() {
       const allMarkerLayers = {}
-      const response = await fetch('../routes.json')
+      const response = await fetch('/api/routes')
       const routeData = await response.json()
 
 
@@ -88,10 +89,10 @@
         const routeVisualization = L.layerGroup([routeLine, routeArrows])
         const combinedMarkerContents = combineStopInformationForMarkers(pattern)
         const markers = L
-                .layerGroup(combinedMarkerContents.map(({ pos, content }) =>
-                        L
-                                .marker(pos)
-                                .bindTooltip(content, { permanent: true })))
+          .layerGroup(combinedMarkerContents.map(({ pos, content }) =>
+            L
+              .marker(pos)
+              .bindTooltip(content, { permanent: true })))
 
         const description = `<div style="margin-bottom: 1em;"><h3>${routeName}</h3>
 ${pattern.name}<br/>
@@ -110,15 +111,15 @@ ${pattern.name}<br/>
         }))
         const markerContents = {}
         stopTexts.forEach(s => {
-                  const prev = markerContents[s.stopId]
-                  if (prev)
-                    prev.stopIndexes.push(s.stopIndex)
-                  else
-                    markerContents[s.stopId] = { ...s, stopIndexes: [s.stopIndex] }
-                }
+          const prev = markerContents[s.stopId]
+          if (prev)
+            prev.stopIndexes.push(s.stopIndex)
+          else
+            markerContents[s.stopId] = { ...s, stopIndexes: [s.stopIndex] }
+        }
         )
         return Object.values(markerContents).map(
-                m => ({ ...m, content: `${m.stopIndexes.join(', ')} - ${m.name}` })
+          m => ({ ...m, content: `${m.stopIndexes.join(', ')} - ${m.name}` })
         )
       }
     }
