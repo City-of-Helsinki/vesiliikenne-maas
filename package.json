@@ -5,7 +5,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "dev": "tsnd --respawn src/server.ts",
-    "start": "tsc && node ./build/server.js",
+    "start": "node ./build/server.js",
     "build": "tsc",
     "fetch": "yarn build && node --trace-warnings --unhandled-rejections=strict ./build/create-routes-json.js && cat routes.json"
   },
