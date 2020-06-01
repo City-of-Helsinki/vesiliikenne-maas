@@ -17,6 +17,6 @@ app.get('/api/routes', asyncHandler(async (_, res) => {
 
 app.use(express.static('public'))
 
-app.listen(process.env.APP_PORT, () =>
-  console.log(`Listening at http://localhost:${process.env.APP_PORT}`)
+app.listen(process.env.PORT, () =>
+  console.log(`Listening at http://localhost:${process.env.PORT}`)
 )
