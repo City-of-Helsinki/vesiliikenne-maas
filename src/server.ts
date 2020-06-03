@@ -17,6 +17,12 @@ app.get('/api/routes', asyncHandler(async (_, res) => {
 
 app.use(express.static('public'))
 
-app.listen(process.env.PORT, () =>
-  console.log(`Listening at http://localhost:${process.env.PORT}`)
-)
+const port = process.env.PORT
+if (port) {
+  app.listen(port, () =>
+    console.log(`Listening at http://localhost:${port}`))
+} else {
+  console.error('PORT is undefined')
+  process.exit(1)
+}
+
