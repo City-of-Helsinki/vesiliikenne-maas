@@ -43,7 +43,7 @@ const writeJSON = async (routes: string) => {
   console.log('File saved')
 }
 
-export const getFilteredRoutes = async () =>
+export const getFilteredRoutes = async (): Promise<Route[]> =>
   filterByAgencyName(await fetchRoutes(url, query), 'JT-Line Oy')
 
 const main = async () => {
@@ -52,5 +52,5 @@ const main = async () => {
 }
 
 if (require.main === module) {
-  main()
+  void main()
 }
