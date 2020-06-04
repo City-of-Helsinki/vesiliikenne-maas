@@ -12,8 +12,7 @@ with route_and_stops as
                          'departure_time', departure_time,
                          'name', stop_name,
                          'lat', stop_lat,
-                         'lon', stop_lon)
-                     stop_info,
+                         'lon', stop_lon) as stop_info,
                  departure_time
           from agency
                    join routes using (agency_id)
