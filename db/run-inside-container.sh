@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 cd /work
 git clone --depth 1 https://github.com/fitnr/gtfs-sql-importer || true
-curl -o gtfs.zip http://lautta.net/db/gtfs_pk/gtfs.zip
+curl -L -o gtfs.zip http://lautta.net/db/gtfs_pk/gtfs.zip
 cd gtfs-sql-importer
 make init
 make load GTFS=../gtfs.zip
