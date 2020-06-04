@@ -51,10 +51,10 @@ with route_and_stops as
                  route_short_name     as "shortName",
                  route_long_name      as "longName",
                  agency_name          as "agency",
-                 jsonb_agg(json_trip) as "patterns"
+                 jsonb_agg(json_trip order by json_trip ->> 'earliestDeparture') as "patterns"
           from route_objects_by_departure_time
           group by 1, 2, 3, 4)
-select json_agg(jsonb_build_object(
+select jsonb_agg(jsonb_build_object(
         'id', id,
         'shortName', "shortName",
         'longName', "longName",
