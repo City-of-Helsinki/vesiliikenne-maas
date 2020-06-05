@@ -1,15 +1,16 @@
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 
-function IndexPage({ data }) {
-  return <div>{data} </div>
+interface IndexPageProperties {
+  uuidAsData?: string;
 }
+
+const IndexPage: NextPage<IndexPageProperties> = ({ uuidAsData }) =>
+  <div>{uuidAsData}</div>
 
 export default IndexPage
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  // Fetch data from external API
-  const data = await Promise.resolve('lol')
-  // Pass data to the page via props
-  return { props: { data } }
+  const theVal = await Promise.resolve('to be uuid as data')
+  return { props: { arvo: theVal } }
 }
 
