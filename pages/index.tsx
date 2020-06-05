@@ -11,15 +11,12 @@ interface IndexPageProperties {
 const IndexPage: NextPage<IndexPageProperties> = ({
   qrCodeContents,
   ticket
-}) => (
-  <div>
-    <TicketContainer
-      ticketType={ticket.ticketTypeId}
-      validUntil={new Date(ticket.validTo)}
-      qrCodeContents={qrCodeContents}
-    />
-  </div>
-)
+}) =>
+  <TicketContainer
+    ticketType={ticket.ticketTypeId}
+    validUntil={new Date(ticket.validTo)}
+    qrCodeContents={qrCodeContents}
+  />
 
 export default IndexPage
 
