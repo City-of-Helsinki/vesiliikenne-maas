@@ -1,0 +1,63 @@
+body,
+html {
+  min-height: 100vh;
+  color: hsl(200, 10%, 30%);
+  background-color: hsl(200, 10%, 96%);
+  display: grid;
+  font-family: "Roboto", sans-serif;
+}
+
+h1 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.ticket {
+  width: 80vw;
+  max-height: 700px;
+  background-color: white;
+  margin: auto;
+  box-shadow: 0 2px 4px hsla(200, 20%, 20%, 0.25);
+  border-radius: 0.375em 0.375em 0.375em 0.375em;
+}
+
+.ticket-type {
+  padding: 0.75rem;
+  border-bottom: 2px dashed hsl(200, 10%, 92%);
+}
+
+.ticket-info {
+  padding: 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-bottom: 2px dashed hsl(200, 10%, 92%);
+}
+
+.ticket-valid-until {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.ticket-discount-group {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  justify-items: end;
+}
+
+.label {
+  font-size: 0.8rem;
+  color: hsl(200, 10%, 85%);
+  padding-bottom: 0.5rem;
+}
+
+.ticket-body {
+  display: grid;
+  padding: 1.25rem 1.25rem 1.75rem 1.25rem;
+}
+
+.qr-code {
+  margin: auto;
+  width: 250px;
+  height: 250px;
+  background-color: black;
+}
