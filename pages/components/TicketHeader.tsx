@@ -32,7 +32,7 @@ const labelStyle = {
   paddingBottom: '0.5rem'
 }
 
-type Props = {
+interface Props {
   ticketType: string
   validUntil: Date
 }

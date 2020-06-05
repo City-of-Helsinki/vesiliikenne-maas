@@ -7,7 +7,7 @@ const qrCodeStyle = {
   margin: 'auto'
 }
 
-type Props = {
+interface Props {
   qrCodeContents: string
 }
 

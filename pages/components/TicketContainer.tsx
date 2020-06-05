@@ -18,7 +18,7 @@ const ticketStyle = {
   borderRadius: '0.375em 0.375em 0.375em 0.375em'
 }
 
-type Props = {
+interface Props {
   ticketType: string
   validUntil: Date
   qrCodeContents: string
