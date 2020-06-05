@@ -4,15 +4,16 @@ const ticketBodyStyle = {
 }
 
 const qrCodeStyle = {
-  margin: 'auto',
-  width: '250px',
-  height: '250px',
-  backgroundColor: 'black'
+  margin: 'auto'
 }
 
-const TicketBody = props => (
+type Props = {
+  qrCodeContents: string
+}
+
+const TicketBody = ({ qrCodeContents }: Props) => (
   <div className="ticket-body" style={ticketBodyStyle}>
-    <div className="qr-code" style={qrCodeStyle}></div>
+    <img alt="the qr code" style={qrCodeStyle} src={qrCodeContents} />
   </div>
 )
 

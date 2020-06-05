@@ -15,6 +15,7 @@ const IndexPage: NextPage<IndexPageProperties> = ({
     <TicketContainer
       ticketType={ticket.ticketTypeId}
       validUntil={new Date(ticket.validTo)}
+      qrCodeContents={qrCodeContents}
     />
     <div>
       <img alt="the qr code" src={qrCodeContents} />
