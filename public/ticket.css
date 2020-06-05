@@ -4,7 +4,7 @@ html {
   color: hsl(200, 10%, 30%);
   background-color: hsl(200, 10%, 96%);
   display: grid;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 h1 {
@@ -14,7 +14,6 @@ h1 {
 
 .ticket {
   width: 80vw;
-  max-height: 700px;
   background-color: white;
   margin: auto;
   box-shadow: 0 2px 4px hsla(200, 20%, 20%, 0.25);
