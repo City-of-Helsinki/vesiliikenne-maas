@@ -18,12 +18,12 @@ const dummyTicket: Ticket = {
 const readTicketDetails = async (_: string) => Promise.resolve(dummyTicket)
 
 export const qrCodeWithTicketDetails = async (uuid: string) => {
-  let x: [string, Ticket]
-  x = await Promise.all([
+  let qrCodeWithTicketTuple: [string, Ticket]
+  qrCodeWithTicketTuple = await Promise.all([
     qrcode.toDataURL(uuid),
     readTicketDetails(uuid)
   ])
-  return x
+  return qrCodeWithTicketTuple
 }
 
 export const renderTicket = async (
