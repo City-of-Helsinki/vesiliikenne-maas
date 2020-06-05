@@ -3,6 +3,7 @@ import TicketBody from './TicketBody'
 
 const bodyStyle = {
   minHeight: '100vh',
+  margin: 0,
   color: 'hsl(200, 10%, 30%)',
   backgroundColor: 'hsl(200, 10%, 96%)',
   display: 'grid',
