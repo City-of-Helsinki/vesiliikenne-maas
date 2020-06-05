@@ -19,6 +19,11 @@ export const renderTicket = async (
 ): Promise<void> => {
   const { uuid } = req.params
   const qrCodeContents = await qrcode.toDataURL(uuid)
+  const ticket = dummyTicket
 
-  res.send(`<div> Moro: <img src="${qrCodeContents}"/></div>`)
+  res.send(`<ul>
+    <li>Voimassa <span>${ticket.validTo}</span>
+    <li>Asiakasryhmä <span>${ticket.ticketTypeId}</span>
+    <li><img src="${qrCodeContents}"/>
+  </ul>`)
 }
