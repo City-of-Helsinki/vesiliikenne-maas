@@ -26,12 +26,12 @@ interface Props {
 }
 
 const TicketContainer = ({ ticketType, validUntil, qrCodeContents }: Props) => (
-  <body style={bodyStyle}>
+  <div style={bodyStyle}>
     <div className="ticket" style={ticketStyle}>
       <TicketHeader ticketType={ticketType} validUntil={validUntil} />
       <TicketBody qrCodeContents={qrCodeContents} />
     </div>
-  </body>
+  </div>
 )
 
 export default TicketContainer
