@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 const ticketBodyStyle = {
   display: 'grid',
   padding: '1.25rem 1.25rem 1.75rem 1.25rem'

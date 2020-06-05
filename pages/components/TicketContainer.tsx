@@ -1,5 +1,6 @@
 import TicketHeader from './TicketHeader'
 import TicketBody from './TicketBody'
+import * as React from 'react'
 
 const bodyStyle = {
   minHeight: '100vh',

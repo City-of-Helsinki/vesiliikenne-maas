@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 const ticketTypeStyle = {
   padding: '0.75rem',
   borderBottom: '2px dashed hsl(200, 10%, 92%)'
