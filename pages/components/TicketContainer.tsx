@@ -17,13 +17,18 @@ const ticketStyle = {
   borderRadius: '0.375em 0.375em 0.375em 0.375em'
 }
 
-const Ticket = props => (
+type Props = {
+  ticketType: string
+  validUntil: Date
+}
+
+const TicketContainer = ({ ticketType, validUntil }: Props) => (
   <body style={bodyStyle}>
     <div className="ticket" style={ticketStyle}>
-      <TicketHeader />
+      <TicketHeader ticketType={ticketType} validUntil={validUntil} />
       <TicketBody />
     </div>
   </body>
 )
 
-export default Ticket
+export default TicketContainer

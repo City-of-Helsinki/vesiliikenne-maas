@@ -32,23 +32,30 @@ const labelStyle = {
   paddingBottom: '0.5rem'
 }
 
-const TicketHeader = props => (
+type Props = {
+  ticketType: string
+  validUntil: Date
+}
+
+const TicketHeader = ({ ticketType, validUntil }: Props) => (
   <div className="ticket-header">
     <div className="ticket-type" style={ticketTypeStyle}>
-      <h1 style={h1Style}>Päivälippu</h1>
+      <h1 style={h1Style}>Day Ticket</h1>
     </div>
     <div className="ticket-info" style={ticketInfoStyle}>
       <div className="ticket-valid-until" style={ticketValidUntilStyle}>
         <span className="label" style={labelStyle}>
-          Voimassa
+          Valid Until
         </span>
-        <span>10.24 asti</span>
+        <span>
+          klo {validUntil.getHours()}:{validUntil.getMinutes()}
+        </span>
       </div>
       <div className="ticket-discount-group" style={ticketDiscountGroupStyle}>
         <span className="label" style={labelStyle}>
-          Asiakasryhmä
+          Discount Group
         </span>
-        <span>Opiskelija</span>
+        <span>{ticketType}</span>
       </div>
     </div>
   </div>
