@@ -15,8 +15,6 @@ app.get(
   })
 )
 
-app.get('/api/ticket/:uuid', asyncHandler(renderTicket))
-
 app.use(express.static('public'))
 
 const port = process.env.PORT
