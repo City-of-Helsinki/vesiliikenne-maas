@@ -19,7 +19,7 @@
     "allowJs": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
+    "noEmit": false,
     "isolatedModules": true,
     "jsx": "preserve"
   },
