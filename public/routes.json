@@ -1,0 +1,47 @@
+{
+  "info": {
+    "title": "Saaristo Hub",
+    "description": "MaaS integration for ferry traffic in Helsinki",
+    "version": "0.1"
+  },
+  "swagger": "2.0",
+  "paths": {
+    "/api/ticket/{ticketId}": {
+      "get": {
+        "summary": "Ticket display",
+        "description": "Returns user ticket in [HSL OpenMaaS Ticket API format](https://sales-api.hsl.fi/ticket-api-doc#operation/Render%20Ticket)",
+        "parameters": [
+          {
+            "name": "ticketId",
+            "in": "path",
+            "required": true,
+            "description": "ticket id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "A ticket with the ticketId was not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {},
+  "responses": {},
+  "parameters": {},
+  "securityDefinitions": {},
+  "tags": []
+}

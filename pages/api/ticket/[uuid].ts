@@ -3,6 +3,30 @@ import TicketContainer from '../../components/TicketContainer'
 import { qrCodeWithTicketDetails } from '../../../src/ticket-renderer'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+/**
+ * @swagger
+ *
+ * /api/ticket/{ticketId}:
+ *   get:
+ *     summary: Ticket display
+ *     description: Returns user ticket in [HSL OpenMaaS Ticket API format](https://sales-api.hsl.fi/ticket-api-doc#operation/Render%20Ticket)
+ *     parameters:
+ *       - name: ticketId
+ *         in: path
+ *         required: true
+ *         description: ticket id
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       '404':
+ *         description: A ticket with the ticketId was not found
+ */
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { uuid } = req.query
   if (typeof uuid !== 'string')
