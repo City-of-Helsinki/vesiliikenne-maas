@@ -8,7 +8,7 @@
     "dev-next": "next",
     "start": "node ./build/server.js",
     "build": "tsc",
-    "fetch": "yarn build && node --trace-warnings --unhandled-rejections=strict ./build/create-routes-json.js && cat routes.json",
+    "fetch": "yarn build && node --trace-warnings --unhandled-rejections=strict ./build/create-routes-json.js",
     "doc": "swagger-jsdoc -o public/routes.json -d swaggerDef.js"
   },
   "dependencies": {
