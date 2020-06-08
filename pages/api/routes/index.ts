@@ -1,5 +1,5 @@
 import { getFilteredRoutes } from '../../../lib/create-routes-json'
-import { NextApiResponse } from 'next'
+import { NextApiRequest, NextApiResponse } from 'next'
 
 /**
  * @swagger
@@ -20,6 +20,6 @@ import { NextApiResponse } from 'next'
  *       '404':
  *         description: Routes not found
  */
-export default async (_, res: NextApiResponse) => {
+export default async (_: NextApiRequest, res: NextApiResponse) => {
   res.json(await getFilteredRoutes())
 }
