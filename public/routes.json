@@ -6,6 +6,28 @@
   },
   "swagger": "2.0",
   "paths": {
+    "/api/routes": {
+      "get": {
+        "summary": "JT-Line ferry routes",
+        "description": "Returns JT-Line ferry routes and their patterns. Fetched from [digitransit](https://digitransit.fi/en/developers/)",
+        "parameters": null,
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Routes not found"
+          }
+        }
+      }
+    },
     "/api/ticket/{ticketId}": {
       "get": {
         "summary": "Ticket display",
