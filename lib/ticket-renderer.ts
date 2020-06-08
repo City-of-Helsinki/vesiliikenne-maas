@@ -1,10 +1,9 @@
 import qrcode from 'qrcode'
-import express from 'express'
 
 export interface Ticket {
-  agency: string;
-  ticketTypeId: string;
-  validFrom: string;
+  agency: string
+  ticketTypeId: string
+  validFrom: string
   validTo: string
 }
 
@@ -24,18 +23,4 @@ export const qrCodeWithTicketDetails = async (uuid: string) => {
     readTicketDetails(uuid)
   ])
   return qrCodeWithTicketTuple
-}
-
-export const renderTicket = async (
-  req: express.Request,
-  res: express.Response
-): Promise<void> => {
-  const { uuid } = req.params
-  const [qrCodeContents, ticket] = await qrCodeWithTicketDetails(uuid)
-
-  res.send(`<ul>
-    <li>Voimassa <span>${ticket.validTo}</span>
-    <li>Asiakasryhmä <span>${ticket.ticketTypeId}</span>
-    <li><img src="${qrCodeContents}"/>
-  </ul>`)
 }
