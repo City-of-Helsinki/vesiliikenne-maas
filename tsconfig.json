@@ -24,7 +24,7 @@
     "jsx": "preserve"
   },
   "include": [
-    "src/**/*.ts"
+    "lib/**/*.ts"
   ],
   "exclude": [
     "node_modules"

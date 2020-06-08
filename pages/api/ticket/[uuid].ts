@@ -1,6 +1,6 @@
 import { renderToString } from 'react-dom/server'
 import TicketContainer from '../../components/TicketContainer'
-import { qrCodeWithTicketDetails } from '../../../src/ticket-renderer'
+import { qrCodeWithTicketDetails } from '../../../lib/ticket-renderer'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 /**

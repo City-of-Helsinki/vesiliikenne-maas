@@ -1,5 +1,5 @@
 import { GetServerSideProps, NextPage } from 'next'
-import { qrCodeWithTicketDetails, Ticket } from '../../src/ticket-renderer'
+import { qrCodeWithTicketDetails, Ticket } from '../../lib/ticket-renderer'
 import * as React from 'react'
 import TicketContainer from '../components/TicketContainer'
 

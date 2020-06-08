@@ -1,4 +1,4 @@
-import { getFilteredRoutes } from '../../../src/create-routes-json'
+import { getFilteredRoutes } from '../../../lib/create-routes-json'
 import { NextApiResponse } from 'next'
 
 /**
