@@ -27,7 +27,22 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "object",
+                  "properties": {
+                    "ticketdata": {
+                      "type": "object",
+                      "properties": {
+                        "ticket": {
+                          "type": "string",
+                          "description": "The ticket in html format"
+                        },
+                        "validUntil": {
+                          "type": "string",
+                          "description": "Validity"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }

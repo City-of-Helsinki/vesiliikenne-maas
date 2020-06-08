@@ -24,6 +24,16 @@ import { NextApiRequest, NextApiResponse } from 'next'
  *           application/json:
  *             schema:
  *               type: object
+ *               properties:
+ *                ticketdata:
+ *                  type: object
+ *                  properties:
+ *                    ticket:
+ *                      type: string
+ *                      description: "The ticket in html format"
+ *                    validUntil:
+ *                      type: string
+ *                      description: "Validity"
  *       '404':
  *         description: A ticket with the ticketId was not found
  */
