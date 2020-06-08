@@ -6,6 +6,24 @@
   },
   "swagger": "2.0",
   "paths": {
+    "/api/mapbox-token": {
+      "get": {
+        "summary": "MapBox token",
+        "description": "MapBox token for the HSL based ferry route display",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/ticket/{ticketId}": {
       "get": {
         "summary": "Ticket display",
