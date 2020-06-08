@@ -16,4 +16,4 @@ import { NextApiRequest, NextApiResponse } from 'next'
  *               type: string
  */
 export default (req: NextApiRequest, res: NextApiResponse) =>
-  res.json(process.env.MAPBOX_ACCESS_KEY)
+  res.json(`"${process.env.MAPBOX_ACCESS_KEY}"`)
