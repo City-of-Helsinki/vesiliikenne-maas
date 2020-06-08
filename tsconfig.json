@@ -24,7 +24,9 @@
     "jsx": "preserve"
   },
   "include": [
-    "lib/**/*.ts"
+    "lib/**/*.ts",
+    "pages/**/*.ts",
+    "pages/**/*.tsx"
   ],
   "exclude": [
     "node_modules"
