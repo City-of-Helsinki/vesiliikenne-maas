@@ -11,6 +11,10 @@
         "summary": "JT-Line ferry routes",
         "description": "Returns JT-Line ferry routes and their patterns. Fetched from [digitransit](https://digitransit.fi/en/developers/)",
         "parameters": null,
+    "/api/mapbox-token": {
+      "get": {
+        "summary": "MapBox token",
+        "description": "MapBox token for the HSL based ferry route display",
         "responses": {
           "200": {
             "description": "OK",
@@ -23,7 +27,11 @@
             }
           },
           "404": {
-            "description": "Routes not found"
+            "description": "Routes not found",
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -49,7 +57,22 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "object",
+                  "properties": {
+                    "ticketdata": {
+                      "type": "object",
+                      "properties": {
+                        "ticket": {
+                          "type": "string",
+                          "description": "The ticket in html format"
+                        },
+                        "validUntil": {
+                          "type": "string",
+                          "description": "Validity"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
