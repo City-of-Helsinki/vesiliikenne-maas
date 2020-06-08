@@ -8,10 +8,6 @@ import { renderTicket } from './ticket-renderer'
 dotenv.config()
 const app = express()
 
-app.get('/api/mapbox-token', (_, res) =>
-  res.json(process.env.MAPBOX_ACCESS_KEY)
-)
-
 app.get(
   '/api/routes',
   asyncHandler(async (_, res) => {
