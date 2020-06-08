@@ -25,6 +25,7 @@
 
     <script>
       const routeColors = {
+        'default': ['#eac8ca', '#f2d5f8', '#e6c0e9', '#bfabcb', '#8d89a6'],
         'Vihreä reitti': ['#05668dff', '#028090ff', '#00a896ff', '#02c39aff'],
         'Kauppatori-Suomenlinna': ['#e9ece7ff', '#ffffffff'],
         'Keltainen reitti': [
@@ -73,7 +74,7 @@
         const routeData = await response.json()
 
         routeData.forEach(route => {
-          const colors = routeColors[route.shortName]
+          const colors = routeColors[route.shortName] || routeColors['default']
           route.patterns.forEach((pattern, patternIndex) =>
             renderPattern(route.shortName, pattern, colors[patternIndex])
           )
