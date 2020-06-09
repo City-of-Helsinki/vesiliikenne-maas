@@ -34,18 +34,23 @@ const findTicketCsv = async (uuid: string) => {
 }
 
 export const findTicket = async (uuid: string) => {
-  const ticketFields = (await findTicketCsv(uuid)).split(',')
+  const [
+    ticketUuid,
+    agency,
+    ticketTypeId,
+    discountGroupId,
+    validFrom,
+    validTo
+  ] = (await findTicketCsv(uuid)).split(',')
 
-  const ticket: Ticket = {
-    uuid: ticketFields[0],
-    agency: ticketFields[1],
-    ticketTypeId: ticketFields[2],
-    discountGroupId: ticketFields[3],
-    validFrom: ticketFields[4],
-    validTo: ticketFields[5]
+  return {
+    uuid: ticketUuid,
+    agency,
+    ticketTypeId,
+    discountGroupId,
+    validFrom,
+    validTo
   }
-
-  return ticket
 }
 
 export const createTicket = async (
