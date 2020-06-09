@@ -1,7 +1,7 @@
-import { GetServerSideProps, NextPage } from 'next'
+import { NextPage } from 'next'
+import Router from 'next/router'
 import * as React from 'react'
 import TicketForm from '../components/TicketForm'
-import { createTicket } from '../../lib/create-ticket'
 
 const TicketPage: NextPage = () => (
   <TicketForm
@@ -20,6 +20,7 @@ const TicketPage: NextPage = () => (
         })
       ).json()
       console.log(ticket)
+      Router.push(`/ticket/${ticket.uuid}`)
     }}
   />
 )

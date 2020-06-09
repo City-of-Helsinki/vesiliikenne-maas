@@ -18,6 +18,36 @@ export const calculateTicketValidTo = (validFrom: moment.Moment) => {
   }
 }
 
+const readTicketLines = async (): Promise<string[]> => {
+  const ticketsCsv = (await fs.readFile('./tickets.csv')).toString()
+  return ticketsCsv.split('\r\n')
+}
+
+const findTicketCsv = async (uuid: string) => {
+  const ticketsAsLines = await readTicketLines()
+
+  const ticketCsv = ticketsAsLines.filter(csvLine => {
+    return csvLine.startsWith(uuid)
+  })
+
+  return ticketCsv[0]
+}
+
+export const findTicket = async (uuid: string) => {
+  const ticketFields = (await findTicketCsv(uuid)).split(',')
+
+  const ticket: Ticket = {
+    uuid: ticketFields[0],
+    agency: ticketFields[1],
+    ticketTypeId: ticketFields[2],
+    discountGroupId: ticketFields[3],
+    validFrom: ticketFields[4],
+    validTo: ticketFields[5]
+  }
+
+  return ticket
+}
+
 export const createTicket = async (
   agency: string,
   discountGroupId: string,
@@ -43,5 +73,5 @@ const storeTicket = async (ticketCsv: string) => {
 }
 
 const ticketAsCsv = (ticket: Ticket) => {
-  return `${ticket.uuid},${ticket.agency},${ticket.ticketTypeId},${ticket.discountGroupId},${ticket.validFrom},${ticket.validFrom}\r\n`
+  return `${ticket.uuid},${ticket.agency},${ticket.ticketTypeId},${ticket.discountGroupId},${ticket.validFrom},${ticket.validTo}\r\n`
 }

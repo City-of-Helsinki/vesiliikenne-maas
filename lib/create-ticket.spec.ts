@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { calculateTicketValidTo } from './create-ticket'
+import { calculateTicketValidTo } from './ticket-service'
 
 describe('create-ticket', () => {
   it('calculates validTo correctly', async () => {

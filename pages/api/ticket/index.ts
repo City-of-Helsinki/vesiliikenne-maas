@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { createTicket } from '../../../lib/create-ticket'
+import { createTicket } from '../../../lib/ticket-service'
 import { isString } from 'util'
 
 interface Body {
