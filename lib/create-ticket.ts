@@ -43,5 +43,5 @@ const storeTicket = async (ticketCsv: string) => {
 }
 
 const ticketAsCsv = (ticket: Ticket) => {
-  return `${ticket.uuid},${ticket.agency},${ticket.ticketTypeId},${ticket.discountGroupId},${ticket.validFrom},${ticket.validFrom}`
+  return `${ticket.uuid},${ticket.agency},${ticket.ticketTypeId},${ticket.discountGroupId},${ticket.validFrom},${ticket.validFrom}\n`
 }
