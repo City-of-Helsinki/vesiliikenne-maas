@@ -64,7 +64,7 @@ export const createTicket = async (
   }
 
   await storeTicket(ticketAsCsv(ticket))
-  return ticket
+  return ticket.uuid
 }
 
 const storeTicket = async (ticketCsv: string) => {

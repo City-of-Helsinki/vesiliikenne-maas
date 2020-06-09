@@ -6,7 +6,7 @@ import TicketForm from '../components/TicketForm'
 const TicketPage: NextPage = () => (
   <TicketForm
     onClick={async () => {
-      const ticket = await (
+      const uuid = await (
         await fetch('/api/ticket', {
           method: 'POST',
           headers: {
@@ -19,8 +19,8 @@ const TicketPage: NextPage = () => (
           })
         })
       ).json()
-      console.log(ticket)
-      Router.push(`/ticket/${ticket.uuid}`)
+      console.log(uuid)
+      Router.push(`/ticket/${uuid}`)
     }}
   />
 )
