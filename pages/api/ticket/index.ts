@@ -19,8 +19,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }).every(isString)
 
     if (allString) {
-      await createTicket(agency, discountGroupId, ticketTypeId)
-      res.json({ agency, discountGroupId, ticketTypeId })
+      const ticket = await createTicket(agency, discountGroupId, ticketTypeId)
+      res.json(ticket)
     } else {
       res.status(400).json({ Error: 'invalid parameters' })
     }

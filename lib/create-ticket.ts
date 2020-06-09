@@ -3,7 +3,7 @@ import moment from 'moment'
 import { uuid } from 'uuidv4'
 import { Ticket } from './ticket-renderer'
 
-export const createTicket = (
+export const createTicket = async (
   agency: string,
   discountGroupId: string,
   ticketTypeId: string
@@ -18,7 +18,8 @@ export const createTicket = (
     validTo: now.add(1, 'days').format() // TODO: Fix
   }
 
-  storeTicket(ticketAsCsv(ticket))
+  await storeTicket(ticketAsCsv(ticket))
+  return ticket
 }
 
 const storeTicket = async (ticketCsv: string) => {
