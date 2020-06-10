@@ -1,7 +1,15 @@
 import { promises as fs } from 'fs'
 import moment from 'moment'
 import { uuid } from 'uuidv4'
-import { Ticket } from './ticket-renderer'
+
+export interface Ticket {
+  uuid: string
+  agency: string
+  ticketTypeId: string
+  discountGroupId: string
+  validFrom: string
+  validTo: string
+}
 
 export const calculateTicketValidTo = (validFrom: moment.Moment) => {
   // If ticket purchased between 00:00 and 03:00, it ends within the same day
