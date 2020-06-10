@@ -13,10 +13,8 @@ export default async (
       const uuid = await createTicket(newTicketEntry)
       res.json({ uuid })
     } catch (error) {
-      res.status(400).json(error)
+      res.status(400).send(error.message)
     }
-
-    res.status(400).json({ Error: 'invalid parameters' })
   } else {
     res.status(404).json({ Error: 'Cannot GET' })
   }
