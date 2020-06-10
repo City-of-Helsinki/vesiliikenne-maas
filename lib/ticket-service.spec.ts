@@ -4,7 +4,7 @@ import { calculateTicketValidTo } from './ticket-service'
 describe('ticket-service', () => {
   it('ticket purchased before midnight should expire the next day', async () => {
     const expected = '2013-02-09 03:00:00.00'
-    let now = moment('2013-02-08 09:30:26.123')
+    const now = moment('2013-02-08 09:30:26.123')
 
     expect(
       calculateTicketValidTo(now).format('YYYY-MM-DD HH:mm:ss.SS')
