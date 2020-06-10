@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "esnext",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "target": "es6",
@@ -10,8 +10,25 @@
     "outDir": "./build",
     "baseUrl": "./",
     "removeComments": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": false,
+    "isolatedModules": true,
+    "jsx": "preserve"
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "lib/**/*.ts",
+    "pages/**/*.ts",
+    "pages/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
