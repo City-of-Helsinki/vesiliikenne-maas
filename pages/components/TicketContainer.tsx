@@ -21,7 +21,7 @@ const ticketStyle = {
 
 interface Props {
   ticketType: string
-  validUntil: Date
+  validUntil: moment.Moment
   qrCodeContents: string
 }
 

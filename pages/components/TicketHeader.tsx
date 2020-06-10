@@ -36,7 +36,7 @@ const labelStyle = {
 
 interface Props {
   ticketType: string
-  validUntil: Date
+  validUntil: moment.Moment
 }
 
 const TicketHeader = ({ ticketType, validUntil }: Props) => (
@@ -49,9 +49,7 @@ const TicketHeader = ({ ticketType, validUntil }: Props) => (
         <span className="label" style={labelStyle}>
           Valid Until
         </span>
-        <span>
-          klo {validUntil.getHours()}:{validUntil.getMinutes()}
-        </span>
+        <span>{validUntil.format('HH:mm')}</span>
       </div>
       <div className="ticket-discount-group" style={ticketDiscountGroupStyle}>
         <span className="label" style={labelStyle}>

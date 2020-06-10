@@ -23,14 +23,16 @@ const readTicketLines = async (): Promise<string[]> => {
   return ticketsCsv.split('\r\n')
 }
 
-const findTicketCsv = async (uuid: string) => {
+const findTicketFields = async (uuid: string) => {
   const ticketsAsLines = await readTicketLines()
 
-  const ticketCsv = ticketsAsLines.filter(csvLine => {
-    return csvLine.startsWith(uuid)
-  })
+  const ticketCsv = ticketsAsLines.find(csvLine => csvLine.startsWith(uuid))
 
-  return ticketCsv[0]
+  if (!ticketCsv) {
+    return []
+  }
+
+  return ticketCsv.split(',')
 }
 
 export const findTicket = async (uuid: string) => {
@@ -41,7 +43,11 @@ export const findTicket = async (uuid: string) => {
     discountGroupId,
     validFrom,
     validTo
-  ] = (await findTicketCsv(uuid)).split(',')
+  ] = await findTicketFields(uuid)
+
+  if (!ticketUuid) {
+    return {}
+  }
 
   return {
     uuid: ticketUuid,
