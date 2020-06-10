@@ -4,7 +4,7 @@ import moment from 'moment'
 import { renderToString } from 'react-dom/server'
 import qrcode from 'qrcode'
 import { findTicket } from '../../lib/ticket-service'
-import TicketContainer from '../components/TicketContainer'
+import TicketContainer from '../../components/TicketContainer'
 
 interface TicketPageProperties {
   html: string

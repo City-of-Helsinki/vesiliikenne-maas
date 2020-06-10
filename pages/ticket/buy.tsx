@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import Router from 'next/router'
 import * as React from 'react'
-import TicketForm from '../components/TicketForm'
+import TicketForm from '../../components/TicketForm'
 
 const TicketPage: NextPage = () => {
   const handleClick = async () => {
