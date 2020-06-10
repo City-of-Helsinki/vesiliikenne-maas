@@ -5,7 +5,7 @@ const isString = (text: any): text is string => {
   return typeof text === 'string' || text instanceof String
 }
 
-const parseString = (string: any, objectKey: string): string => {
+export const parseString = (string: any, objectKey: string): string => {
   if (!string || !isString(string)) {
     throw new Error(`Incorrect or missing ${objectKey}: ${string}`)
   }

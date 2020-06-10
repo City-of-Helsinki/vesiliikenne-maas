@@ -35,7 +35,9 @@ const readTicketLines = async (): Promise<string[]> => {
 const findTicketFields = async (uuid: string) => {
   const ticketsAsLines = await readTicketLines()
 
-  const ticketCsv = ticketsAsLines.find(csvLine => csvLine.startsWith(uuid))
+  const ticketCsv = ticketsAsLines.find(
+    csvLine => csvLine.split(',')[0] === uuid
+  )
 
   if (!ticketCsv) {
     return []
