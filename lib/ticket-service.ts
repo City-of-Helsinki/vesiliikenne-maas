@@ -74,10 +74,10 @@ export const createTicket = async (
 ) => {
   const now = moment()
   const ticket: Ticket = {
-    agency,
-    discountGroupId,
-    ticketTypeId,
     uuid: uuid(),
+    agency,
+    ticketTypeId,
+    discountGroupId,
     validFrom: now.format(),
     validTo: calculateTicketValidTo(now).format() // TODO: Fix
   }
