@@ -80,7 +80,7 @@ export const createTicket = async ({
     ticketTypeId,
     discountGroupId,
     validFrom: now.format(),
-    validTo: calculateTicketValidTo(now).format() // TODO: Fix
+    validTo: calculateTicketValidTo(now).format()
   }
 
   await storeTicket(ticketAsCsv(ticket))
