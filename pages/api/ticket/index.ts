@@ -20,7 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (allString) {
       const uuid = await createTicket(agency, discountGroupId, ticketTypeId)
-      res.json(uuid)
+      res.json({ uuid })
     } else {
       res.status(400).json({ Error: 'invalid parameters' })
     }
