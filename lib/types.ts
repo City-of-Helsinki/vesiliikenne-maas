@@ -23,3 +23,9 @@ interface Stop {
 interface Agency {
   name: string
 }
+
+export interface NewTicketEntry {
+  agency: string
+  discountGroupId: string
+  ticketTypeId: string
+}

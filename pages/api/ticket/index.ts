@@ -1,29 +1,22 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTicket } from '../../../lib/ticket-service'
-import { isString } from 'util'
+import { toNewTicketEntry } from '../../../lib/utils'
 
-interface Body {
-  agency: string
-  discountGroupId: string
-  ticketTypeId: string
-}
-
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> => {
   if (req.method === 'POST') {
-    const { agency, discountGroupId, ticketTypeId } = req.body as Body
+    try {
+      const newTicketEntry = toNewTicketEntry(req.body)
 
-    const allString = Object.values({
-      agency,
-      discountGroupId,
-      ticketTypeId
-    }).every(isString)
-
-    if (allString) {
-      const uuid = await createTicket(agency, discountGroupId, ticketTypeId)
+      const uuid = await createTicket(newTicketEntry)
       res.json({ uuid })
-    } else {
-      res.status(400).json({ Error: 'invalid parameters' })
+    } catch (error) {
+      res.status(400).json(error)
     }
+
+    res.status(400).json({ Error: 'invalid parameters' })
   } else {
     res.status(404).json({ Error: 'Cannot GET' })
   }

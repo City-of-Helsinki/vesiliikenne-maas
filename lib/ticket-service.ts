@@ -1,6 +1,7 @@
 import { promises as fs } from 'fs'
 import moment from 'moment'
 import { uuid } from 'uuidv4'
+import { NewTicketEntry } from '../lib/types'
 
 export interface Ticket {
   uuid: string
@@ -67,11 +68,11 @@ export const findTicket = async (uuid: string) => {
   }
 }
 
-export const createTicket = async (
-  agency: string,
-  discountGroupId: string,
-  ticketTypeId: string
-) => {
+export const createTicket = async ({
+  agency,
+  discountGroupId,
+  ticketTypeId
+}: NewTicketEntry): Promise<string> => {
   const now = moment()
   const ticket: Ticket = {
     uuid: uuid(),
