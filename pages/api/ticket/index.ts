@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTicket, saveTicket } from '../../../lib/ticket-service'
-import { toNewTicketEntry } from '../../../lib/utils'
+import { isString, toNewTicketEntry } from '../../../lib/utils'
 import { NewTicketEntry } from '../../../lib/types'
 import { postTicketToCRD } from '../../../lib/crd'
 
@@ -22,9 +22,14 @@ export default async (
 
   const ticket = createTicket(newTicketEntry)
 
+  const crdUrl = process.env.CRD_URL
+  const apiToken = process.env.CRD_TOKEN
+  if (!isString(crdUrl) || !isString(apiToken)) {
+    return res.status(500).send('Server configuration error')
+  }
   const crdResponse = await postTicketToCRD(
-    process.env.CRD_URL,
-    process.env.CRD_TOKEN,
+    crdUrl,
+    apiToken,
     ticket,
   )
 
