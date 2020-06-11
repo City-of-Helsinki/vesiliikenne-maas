@@ -1,7 +1,7 @@
-import { promises as fs } from 'fs'
 import moment from 'moment'
 import { uuid } from 'uuidv4'
 import { NewTicketEntry } from '../lib/types'
+import { storeTicket, getTicketFields } from './ticket-storage'
 
 export interface Ticket {
   uuid: string
@@ -27,25 +27,6 @@ export const calculateTicketValidTo = (validFrom: moment.Moment) => {
   }
 }
 
-const readTicketLines = async (): Promise<string[]> => {
-  const ticketsCsv = (await fs.readFile('./tickets.csv')).toString()
-  return ticketsCsv.split('\r\n')
-}
-
-const findTicketFields = async (uuid: string) => {
-  const ticketsAsLines = await readTicketLines()
-
-  const ticketCsv = ticketsAsLines.find(
-    csvLine => csvLine.split(',')[0] === uuid
-  )
-
-  if (!ticketCsv) {
-    return []
-  }
-
-  return ticketCsv.split(',')
-}
-
 export const findTicket = async (uuid: string) => {
   const [
     ticketUuid,
@@ -54,7 +35,7 @@ export const findTicket = async (uuid: string) => {
     discountGroupId,
     validFrom,
     validTo
-  ] = await findTicketFields(uuid)
+  ] = await getTicketFields(uuid)
 
   if (!ticketUuid) {
     return {}
@@ -85,15 +66,6 @@ export const createTicket = async ({
     validTo: calculateTicketValidTo(now).format()
   }
 
-  await storeTicket(ticketAsCsv(ticket))
+  await storeTicket(ticket)
   return ticket.uuid
-}
-
-const storeTicket = async (ticketCsv: string) => {
-  await fs.appendFile('./tickets.csv', ticketCsv)
-  console.log('Ticket appended')
-}
-
-const ticketAsCsv = (ticket: Ticket) => {
-  return `${ticket.uuid},${ticket.agency},${ticket.ticketTypeId},${ticket.discountGroupId},${ticket.validFrom},${ticket.validTo}\r\n`
 }
