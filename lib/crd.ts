@@ -1,7 +1,7 @@
 import axios from 'axios'
 import moment from 'moment'
 import { CrdResponse } from './types'
-import { Ticket } from './ticket-service'
+import { Ticket } from './types'
 
 const generateObject = (token: string, unixTime: number, uuid: string) => ({
   token,

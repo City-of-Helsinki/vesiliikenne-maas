@@ -1,5 +1,5 @@
 import { promises as fs } from 'fs'
-import { Ticket } from './ticket-service'
+import { Ticket } from './types'
 
 const readTicketLines = async (): Promise<string[]> => {
   const ticketsCsv = (await fs.readFile('./tickets.csv')).toString()
@@ -10,7 +10,7 @@ export const getTicketFields = async (uuid: string) => {
   const ticketsAsLines = await readTicketLines()
 
   const ticketCsv = ticketsAsLines.find(
-    csvLine => csvLine.split(',')[0] === uuid
+    csvLine => csvLine.split(',')[0] === uuid,
   )
 
   if (!ticketCsv) {
