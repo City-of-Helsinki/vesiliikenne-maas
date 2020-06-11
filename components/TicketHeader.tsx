@@ -17,7 +17,7 @@ const ticketInfoStyle = {
   borderBottom: '2px dashed hsl(200, 10%, 92%)'
 }
 
-const ticketValidUntilStyle = {
+const ticketvalidToStyle = {
   display: 'grid',
   gridTemplateRows: 'repeat(2, 1fr)'
 }
@@ -36,22 +36,20 @@ const labelStyle = {
 
 interface Props {
   ticketType: string
-  validUntil: Date
+  validTo: moment.Moment
 }
 
-const TicketHeader = ({ ticketType, validUntil }: Props) => (
+const TicketHeader = ({ ticketType, validTo }: Props) => (
   <div className="ticket-header">
     <div className="ticket-type" style={ticketTypeStyle}>
       <h1 style={h1Style}>Day Ticket</h1>
     </div>
     <div className="ticket-info" style={ticketInfoStyle}>
-      <div className="ticket-valid-until" style={ticketValidUntilStyle}>
+      <div className="ticket-valid-until" style={ticketvalidToStyle}>
         <span className="label" style={labelStyle}>
           Valid Until
         </span>
-        <span>
-          klo {validUntil.getHours()}:{validUntil.getMinutes()}
-        </span>
+        <span>{validTo.format('HH:mm')}</span>
       </div>
       <div className="ticket-discount-group" style={ticketDiscountGroupStyle}>
         <span className="label" style={labelStyle}>

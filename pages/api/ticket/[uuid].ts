@@ -1,6 +1,8 @@
 import { renderToString } from 'react-dom/server'
-import TicketContainer from '../../components/TicketContainer'
-import { qrCodeWithTicketDetails } from '../../../lib/ticket-renderer'
+import qrcode from 'qrcode'
+import moment from 'moment'
+import TicketContainer from '../../../components/TicketContainer'
+import { findTicket } from '../../../lib/ticket-service'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 /**
@@ -41,12 +43,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { uuid } = req.query
   if (typeof uuid !== 'string')
     throw new Error('Argument uuid is not of type string')
-  const [qrCodeContents, ticket] = await qrCodeWithTicketDetails(uuid)
+
+  const ticket = await findTicket(uuid)
+
+  if (!ticket.uuid) {
+    return res.status(404).json({ error: 'Ticket not found.' })
+  }
+
   const html = renderToString(
     TicketContainer({
       ticketType: ticket.ticketTypeId,
-      validUntil: new Date(ticket.validTo),
-      qrCodeContents
+      validTo: moment(ticket.validTo),
+      qrCodeContents: await qrcode.toDataURL(ticket.uuid)
     })
   )
 

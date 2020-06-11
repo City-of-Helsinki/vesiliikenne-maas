@@ -21,14 +21,14 @@ const ticketStyle = {
 
 interface Props {
   ticketType: string
-  validUntil: Date
+  validTo: moment.Moment
   qrCodeContents: string
 }
 
-const TicketContainer = ({ ticketType, validUntil, qrCodeContents }: Props) => (
+const TicketContainer = ({ ticketType, validTo, qrCodeContents }: Props) => (
   <div style={bodyStyle}>
     <div className="ticket" style={ticketStyle}>
-      <TicketHeader ticketType={ticketType} validUntil={validUntil} />
+      <TicketHeader ticketType={ticketType} validTo={validTo} />
       <TicketBody qrCodeContents={qrCodeContents} />
     </div>
   </div>

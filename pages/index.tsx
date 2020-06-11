@@ -17,6 +17,9 @@ const Home: NextPage = ({}) => {
             Sample ticket
           </a>
         </li>
+        <li>
+          <a href="/ticket/buy">Buy ticket</a>
+        </li>
       </ul>
     </div>
   )

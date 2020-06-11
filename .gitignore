@@ -110,3 +110,7 @@ dist
 build
 .idea
 *~
+
+api.http
+tickets.csv
+
