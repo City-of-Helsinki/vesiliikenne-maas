@@ -8,7 +8,7 @@ export default async (
   res: NextApiResponse
 ): Promise<void> => {
   if (req.method !== 'POST')
-    res.status(405).json({ Error: 'Cannot GET' })
+    return res.status(405).json({ Error: 'Cannot GET' })
 
   let newTicketEntry: NewTicketEntry
   try {
