@@ -11,7 +11,8 @@ const generateObject = (token: string, unixTime: number, uuid: string) => ({
       barcode: uuid,
       products: [
         {
-          productId: '1',
+          name: 'Island Hopping - Whim',
+          productId: '101',
           type: 'ticket',
           typeDetails: { type: 'adult' },
           amount: 1,
