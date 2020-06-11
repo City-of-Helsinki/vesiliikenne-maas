@@ -1,8 +1,7 @@
 import moment from 'moment-timezone'
 import { uuid } from 'uuidv4'
-import { NewTicketEntry } from '../lib/types'
-import { storeTicket, getTicketFields } from './ticket-storage'
-import { Ticket } from 'lib/types'
+import { NewTicketEntry, Ticket } from './types'
+import { getTicketFields, storeTicket } from './ticket-storage'
 
 export const calculateTicketValidTo = (validFrom: moment.Moment) => {
   // If ticket purchased between 00:00 and 03:00, it ends within the same day
