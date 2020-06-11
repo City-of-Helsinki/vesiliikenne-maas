@@ -47,7 +47,7 @@ export const createTicket = ({
                                discountGroupId,
                                ticketTypeId,
                              }: NewTicketEntry): Ticket => {
-  const now = moment()
+  const now = moment().tz('Europe/Helsinki')
   return {
     uuid: uuid(),
     agency,
