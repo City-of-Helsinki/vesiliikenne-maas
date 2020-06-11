@@ -1,6 +1,6 @@
 import { GetServerSideProps, NextPage } from 'next'
 import { findTicket } from '../../lib/ticket-service'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import qrcode from 'qrcode'
 import NextError from 'next/error'
 import * as React from 'react'

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import { CrdResponse, Ticket } from './types'
 
 const generateObject = (token: string, unixTime: number, uuid: string) => ({

@@ -1,4 +1,5 @@
 import * as React from 'react'
+import moment from 'moment-timezone'
 
 const ticketTypeStyle = {
   padding: '0.75rem',
@@ -49,7 +50,7 @@ const TicketHeader = ({ ticketType, validTo }: Props) => (
         <span className="label" style={labelStyle}>
           Valid Until
         </span>
-        <span>{validTo.format('HH:mm')}</span>
+        <span>{validTo.tz('Europe/Helsinki').format('HH:mm')}</span>
       </div>
       <div className="ticket-discount-group" style={ticketDiscountGroupStyle}>
         <span className="label" style={labelStyle}>
