@@ -51,13 +51,13 @@ export const findTicket = async (uuid: string) => {
   }
 }
 
-export const createTicket = async ({
+export const createTicket = ({
   agency,
   discountGroupId,
   ticketTypeId
-}: NewTicketEntry): Promise<string> => {
+}: NewTicketEntry): Ticket => {
   const now = moment()
-  const ticket: Ticket = {
+  return {
     uuid: uuid(),
     agency,
     ticketTypeId,
@@ -65,7 +65,10 @@ export const createTicket = async ({
     validFrom: now.format(),
     validTo: calculateTicketValidTo(now).format()
   }
+}
 
+export const saveTicket = async (ticket: Ticket): Promise<string> => {
   await storeTicket(ticket)
+
   return ticket.uuid
 }

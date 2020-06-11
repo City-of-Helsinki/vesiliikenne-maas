@@ -8,16 +8,16 @@ const TicketPage: NextPage = () => {
     const response = await fetch('/api/ticket', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         agency: 'JT-Line',
         discountGroupId: 'Adult',
-        ticketTypeId: 'Day'
-      })
+        ticketTypeId: 'Day',
+      }),
     })
-    const { uuid } = await response.json()
 
+    const { uuid } = await response.json()
     void Router.push(`/ticket/${uuid}`)
   }
   return <TicketForm onClick={handleClick} />

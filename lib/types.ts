@@ -29,3 +29,16 @@ export interface NewTicketEntry {
   discountGroupId: string
   ticketTypeId: string
 }
+
+interface crdResponses {
+  saleId: string
+  status: number
+}
+
+export interface CrdResponse {
+  responses: crdResponses[]
+  success: number
+  skipped: number
+  failed: number
+  status: number
+}
