@@ -1,4 +1,4 @@
-import moment from 'moment'
+import moment from 'moment-timezone'
 import { uuid } from 'uuidv4'
 import { NewTicketEntry } from '../lib/types'
 import { storeTicket, getTicketFields } from './ticket-storage'
@@ -44,10 +44,10 @@ export const findTicket = async (uuid: string) => {
 }
 
 export const createTicket = ({
-  agency,
-  discountGroupId,
-  ticketTypeId,
-}: NewTicketEntry): Ticket => {
+                               agency,
+                               discountGroupId,
+                               ticketTypeId,
+                             }: NewTicketEntry): Ticket => {
   const now = moment()
   return {
     uuid: uuid(),

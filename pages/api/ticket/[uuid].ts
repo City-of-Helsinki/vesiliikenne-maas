@@ -1,6 +1,6 @@
 import { renderToString } from 'react-dom/server'
 import qrcode from 'qrcode'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import TicketContainer from '../../../components/TicketContainer'
 import { findTicket } from '../../../lib/ticket-service'
 import { NextApiRequest, NextApiResponse } from 'next'
