@@ -52,7 +52,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const html = renderToString(
     TicketContainer({
-      ticket
+      ticketType: ticket.ticketTypeId,
+      validTo: moment(ticket.validTo),
+      qrCodeContents: await qrcode.toDataURL(ticket.uuid)
     })
   )
 
