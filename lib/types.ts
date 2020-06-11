@@ -24,6 +24,15 @@ interface Agency {
   name: string
 }
 
+export interface Ticket {
+  uuid: string
+  agency: string
+  ticketTypeId: string
+  discountGroupId: string
+  validFrom: string
+  validTo: string
+}
+
 export interface NewTicketEntry {
   agency: string
   discountGroupId: string

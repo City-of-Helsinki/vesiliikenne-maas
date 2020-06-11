@@ -2,15 +2,7 @@ import moment from 'moment'
 import { uuid } from 'uuidv4'
 import { NewTicketEntry } from '../lib/types'
 import { storeTicket, getTicketFields } from './ticket-storage'
-
-export interface Ticket {
-  uuid: string
-  agency: string
-  ticketTypeId: string
-  discountGroupId: string
-  validFrom: string
-  validTo: string
-}
+import { Ticket } from 'lib/types'
 
 export const calculateTicketValidTo = (validFrom: moment.Moment) => {
   // If ticket purchased between 00:00 and 03:00, it ends within the same day
@@ -34,7 +26,7 @@ export const findTicket = async (uuid: string) => {
     ticketTypeId,
     discountGroupId,
     validFrom,
-    validTo
+    validTo,
   ] = await getTicketFields(uuid)
 
   if (!ticketUuid) {
@@ -47,14 +39,14 @@ export const findTicket = async (uuid: string) => {
     ticketTypeId,
     discountGroupId,
     validFrom,
-    validTo
+    validTo,
   }
 }
 
 export const createTicket = ({
   agency,
   discountGroupId,
-  ticketTypeId
+  ticketTypeId,
 }: NewTicketEntry): Ticket => {
   const now = moment()
   return {
@@ -63,7 +55,7 @@ export const createTicket = ({
     ticketTypeId,
     discountGroupId,
     validFrom: now.format(),
-    validTo: calculateTicketValidTo(now).format()
+    validTo: calculateTicketValidTo(now).format(),
   }
 }
 
