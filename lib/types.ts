@@ -24,8 +24,30 @@ interface Agency {
   name: string
 }
 
+export interface Ticket {
+  uuid: string
+  agency: string
+  ticketTypeId: string
+  discountGroupId: string
+  validFrom: string
+  validTo: string
+}
+
 export interface NewTicketEntry {
   agency: string
   discountGroupId: string
   ticketTypeId: string
+}
+
+interface crdResponses {
+  saleId: string
+  status: number
+}
+
+export interface CrdResponse {
+  responses: crdResponses[]
+  success: number
+  skipped: number
+  failed: number
+  status: number
 }

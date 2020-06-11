@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next",
     "start": "next start -p $PORT",
-    "build": "tsc",
+    "build": "next build",
     "doc": "swagger-jsdoc -o public/specs/routes.json -d public/specs/swaggerDef.js",
     "test": "jest"
   },
@@ -14,12 +14,13 @@
     "@types/node": "^14.0.5",
     "axios": "^0.19.2",
     "leaflet-polylinedecorator": "^1.6.0",
-    "moment": "^2.26.0",
+    "moment-timezone": "^0.5.31",
     "next": "^9.4.4",
     "qrcode": "^1.4.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.3",
+    "uuidv4": "^6.1.0"
   },
   "devDependencies": {
     "@types/jest": "^25.2.3",
@@ -31,7 +32,6 @@
     "eslint": "^7.1.0",
     "jest": "^26.0.1",
     "swagger-jsdoc": "^4.0.0",
-    "ts-jest": "^26.1.0",
-    "uuidv4": "^6.1.0"
+    "ts-jest": "^26.1.0"
   }
 }

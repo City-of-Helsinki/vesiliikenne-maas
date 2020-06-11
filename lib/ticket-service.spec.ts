@@ -1,4 +1,4 @@
-import moment from 'moment'
+import moment from 'moment-timezone'
 import { calculateTicketValidTo } from './ticket-service'
 
 describe('ticket-service', () => {
