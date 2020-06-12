@@ -92,6 +92,23 @@
           }
         }
       }
+    },
+    "/api/ticket": {
+      "post": {
+        "summary": "Ticket purchase",
+        "description": "Creates a ticket and returns the UUID of the created ticket",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
     }
   },
   "definitions": {},
