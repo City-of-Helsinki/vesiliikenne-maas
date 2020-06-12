@@ -4,6 +4,21 @@ import { isString, toNewTicketEntry } from '../../../lib/utils'
 import { NewTicketEntry } from '../../../lib/types'
 import { postTicketToCRD } from '../../../lib/crd'
 
+/**
+ * @swagger
+ *
+ * /api/ticket:
+ *   post:
+ *     summary: Ticket purchase
+ *     description: Creates a ticket and returns the UUID of the created ticket
+ *     responses:
+ *       '200':
+ *         description: Success
+ *       '400':
+ *         description: Bad Request
+ *       '500':
+ *         description: Server error
+ */
 export default async (
   req: NextApiRequest,
   res: NextApiResponse,
