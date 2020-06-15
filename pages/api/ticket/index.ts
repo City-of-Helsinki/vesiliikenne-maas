@@ -3,7 +3,7 @@ import { createTicket, saveTicket } from '../../../lib/ticket-service'
 import { isString, toNewTicketEntry } from '../../../lib/utils'
 import { NewTicketEntry } from '../../../lib/types'
 import { postTicketToCRD } from '../../../lib/crd'
-import { validateApiKey } from '../../../lib/middleware'
+import { withApiKeyValidation } from '../../../lib/middleware'
 
 /**
  * @swagger
@@ -20,14 +20,12 @@ import { validateApiKey } from '../../../lib/middleware'
  *       '500':
  *         description: Server error
  */
-export default async (
+const handler = async (
   req: NextApiRequest,
   res: NextApiResponse,
 ): Promise<void> => {
   if (req.method !== 'POST') {
     return res.status(405).json({ Error: 'Cannot GET' })
-  } else if (!validateApiKey(req)) {
-    return res.status(401).send('Invalid api key')
   }
 
   let newTicketEntry: NewTicketEntry
@@ -55,3 +53,5 @@ export default async (
   const uuid = await saveTicket(ticket)
   res.json({ uuid })
 }
+
+export default withApiKeyValidation(handler)

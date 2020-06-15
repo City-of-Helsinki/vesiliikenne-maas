@@ -4,7 +4,7 @@ import moment from 'moment-timezone'
 import TicketContainer from '../../../components/TicketContainer'
 import { findTicket } from '../../../lib/ticket-service'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { validateApiKey } from '../../../lib/middleware'
+import { withApiKeyValidation } from '../../../lib/middleware'
 
 /**
  * @swagger
@@ -40,12 +40,10 @@ import { validateApiKey } from '../../../lib/middleware'
  *       '404':
  *         description: A ticket with the ticketId was not found
  */
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { uuid } = req.query
   if (typeof uuid !== 'string')
     throw new Error('Argument uuid is not of type string')
-
-  if (!validateApiKey(req)) return res.status(401).send('Invalid api key')
 
   const ticket = await findTicket(uuid)
 
@@ -63,3 +61,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   res.json({ ticketdata: { ...ticket, ticket: html } })
 }
+
+export default withApiKeyValidation(handler)
