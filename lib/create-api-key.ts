@@ -13,12 +13,10 @@ const main = async () => {
   const hash = await bcrypt.hash(randomString, saltRounds)
 
   console.log(`API Key to send to Whim: ${randomString}`)
-
+  console.log('Line to copy to .env file:')
   // If $ are not escaped, when loading the variable from the .env
   // file, next.js will intepret them as environment variable substitution
   // resulting in an incorrect hash being loaded
-  const re = new RegExp('$')
-  console.log('Line to copy to .env file:')
   console.log(`WHIM_API_KEY_HASH="${hash.replace(/\$/g, '\\$')}"`)
 }
 
