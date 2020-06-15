@@ -3,21 +3,22 @@ import { randomBytes } from 'crypto'
 
 const saltRounds = 10
 
+export const random64CharacterHexString = () => {
+  return randomBytes(32).toString('hex')
+}
+
+export const formatHashToEnvVariable = (hash: string) => {
+  return hash.replace(/\$/g, '\\$')
+}
+
 const main = async () => {
-  // No promises version is available of randomBytes, so I
-  // opted to go for the synchronous version for readability.
-  //
-  // Produces a 64-character long random hex string
-  const randomString = randomBytes(32).toString('hex')
+  const randomString = random64CharacterHexString()
 
   const hash = await bcrypt.hash(randomString, saltRounds)
 
   console.log(`API Key to send to Whim: ${randomString}`)
   console.log('Line to copy to .env file:')
-  // If $ are not escaped, when loading the variable from the .env
-  // file, next.js will intepret them as environment variable substitution
-  // resulting in an incorrect hash being loaded
-  console.log(`WHIM_API_KEY_HASH="${hash.replace(/\$/g, '\\$')}"`)
+  console.log(`WHIM_API_KEY_HASH="${formatHashToEnvVariable(hash)}"`)
 }
 
 if (require.main === module) {
