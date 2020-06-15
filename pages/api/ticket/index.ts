@@ -3,6 +3,7 @@ import { createTicket, saveTicket } from '../../../lib/ticket-service'
 import { isString, toNewTicketEntry } from '../../../lib/utils'
 import { NewTicketEntry } from '../../../lib/types'
 import { postTicketToCRD } from '../../../lib/crd'
+import { validateApiKey } from '../../../lib/middleware'
 
 /**
  * @swagger
@@ -25,6 +26,8 @@ export default async (
 ): Promise<void> => {
   if (req.method !== 'POST') {
     return res.status(405).json({ Error: 'Cannot GET' })
+  } else if (!validateApiKey(req)) {
+    return res.status(401).send('Invalid api key')
   }
 
   let newTicketEntry: NewTicketEntry
@@ -42,11 +45,7 @@ export default async (
   if (!isString(crdUrl) || !isString(apiToken)) {
     return res.status(500).send('Server configuration error')
   }
-  const crdResponse = await postTicketToCRD(
-    crdUrl,
-    apiToken,
-    ticket,
-  )
+  const crdResponse = await postTicketToCRD(crdUrl, apiToken, ticket)
 
   if (crdResponse.failed) {
     return res.send(502)
