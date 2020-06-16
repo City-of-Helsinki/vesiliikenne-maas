@@ -4,7 +4,7 @@ import moment from 'moment-timezone'
 import TicketContainer from '../../../components/TicketContainer'
 import { findTicket } from '../../../lib/ticket-service'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { withApiKeyValidation } from '../../../lib/middleware'
+import { withApiKeyAuthentication } from '../../../lib/middleware'
 
 /**
  * @swagger
@@ -62,4 +62,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.json({ ticketdata: { ...ticket, ticket: html } })
 }
 
-export default withApiKeyValidation(handler)
+export default withApiKeyAuthentication(handler)

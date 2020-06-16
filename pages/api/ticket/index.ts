@@ -3,7 +3,7 @@ import { createTicket, saveTicket } from '../../../lib/ticket-service'
 import { isString, toNewTicketEntry } from '../../../lib/utils'
 import { NewTicketEntry } from '../../../lib/types'
 import { postTicketToCRD } from '../../../lib/crd'
-import { withApiKeyValidation } from '../../../lib/middleware'
+import { withApiKeyAuthentication } from '../../../lib/middleware'
 
 /**
  * @swagger
@@ -54,4 +54,4 @@ const handler = async (
   res.json({ uuid })
 }
 
-export default withApiKeyValidation(handler)
+export default withApiKeyAuthentication(handler)

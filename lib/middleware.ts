@@ -4,7 +4,7 @@ import { isString } from './utils'
 export const getXAPIKEY = (req: NextApiRequest): string | false =>
   isString(req.headers['x-api-key']) && req.headers['x-api-key']
 
-export const validateApiKey = (req: NextApiRequest): boolean => {
+export const authenticateApiKey = (req: NextApiRequest): boolean => {
   const apiKey = getXAPIKEY(req)
   if (apiKey) {
     // validate
@@ -12,9 +12,9 @@ export const validateApiKey = (req: NextApiRequest): boolean => {
   return false
 }
 
-export const withApiKeyValidation = (
+export const withApiKeyAuthentication = (
   handler: (req: NextApiRequest, res: NextApiResponse) => Promise<void>,
 ) => (req: NextApiRequest, res: NextApiResponse): Promise<void> | void => {
-  if (!validateApiKey(req)) return res.status(401).send('Invalid api key')
+  if (!authenticateApiKey(req)) return res.status(401).send('Invalid api key')
   return handler(req, res)
 }
