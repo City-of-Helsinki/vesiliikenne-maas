@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NewTicketEntry } from './types'
+import jsonwebtoken from 'jsonwebtoken'
+import fs from 'fs/promises'
 
 export const isString = (text: any): text is string => {
   return typeof text === 'string' || text instanceof String
@@ -20,6 +22,20 @@ export const toNewTicketEntry = (object: any): NewTicketEntry => {
   return {
     agency,
     discountGroupId,
-    ticketTypeId
+    ticketTypeId,
   }
+}
+
+const readPublicKeyData = async () => {
+  return await fs.readFile('./public_key.pem', 'utf8')
+}
+
+const readPrivateKeyData = async () => {
+  return await fs.readFile('./private_key.pem', 'utf8')
+}
+
+export const createJWT = async (object: any): Promise<string> => {
+  const privatekey = await readPrivateKeyData()
+  const jwtoken = jsonwebtoken.sign(object, privatekey, { algorithm: 'RS256' })
+  return jwtoken
 }
