@@ -6,17 +6,46 @@ const buttonStyle = {
   borderRadius: '10px',
   padding: '20px',
   fontSize: '18px',
-  color: '#00a6fb'
+  color: '#00a6fb',
+}
+
+const tokenRowStyle = {
+  margin: '12px 0',
+}
+
+const inputStyle = {
+  margin: '0 12px',
+  width: '32rem',
+}
+
+const labelStyle = {
+  fontSize: '18px',
+  fontFamily: 'sans-serif',
 }
 
 interface Props {
-  onClick: (ev: React.MouseEvent<HTMLButtonElement>) => void
+  handlePurchase: (token: string) => void
 }
 
-const TicketForm = ({ onClick }: Props) => (
-  <button style={buttonStyle} onClick={onClick}>
-    Osta Lippu
-  </button>
-)
+const TicketForm = ({ handlePurchase }: Props) => {
+  const [tokenValue, setTokenValue] = React.useState('')
+  return <form onSubmit={(e) => {
+    e.preventDefault()
+    handlePurchase(tokenValue)
+  }}>
+    <div style={tokenRowStyle}>
+      <label style={labelStyle}>
+        Authentication token:
+        <input
+          type="text" style={inputStyle} value={tokenValue} onChange={(e) => {
+          setTokenValue(e.target.value)
+        }}/>
+      </label>
+    </div>
+    <button type="submit" style={buttonStyle}>
+      Buy the ticket
+    </button>
+  </form>
+}
 
 export default TicketForm
