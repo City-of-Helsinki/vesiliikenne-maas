@@ -4,11 +4,12 @@ import * as React from 'react'
 import TicketForm from '../../components/TicketForm'
 
 const TicketPage: NextPage = () => {
-  const handleClick = async () => {
+  const handleClick = async (token: string) => {
     const response = await fetch('/api/ticket', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': token,
       },
       body: JSON.stringify({
         agency: 'JT-Line',
@@ -20,7 +21,7 @@ const TicketPage: NextPage = () => {
     const { uuid } = await response.json()
     void Router.push(`/ticket/${uuid}`)
   }
-  return <TicketForm onClick={handleClick} />
+  return <TicketForm handlePurchase={handleClick} />
 }
 
 export default TicketPage

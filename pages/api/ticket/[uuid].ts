@@ -4,6 +4,7 @@ import moment from 'moment-timezone'
 import TicketContainer from '../../../components/TicketContainer'
 import { findTicket } from '../../../lib/ticket-service'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { withApiKeyAuthentication } from '../../../lib/middleware'
 
 /**
  * @swagger
@@ -39,7 +40,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
  *       '404':
  *         description: A ticket with the ticketId was not found
  */
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { uuid } = req.query
   if (typeof uuid !== 'string')
     throw new Error('Argument uuid is not of type string')
@@ -54,9 +55,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     TicketContainer({
       ticketType: ticket.ticketTypeId,
       validTo: moment(ticket.validTo),
-      qrCodeContents: await qrcode.toDataURL(ticket.uuid)
-    })
+      qrCodeContents: await qrcode.toDataURL(ticket.uuid),
+    }),
   )
 
   res.json({ ticketdata: { ...ticket, ticket: html } })
 }
+
+export default withApiKeyAuthentication(handler)

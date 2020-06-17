@@ -3,6 +3,7 @@ import { createTicket, saveTicket } from '../../../lib/ticket-service'
 import { isString, toNewTicketEntry } from '../../../lib/utils'
 import { NewTicketEntry } from '../../../lib/types'
 import { postTicketToCRD } from '../../../lib/crd'
+import { withApiKeyAuthentication } from '../../../lib/middleware'
 
 /**
  * @swagger
@@ -19,7 +20,7 @@ import { postTicketToCRD } from '../../../lib/crd'
  *       '500':
  *         description: Server error
  */
-export default async (
+const handler = async (
   req: NextApiRequest,
   res: NextApiResponse,
 ): Promise<void> => {
@@ -42,11 +43,7 @@ export default async (
   if (!isString(crdUrl) || !isString(apiToken)) {
     return res.status(500).send('Server configuration error')
   }
-  const crdResponse = await postTicketToCRD(
-    crdUrl,
-    apiToken,
-    ticket,
-  )
+  const crdResponse = await postTicketToCRD(crdUrl, apiToken, ticket)
 
   if (crdResponse.failed) {
     return res.send(502)
@@ -56,3 +53,5 @@ export default async (
   const uuid = await saveTicket(ticket)
   res.json({ uuid })
 }
+
+export default withApiKeyAuthentication(handler)
