@@ -26,7 +26,7 @@ export const toNewTicketEntry = (object: any): NewTicketEntry => {
   }
 }
 
-const readPublicKeyData = async () => {
+export const readPublicKeyData = async () => {
   return await fs.readFile('./public_key.pem', 'utf8')
 }
 

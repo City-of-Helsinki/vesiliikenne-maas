@@ -8,7 +8,8 @@
     "start": "next start -p $PORT",
     "build": "next build",
     "build-scripts": "tsc -p ./scripts/tsconfig.json",
-    "create-api-key": "yarn run build-scripts && node build/create-api-key.js",
+    "create-api-key": "yarn run build-scripts && node build/scripts/create-api-key.js",
+    "fetch-jwt-ticket": "yarn run build-scripts && node build/scripts/fetch-ticket-from-api.js",
     "doc": "swagger-jsdoc -o public/specs/routes.json -d public/specs/swaggerDef.js",
     "test": "jest"
   },
