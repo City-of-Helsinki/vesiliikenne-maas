@@ -15,15 +15,11 @@ const requestTicketContents = async (ticketUuid: string, apiKey: string) => {
     apiKey)
   const jsonwebtokenofdata = ticket.data.ticketdata
   const decode: any = jsonwebtoken.verify(jsonwebtokenofdata, await readPublicKeyData())
-  const ticketContents = parseString(decode.ticket, 'ticket')
-
-  return ticketContents
+  return parseString(decode.ticket, 'ticket')
 }
 
 const main = async () => {
-  const relevantArgs = process.argv.slice(2)
-  const ticketUuid = relevantArgs[0]
-  const apiKey = relevantArgs[1]
+  const [ticketUuid, apiKey] = process.argv.slice(2)
   console.log(await requestTicketContents(ticketUuid, apiKey))
 }
 
