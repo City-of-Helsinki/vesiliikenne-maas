@@ -49,7 +49,6 @@ const handler = async (
     return res.send(502)
   }
 
-  console.log(crdResponse)
   const uuid = await saveTicket(ticket)
   res.json({ uuid })
 }

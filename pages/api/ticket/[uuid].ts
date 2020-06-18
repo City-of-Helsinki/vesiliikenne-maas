@@ -5,6 +5,7 @@ import TicketContainer from '../../../components/TicketContainer'
 import { findTicket } from '../../../lib/ticket-service'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { withApiKeyAuthentication } from '../../../lib/middleware'
+import { createJWT } from '../../../lib/utils'
 
 /**
  * @swagger
@@ -53,13 +54,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const html = renderToString(
     TicketContainer({
-      ticketType: ticket.ticketTypeId,
+      discountGroup: ticket.discountGroupId,
       validTo: moment(ticket.validTo),
       qrCodeContents: await qrcode.toDataURL(ticket.uuid),
     }),
   )
-
-  res.json({ ticketdata: { ...ticket, ticket: html } })
+  const jwToken = await createJWT({ ...ticket, ticket: html })
+  res.json({ ticketdata: jwToken })
 }
 
 export default withApiKeyAuthentication(handler)

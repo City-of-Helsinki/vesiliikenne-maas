@@ -8,7 +8,7 @@ const bodyStyle = {
   color: 'hsl(200, 10%, 30%)',
   backgroundColor: 'hsl(200, 10%, 96%)',
   display: 'grid',
-  fontFamily: "'Roboto', sans-serif"
+  fontFamily: "'Roboto', sans-serif",
 }
 
 const ticketStyle = {
@@ -16,19 +16,19 @@ const ticketStyle = {
   backgroundColor: 'white',
   margin: 'auto',
   boxShadow: '0 2px 4px hsla(200, 20%, 20%, 0.25)',
-  borderRadius: '0.375em 0.375em 0.375em 0.375em'
+  borderRadius: '0.375em 0.375em 0.375em 0.375em',
 }
 
 interface Props {
-  ticketType: string
+  discountGroup: string
   validTo: moment.Moment
   qrCodeContents: string
 }
 
-const TicketContainer = ({ ticketType, validTo, qrCodeContents }: Props) => (
+const TicketContainer = ({ discountGroup, validTo, qrCodeContents }: Props) => (
   <div style={bodyStyle}>
     <div className="ticket" style={ticketStyle}>
-      <TicketHeader ticketType={ticketType} validTo={validTo} />
+      <TicketHeader discountGroup={discountGroup} validTo={validTo} />
       <TicketBody qrCodeContents={qrCodeContents} />
     </div>
   </div>
