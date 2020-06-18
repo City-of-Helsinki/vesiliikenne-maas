@@ -4,7 +4,7 @@ import { parseString, readPublicKeyData } from '../lib/utils'
 
 const fetchTicket = async (ticketUuid: string, apiKey: string) =>
   await axios.get(`http://localhost:3000/api/ticket/${ticketUuid}`, {
-    'headers': {
+    headers: {
       'x-api-key': apiKey,
     },
   })
