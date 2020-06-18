@@ -54,7 +54,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const html = renderToString(
     TicketContainer({
-      ticketType: ticket.ticketTypeId,
+      discountGroup: ticket.discountGroupId,
       validTo: moment(ticket.validTo),
       qrCodeContents: await qrcode.toDataURL(ticket.uuid),
     }),
