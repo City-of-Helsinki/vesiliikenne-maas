@@ -6,10 +6,11 @@
   "scripts": {
     "dev": "next",
     "start": "next start -p $PORT",
+    "clean": "rm -rf build",
     "build": "next build",
     "build-scripts": "tsc -p ./scripts/tsconfig.json",
-    "create-api-key": "yarn run build-scripts && node build/scripts/create-api-key.js",
-    "fetch-jwt-ticket": "yarn run build-scripts && node build/scripts/fetch-ticket-from-api.js",
+    "create-api-key": "yarn clean && yarn run build-scripts && node build/scripts/create-api-key.js",
+    "fetch-jwt-ticket": "yarn clean && yarn run build-scripts && node build/scripts/fetch-ticket-from-api.js",
     "doc": "swagger-jsdoc -o public/specs/routes.json -d public/specs/swaggerDef.js",
     "test": "jest"
   },
