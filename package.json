@@ -1,8 +1,8 @@
 {
-  "name": "hki-vesiliikenne",
+  "name": "vesiliikenne-maas",
   "version": "1.0.0",
-  "repository": "git@github.com:reaktor/hki-vesiliikenne.git",
-  "license": "UNLICENSED",
+  "repository": "git@github.com:City-of-Helsinki/vesiliikenne-maas.git",
+  "license": "MIT",
   "scripts": {
     "dev": "next",
     "start": "next start -p $PORT",
