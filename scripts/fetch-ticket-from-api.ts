@@ -17,7 +17,7 @@ const requestTicketContents = async (ticketUuid: string, apiKey: string) => {
   const decode: any = jsonwebtoken.verify(jsonwebtokenofdata, await readPublicKeyData())
   const ticketContents = parseString(decode.ticket, 'ticket')
 
-  return (ticketContents)
+  return ticketContents
 }
 
 const main = async () => {
