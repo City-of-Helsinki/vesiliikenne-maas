@@ -34,9 +34,6 @@ import { withApiKeyAuthentication } from '../../../lib/middleware'
  *                   currency:
  *                     type: string
  *                     description: "Ticket currency"
- *                   validityseconds:
- *                     type: number
- *                     description: "How long ticket is available"
  *       '401':
  *         description: Invalid api key
  *       '500':
