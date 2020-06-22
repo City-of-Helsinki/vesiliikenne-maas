@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1,
+    "description": "Hop-on hop-off -style ticket at the islands Lonna, Vallisaari and Suomenlinna.",
+    "name": "Island Hopping - MaaS",
+    "amount": 1200,
+    "currency": "EUR",
+    "validityseconds": 86400
+  }
+]
