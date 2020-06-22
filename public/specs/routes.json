@@ -39,10 +39,6 @@
                       "currency": {
                         "type": "string",
                         "description": "Ticket currency"
-                      },
-                      "validityseconds": {
-                        "type": "number",
-                        "description": "How long ticket is available"
                       }
                     }
                   }

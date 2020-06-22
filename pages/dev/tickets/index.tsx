@@ -18,10 +18,9 @@ interface TicketOption {
   description: string
   id: number
   name: string
-  validityseconds: number
 }
 
-const TicketsPage: NextPage<props> = ({ NODE_ENV }) => {
+const TicketsPage: NextPage<Props> = ({ NODE_ENV }) => {
   const [tokenValue, setTokenValue] = React.useState('')
   const [tickets, setTickets] = React.useState<TicketOption[]>([])
 
