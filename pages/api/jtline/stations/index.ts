@@ -33,7 +33,7 @@ select jsonb_agg(
                'services',
                jsonb_build_array('FERRY')
              )
-         )
+         ) as aggregated_out
 from jtline_stops;
 `
 
@@ -43,9 +43,7 @@ const handler = async (
   res: NextApiResponse,
 ): Promise<void> => {
   const stuff = await pool.query(jtlineStopsQuery)
-    //.then((a) => { console.log(a)})
-  //console.log(result);
-  res.json({moi: "ehllo", stuff})
+  res.json(stuff.rows[0]['aggregated_out'])
 }
 
 export default withApiKeyAuthentication(handler)
