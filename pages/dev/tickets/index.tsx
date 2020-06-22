@@ -8,10 +8,6 @@ interface props {
   NODE_ENV: string
 }
 
-interface Props {
-  handlePurchase: (token: string) => void
-}
-
 interface TicketOption {
   amount: number
   currency: string
@@ -20,7 +16,7 @@ interface TicketOption {
   name: string
 }
 
-const TicketsPage: NextPage<Props> = ({ NODE_ENV }) => {
+const TicketsPage: NextPage<props> = ({ NODE_ENV }) => {
   const [tokenValue, setTokenValue] = React.useState('')
   const [tickets, setTickets] = React.useState<TicketOption[]>([])
 
