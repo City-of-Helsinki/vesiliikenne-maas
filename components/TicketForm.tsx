@@ -1,4 +1,5 @@
 import * as React from 'react'
+import ApiKeyField from './ApiKeyField'
 
 const buttonStyle = {
   background: '#FFF',
@@ -29,23 +30,22 @@ interface Props {
 
 const TicketForm = ({ handlePurchase }: Props) => {
   const [tokenValue, setTokenValue] = React.useState('')
-  return <form onSubmit={(e) => {
-    e.preventDefault()
-    handlePurchase(tokenValue)
-  }}>
-    <div style={tokenRowStyle}>
-      <label style={labelStyle}>
-        Authentication token:
-        <input
-          type="text" style={inputStyle} value={tokenValue} onChange={(e) => {
-          setTokenValue(e.target.value)
-        }}/>
-      </label>
-    </div>
-    <button type="submit" style={buttonStyle}>
-      Buy the ticket
-    </button>
-  </form>
+  return (
+    <form
+      onSubmit={e => {
+        e.preventDefault()
+        handlePurchase(tokenValue)
+      }}
+    >
+      <ApiKeyField
+        token={tokenValue}
+        handleChange={e => setTokenValue(e.target.value)}
+      />
+      <button type="submit" style={buttonStyle}>
+        Buy the ticket
+      </button>
+    </form>
+  )
 }
 
 export default TicketForm
