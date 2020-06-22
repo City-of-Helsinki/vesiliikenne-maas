@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { withApiKeyAuthentication } from '../../../../lib/middleware'
-import { Pool, Client } from 'pg'
+import { Pool } from 'pg'
 
 const pool = new Pool({
-  connectionString: 'postgresql://postgres:hki-vesiliikenne@localhost:5432/postgres'
+  connectionString: process.env.DATABASE_URL
 })
 
 const handler = async (
