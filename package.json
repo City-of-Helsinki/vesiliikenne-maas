@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "repository": "git@github.com:City-of-Helsinki/vesiliikenne-maas.git",
   "license": "MIT",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "dev": "next",
     "start": "next start -p $PORT",
