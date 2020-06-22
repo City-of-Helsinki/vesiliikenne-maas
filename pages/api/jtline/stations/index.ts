@@ -22,16 +22,15 @@ const jtlineStopsQuery = `with jtline_stops as
           and now() between start_date and end_date
           and ST_Distance(
                   the_geom::geography,
-                  ST_SetSRID(ST_Point(24.9533522, 60.1672325), 4326)::geography
-                ) < 10000)
+                  ST_SetSRID(ST_Point($1, $2), 4326)::geography
+                ) <= cast($3 as integer))
 select jsonb_agg(
            json_build_object(
                'id', stop_id,
                'location', concat(stop_lat, ',', stop_lon),
                'agencyId', 'jtline',
                'name', stop_name,
-               'services',
-               jsonb_build_array('FERRY')
+               'services', jsonb_build_array('FERRY')
              )
          ) as aggregated_out
 from jtline_stops;
@@ -42,8 +41,17 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse,
 ): Promise<void> => {
-  const stuff = await pool.query(jtlineStopsQuery)
-  res.json(stuff.rows[0]['aggregated_out'])
+  const {location, radius} = req.query
+  if (typeof location !== 'string') {
+    return res.status(400).send("Invalid location")
+  }
+  const [latitude, longitude] = location.split(",")
+  const distanceInMeters = radius
+  if (distanceInMeters == null) {
+    return res.status(400).send("Required parameter 'radius' is missing.")
+  }
+  const queryResult = await pool.query(jtlineStopsQuery, [longitude, latitude, distanceInMeters])
+  res.json(queryResult.rows[0]['aggregated_out'])
 }
 
 export default withApiKeyAuthentication(handler)
