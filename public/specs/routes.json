@@ -33,7 +33,7 @@
                         "description": "Ticket name"
                       },
                       "amount": {
-                        "type": "number",
+                        "type": "string",
                         "description": "Ticket price"
                       },
                       "currency": {
