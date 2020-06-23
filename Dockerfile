@@ -3,8 +3,6 @@ FROM node:14-alpine AS build
 WORKDIR /app
 COPY package.json yarn.lock ./
 
-
-# Install all dependencies and build
 RUN yarn --frozen-lockfile --no-progress
 COPY . .
 
