@@ -12,16 +12,20 @@ const Home: NextPage = () => {
       route: 'specs/redoc.html',
     },
     {
-      name: 'Sample ticket',
+      name: 'Dev - Sample ticket',
       route: 'dev/ticket/c9a5c85d-7d8a-4f8c-8424-ba7f6434d010',
     },
     {
-      name: 'Buy ticket',
+      name: 'Dev - Buy ticket',
       route: 'dev/ticket/buy',
     },
     {
-      name: 'List available ticket options',
+      name: 'Dev - List available ticket options',
       route: 'dev/tickets',
+    },
+    {
+      name: 'Dev - List available stations',
+      route: 'dev/stations',
     },
   ]
   return (
