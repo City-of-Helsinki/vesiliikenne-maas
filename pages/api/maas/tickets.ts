@@ -41,6 +41,8 @@ import { TSPTicket } from '../../../lib/types'
  *                   validityseconds:
  *                     type: number
  *                     description: "How long ticket is valid in seconds"
+ *       '400':
+ *         description: Invalid startTime parameter
  *       '401':
  *         description: Invalid api key
  *       '500':

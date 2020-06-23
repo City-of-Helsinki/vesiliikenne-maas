@@ -50,6 +50,9 @@
               }
             }
           },
+          "400": {
+            "description": "Invalid startTime parameter"
+          },
           "401": {
             "description": "Invalid api key"
           },
