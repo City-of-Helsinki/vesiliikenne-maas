@@ -5,6 +5,8 @@ services:
     command: yarn dev
     build:
       context: .
+      args:
+        - NODE_ENV=development
     volumes:
       - ./:/home/node/app/
       - /home/node/app/node_modules/

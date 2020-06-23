@@ -1,18 +1,32 @@
-FROM node:14-alpine
+FROM node:14-alpine AS build
+
+WORKDIR /app
+COPY package.json yarn.lock ./
+
+
+# Install all dependencies and build
+RUN yarn --frozen-lockfile --no-progress
+COPY . .
+
+RUN yarn build
+
+FROM build AS release
+
+WORKDIR /home/node/app
+
+ARG NODE_ENV=production
+ENV NODE_ENV $NODE_ENV
 
 RUN mkdir -p /home/node/app/node_modules && \
-  mkdir -p /home/node/app/.next && \
   chown -R node:node /home/node/app
 
 USER node
 
-WORKDIR /home/node/app
-
 COPY --chown=node:node package.json yarn.lock ./
 RUN yarn --frozen-lockfile --no-progress
-COPY --chown=node:node . .
 
-RUN yarn build
+COPY --from=build --chown=node:node /app/.next ./.next
+COPY --from=build --chown=node:node /app/public ./public
 
 EXPOSE 8080
 
