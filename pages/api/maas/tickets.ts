@@ -13,6 +13,14 @@ import { TSPTicket } from '../../../lib/types'
  *   get:
  *     summary: Lists tickets available for purchase
  *     description: Lists tickets provided by JT-Line for purchase via the MaaS app
+ *
+ *     parameters:
+ *       - name: startTime
+ *         in: query
+ *         required: true
+ *         description: POSIX time in milliseconds
+ *         schema:
+ *           type: integer
  *     responses:
  *       '200':
  *         description: OK
