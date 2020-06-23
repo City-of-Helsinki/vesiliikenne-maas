@@ -1,0 +1,6 @@
+.git
+build
+.next
+.github
+node_modules
+.gitignore
