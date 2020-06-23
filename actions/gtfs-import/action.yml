@@ -1,0 +1,28 @@
+# action.yml
+name: 'GTFS Import'
+description: 'Imports GTFS data'
+inputs:
+  postgres-host:
+    description: 'Postgres hostname'
+    required: true
+  postgres-port:
+    description: 'Postgres port'
+    default: 5432
+    required: true
+  postgres-username:
+    description: 'Postgres username'
+    required: true
+  postgres-password:
+    description: 'Postgres password'
+    required: true
+outputs:
+  message:
+    description: 'Message'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.postgres-host }}
+    - ${{ inputs.postgres-port }}
+    - ${{ inputs.postgres-user }}
+    - ${{ inputs.postgres-password }}
