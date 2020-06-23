@@ -15,6 +15,13 @@ export const parseString = (string: any, objectKey: string): string => {
   return string
 }
 
+export const parseNumber = (num: any): number => {
+  if (isNaN(num) || !num) {
+    throw new Error(`${num} is not a number`)
+  }
+  return Number(num)
+}
+
 export const toNewTicketEntry = (object: any): NewTicketEntry => {
   const agency = parseString(object.agency, 'Agency')
   const discountGroupId = parseString(object.discountGroupId, 'DiscountGroupId')
