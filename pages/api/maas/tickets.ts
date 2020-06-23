@@ -1,6 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { promises as fs } from 'fs'
+import moment from 'moment-timezone'
 import { withApiKeyAuthentication } from '../../../lib/middleware'
+import { calculateTicketValidTo } from '../../../lib/ticket-service'
+import { parseNumber } from '../../../lib/utils'
+import { TSPTicket } from '../../../lib/types'
 
 /**
  * @swagger
@@ -34,14 +38,43 @@ import { withApiKeyAuthentication } from '../../../lib/middleware'
  *                   currency:
  *                     type: string
  *                     description: "Ticket currency"
+ *                   validityseconds:
+ *                     type: number
+ *                     description: "How long ticket is valid in seconds"
  *       '401':
  *         description: Invalid api key
  *       '500':
  *         description: Server error
  */
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+
+export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  let startTime: number
+
   try {
-    res.json(await fs.readFile('./JTline-tickets.json'))
+    startTime = parseNumber(req.query.startTime)
+  } catch (error) {
+    return res.status(400).send(error.message)
+  }
+
+  const endTimeInMilliseconds = calculateTicketValidTo(
+    moment(startTime),
+  ).valueOf()
+
+  const validityseconds = moment
+    .duration(endTimeInMilliseconds - startTime, 'milliseconds')
+    .asSeconds()
+
+  try {
+    const tickets = JSON.parse(
+      await fs.readFile('./JTline-tickets.json', 'utf-8'),
+    ) as TSPTicket[]
+
+    const ticketsWithSeconds = tickets.map(ticket => ({
+      ...ticket,
+      validityseconds,
+    }))
+
+    res.json(ticketsWithSeconds)
   } catch (error) {
     return res.status(500).send(error.message)
   }
