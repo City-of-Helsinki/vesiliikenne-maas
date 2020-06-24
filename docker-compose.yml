@@ -18,11 +18,13 @@ services:
       - POSTGRES_PASSWORD=hki-vesiliikenne
     ports:
       - '5432:5432'
-  postgis-migrator:
+  gtfs-import:
     build:
-      context: ./migrator
+      context: ./actions/gtfs-import
+    command: /entrypoint.sh --wait-until-ready
     environment:
       - PGHOST=postgis
+      - PGPORT=5432 
       - PGUSER=postgres
       - PGPASSWORD=hki-vesiliikenne
     depends_on:
