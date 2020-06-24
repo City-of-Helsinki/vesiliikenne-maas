@@ -18,12 +18,12 @@ export const performRequest = (handler: any, params: any): State  => {
   let server: http.Server
 
   beforeAll(async () => {
-    let requestHandler = (req: IncomingMessage, res: ServerResponse) => {
+    const requestHandler = (req: IncomingMessage, res: ServerResponse) => {
       return apiResolver(req, res, params, handler, dummyApiContext)
     }
 
     server = http.createServer(requestHandler)
-    let url = await listen(server)
+    const url = await listen(server)
     state.response = await fetch(url)
   })
 
