@@ -29,7 +29,7 @@ import { withApiKeyAuthentication } from '../../../lib/middleware'
  *                     type: string
  *                     description: "Ticket name"
  *                   amount:
- *                     type: number
+ *                     type: string
  *                     description: "Ticket price"
  *                   currency:
  *                     type: string
