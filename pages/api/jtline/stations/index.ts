@@ -36,7 +36,45 @@ select jsonb_agg(
 from jtline_stops;
 `
 
-
+/**
+ * @swagger
+ *
+ * /api/jtline/stations:
+ *   get:
+ *     summary: JT-Line stations
+ *     description: Lists JT-Line stations on the map
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     description: "Station id"
+ *                   name:
+ *                     type: string
+ *                     description: "Station name"
+ *                   agencyId:
+ *                     type: string
+ *                     description: "Agency id: 'jtline'"
+ *                   location:
+ *                     type: string
+ *                     description: "Location in 'lat,lon' format"
+ *                   services:
+ *                     type: array
+ *                     description: "Service types, currently only 'FERRY'"
+ *                     items:
+ *                       type: string
+ *       '401':
+ *         description: Invalid api key
+ *       '500':
+ *         description: Server error
+*/
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse,
