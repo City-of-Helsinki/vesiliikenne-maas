@@ -58,21 +58,23 @@ import { TSPTicket } from '../../../lib/types'
  */
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let startTime: number
+  let startTime
 
   try {
     startTime = parseNumber(req.query.startTime)
   } catch (error) {
-    return res.status(400).send(error.message)
+    return res.status(400).send(`Invalid parameter startTime: ${error.message}`)
   }
 
   const endTimeInMilliseconds = calculateTicketValidTo(
     moment.tz(startTime, 'Europe/Helsinki'),
   ).valueOf()
 
-  const validityseconds = moment
-    .duration(endTimeInMilliseconds - startTime, 'milliseconds')
-    .asSeconds()
+  const validityseconds = Math.ceil(
+    moment
+      .duration(endTimeInMilliseconds - startTime, 'milliseconds')
+      .asSeconds(),
+  )
 
   try {
     const tickets = JSON.parse(
