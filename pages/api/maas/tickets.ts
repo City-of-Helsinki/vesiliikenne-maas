@@ -67,7 +67,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const endTimeInMilliseconds = calculateTicketValidTo(
-    moment(startTime),
+    moment.tz(startTime, 'Europe/Helsinki'),
   ).valueOf()
 
   const validityseconds = moment
