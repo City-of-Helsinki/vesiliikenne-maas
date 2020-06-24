@@ -3,6 +3,7 @@ import * as React from 'react'
 import NextError from 'next/error'
 import axios from 'axios'
 import ApiKeyField from '../../../components/ApiKeyField'
+import moment from 'moment-timezone'
 
 interface props {
   NODE_ENV: string
@@ -25,11 +26,15 @@ const TicketsPage: NextPage<props> = ({ NODE_ENV }) => {
   }
 
   const handleClick = async (token: string) => {
-    const response = await axios.get('/api/maas/tickets', {
-      headers: {
-        'x-api-key': token,
+    const currentTimeMS = moment().tz('Europe/Helsinki').valueOf()
+    const response = await axios.get(
+      `/api/maas/tickets?startTime=${currentTimeMS}`,
+      {
+        headers: {
+          'x-api-key': token,
+        },
       },
-    })
+    )
 
     setTickets(await response.data)
   }
