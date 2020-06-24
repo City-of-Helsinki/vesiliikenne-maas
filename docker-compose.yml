@@ -12,3 +12,18 @@ services:
       - /home/node/app/node_modules/
     ports:
       - '3000:3000'
+  postgis:
+    image: postgis/postgis:12-3.0
+    environment:
+      - POSTGRES_PASSWORD=hki-vesiliikenne
+    ports:
+      - '5432:5432'
+  postgis-migrator:
+    build:
+      context: ./migrator
+    environment:
+      - PGHOST=postgis
+      - PGUSER=postgres
+      - PGPASSWORD=hki-vesiliikenne
+    depends_on:
+      - postgis
