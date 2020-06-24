@@ -1,4 +1,6 @@
 import * as React from 'react'
+import Link from 'next/link'
+
 import { NextPage } from 'next'
 
 const Home: NextPage = () => {
@@ -34,7 +36,9 @@ const Home: NextPage = () => {
       <ul>
         {routes.map(route => (
           <li key={route.name}>
-            <a href={route.route}>{route.name}</a>
+            <Link href={route.route}>
+              <a>{route.name}</a>
+            </Link>
           </li>
         ))}
       </ul>
