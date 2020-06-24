@@ -51,3 +51,12 @@ export interface CrdResponse {
   failed: number
   status: number
 }
+
+export interface TSPTicket {
+  id: string
+  description: string
+  name: string
+  amount: string
+  currency: string
+  validityseconds?: number
+}
