@@ -216,9 +216,50 @@
       "post": {
         "summary": "Ticket purchase",
         "description": "Creates a ticket and returns the UUID of the created ticket",
+        "parameters": [
+          {
+            "in": "body",
+            "required": true,
+            "description": "the ticket to buy",
+            "schema": {
+              "type": "object",
+              "required": "agency discountGroupId ticketTypeId",
+              "properties": {
+                "agency": {
+                  "type": "string",
+                  "example": "jt-line",
+                  "description": "ferry agency"
+                },
+                "discountGroupId": {
+                  "type": "string",
+                  "example": "adult",
+                  "description": "discount group"
+                },
+                "ticketTypeId": {
+                  "type": "string",
+                  "example": "island hopping",
+                  "description": "ticket type"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string",
+                      "example": "20ca08a3-dfd9-4b74-97bf-eb414e143def"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
