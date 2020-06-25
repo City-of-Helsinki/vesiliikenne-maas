@@ -10,6 +10,37 @@
       "get": {
         "summary": "JT-Line stations",
         "description": "Lists JT-Line stations on the map",
+        "parameters": [
+          {
+            "name": "location",
+            "in": "query",
+            "required": true,
+            "description": "Location in format lat,long",
+            "example": "60.167235,24.953353",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "radius",
+            "in": "query",
+            "required": true,
+            "description": "Radius for stations in meters",
+            "example": "1500",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "required": true,
+            "description": "API key",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
