@@ -10,6 +10,8 @@ services:
     volumes:
       - ./:/home/node/app/
       - /home/node/app/node_modules/
+    environment:
+      - DATABASE_URL=postgres://postgres:hki-vesiliikenne@postgis:5432/
     ports:
       - '3000:3000'
   postgis:
