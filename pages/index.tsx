@@ -14,6 +14,14 @@ const Home: NextPage = () => {
       route: 'specs/redoc.html',
     },
     {
+      name: 'Readiness check',
+      route: 'readiness',
+    },
+    {
+      name: 'Liveness check',
+      route: 'healthz',
+    },
+    {
       name: 'Dev - Sample ticket',
       route: 'dev/ticket/c9a5c85d-7d8a-4f8c-8424-ba7f6434d010',
     },
