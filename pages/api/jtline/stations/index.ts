@@ -1,10 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { withApiKeyAuthentication } from '../../../../lib/middleware'
-import { Pool } from 'pg'
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL
-})
+import { parseString } from '../../../../lib/utils'
+import { pool } from '../../../../lib/db';
 
 // language=PostgreSQL
 const jtlineStopsQuery = `with jtline_stops as
@@ -75,15 +72,18 @@ from jtline_stops;
  *       '500':
  *         description: Server error
 */
-const handler = async (
+export const handler = async (
   req: NextApiRequest,
   res: NextApiResponse,
 ): Promise<void> => {
-  const {location, radius} = req.query
-  if (typeof location !== 'string') {
-    return res.status(400).send("Invalid location")
+  const { location, radius } = req.query
+  let locationString
+  try {
+    locationString = parseString(location, "location")
+  } catch (error) {
+    return res.status(400).send(error.message)
   }
-  const [latitude, longitude] = location.split(",")
+  const [latitude, longitude] = locationString.split(",")
   const distanceInMeters = radius
   if (distanceInMeters == null) {
     return res.status(400).send("Required parameter 'radius' is missing.")
