@@ -168,7 +168,7 @@
     "/api/ticket/{ticketId}": {
       "get": {
         "summary": "Ticket display",
-        "description": "Returns user ticket in [HSL OpenMaaS Ticket API format](https://sales-api.hsl.fi/ticket-api-doc#operation/Render%20Ticket)",
+        "description": "Returns user ticket in [HSL OpenMaaS Ticket API format](https://sales-api.hsl.fi/ticket-api-doc#operation/Render%20Ticket). encoded in JSON Web Token",
         "parameters": [
           {
             "name": "ticketId",
@@ -191,8 +191,29 @@
                     "ticketdata": {
                       "type": "object",
                       "properties": {
+                        "uuid": {
+                          "type": "string",
+                          "example": "be78e1f9-e4a4-48d2-b9fe-50aa335e5371"
+                        },
+                        "agency": {
+                          "type": "string",
+                          "example": "jt-line"
+                        },
+                        "ticketTypeId": {
+                          "type": "string",
+                          "example": "island-hopping"
+                        },
+                        "validFrom": {
+                          "type": "string",
+                          "example": "2020-06-25T12:56:18.000Z"
+                        },
+                        "validTo": {
+                          "type": "string",
+                          "example": "2020-06-26T00:00:00.000Z"
+                        },
                         "ticket": {
                           "type": "string",
+                          "example": "<div> ...Ticket... </div>",
                           "description": "The ticket in html format"
                         },
                         "validUntil": {
@@ -216,9 +237,50 @@
       "post": {
         "summary": "Ticket purchase",
         "description": "Creates a ticket and returns the UUID of the created ticket",
+        "parameters": [
+          {
+            "in": "body",
+            "required": true,
+            "description": "the ticket to buy",
+            "schema": {
+              "type": "object",
+              "required": "agency discountGroupId ticketTypeId",
+              "properties": {
+                "agency": {
+                  "type": "string",
+                  "example": "jt-line",
+                  "description": "ferry agency"
+                },
+                "discountGroupId": {
+                  "type": "string",
+                  "example": "adult",
+                  "description": "discount group"
+                },
+                "ticketTypeId": {
+                  "type": "string",
+                  "example": "island hopping",
+                  "description": "ticket type"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string",
+                      "example": "20ca08a3-dfd9-4b74-97bf-eb414e143def"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
