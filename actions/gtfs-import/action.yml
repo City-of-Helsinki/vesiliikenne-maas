@@ -21,8 +21,8 @@ outputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.postgres-host }}
-    - ${{ inputs.postgres-port }}
-    - ${{ inputs.postgres-user }}
-    - ${{ inputs.postgres-password }}
+  env:
+    PGHOST: ${{ inputs.postgres-host }}
+    PGPORT: ${{ inputs.postgres-port }}
+    PGUSER: ${{ inputs.postgres-user }}
+    PGPASSWORD: ${{ inputs.postgres-password }}

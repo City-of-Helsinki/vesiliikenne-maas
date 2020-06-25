@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  api-backend:
+    command: yarn dev
+    build:
+      context: .
+      args:
+        - NODE_ENV=development
+    volumes:
+      - ./:/home/node/app/
+      - /home/node/app/node_modules/
+    environment:
+      - DATABASE_URL=postgres://postgres:hki-vesiliikenne@postgis:5432/
+    ports:
+      - '3000:3000'
+  postgis:
+    image: postgis/postgis:12-3.0
+    environment:
+      - POSTGRES_PASSWORD=hki-vesiliikenne
+    ports:
+      - '5432:5432'
+  gtfs-import:
+    build:
+      context: ./actions/gtfs-import
+    command: /entrypoint.sh --wait-until-ready
+    environment:
+      - PGHOST=postgis
+      - PGPORT=5432 
+      - PGUSER=postgres
+      - PGPASSWORD=hki-vesiliikenne
+    depends_on:
+      - postgis

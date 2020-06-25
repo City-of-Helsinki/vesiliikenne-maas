@@ -2,10 +2,15 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-export PGHOST=$1
-export PGPORT=$2
-export PGUSER=$3
-export PGPASSWORD=$4
+while [ -n "${1-}" ]; do 
+  case $1 in
+  --wait-until-ready )
+    until psql -h "$PGHOST" -U "$PGUSER" -c '\q'; do
+      >&2 echo "Postgres is unavailable - sleeping"
+      sleep 1
+    done
+    ;;
+esac; shift; done
 
 cd /work
 git clone --depth 1 https://github.com/fitnr/gtfs-sql-importer || true
