@@ -22,6 +22,10 @@ const StationsPage: NextPage<props> = ({ NODE_ENV }) => {
       headers: {
         'x-api-key': token,
       },
+      params: {
+        location: "60.167235,24.953353",
+        radius: "5000"
+      }
     })
 
     setStations(await response.data)
