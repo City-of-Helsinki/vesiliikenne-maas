@@ -3,17 +3,17 @@ import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import listen from 'test-listen'
 import fetch from 'isomorphic-unfetch'
 
-const dummyApiContext = {
+export const dummyApiContext = {
   previewModeEncryptionKey: '',
   previewModeId: '',
-  previewModeSigningKey: ''
+  previewModeSigningKey: '',
 }
 
 interface State {
   response?: Response
 }
 
-export const performRequest = (handler: any, params: any): State  => {
+export const performRequest = (handler: any, params: any): State => {
   let state: State = { response: undefined }
   let server: http.Server
 
@@ -27,7 +27,7 @@ export const performRequest = (handler: any, params: any): State  => {
     state.response = await fetch(url)
   })
 
-  afterAll(async() => {
+  afterAll(async () => {
     return server?.close()
   })
 
