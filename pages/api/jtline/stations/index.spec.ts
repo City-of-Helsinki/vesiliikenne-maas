@@ -8,15 +8,19 @@ afterAll(async () => {
 
 describe('/api/jtline/stations', () => {
   describe('GET with empty parameters', () => {
-    const state = performRequest(jtlineStations, undefined)
+    const state = performRequest(jtlineStations, {})
 
     it('responds with status code 400', () => {
       expect(state.response?.status).toBe(400)
     })
+
+    it('should have error message as body', () => {
+      expect(state.response?.text()).resolves.toBe("Required query parameter 'location' is missing.")
+    })
   })
 
   describe('GET with valid parameters', () => {
-    const state = performRequest(jtlineStations, { location: '60.1676,24.9552', radius: 10000 })
+    const state = performRequest(jtlineStations, { location: "60.1676,24.9552", radius: "10000" })
 
     it('responds with status code 200', () => {
       expect(state.response?.status).toBe(200)
