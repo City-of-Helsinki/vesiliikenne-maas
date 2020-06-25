@@ -13,7 +13,7 @@ import { createJWT } from '../../../lib/utils'
  * /api/ticket/{ticketId}:
  *   get:
  *     summary: Ticket display
- *     description: Returns user ticket in [HSL OpenMaaS Ticket API format](https://sales-api.hsl.fi/ticket-api-doc#operation/Render%20Ticket)
+ *     description: Returns user ticket in [HSL OpenMaaS Ticket API format](https://sales-api.hsl.fi/ticket-api-doc#operation/Render%20Ticket). encoded in JSON Web Token
  *     parameters:
  *       - name: ticketId
  *         in: path
@@ -32,8 +32,24 @@ import { createJWT } from '../../../lib/utils'
  *                ticketdata:
  *                  type: object
  *                  properties:
+ *                    uuid:
+ *                      type: string
+ *                      example: be78e1f9-e4a4-48d2-b9fe-50aa335e5371
+ *                    agency:
+ *                      type: string
+ *                      example: jt-line
+ *                    ticketTypeId:
+ *                      type: string
+ *                      example: island-hopping
+ *                    validFrom:
+ *                      type: string
+ *                      example: 2020-06-25T15:56:18+03:00
+ *                    validTo:
+ *                      type: string
+ *                      example: 2020-06-26T03:00:00+03:00
  *                    ticket:
  *                      type: string
+ *                      example: <div> ...Ticket... </div>
  *                      description: "The ticket in html format"
  *                    validUntil:
  *                      type: string
