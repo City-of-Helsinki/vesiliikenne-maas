@@ -52,11 +52,15 @@ const FerryStations: NextPage<props> = ({ DEV_API_KEY, NODE_ENV }) => {
 
   const ticketOptions = maasTickets.map(ticket => (
     <li style={liStyle}>
-      <div style={{
-        background: `url(/images/${ticket.logoId})`,
-        backgroundSize: 'contain',
-        backgroundRepeat: 'no-repeat',
-      }}/>
+      <div style={{padding: "12px"}}>
+        <div style={{
+          background: `url(/images/${ticket.logoId})`,
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'top',
+          height: "100%"
+        }}/>
+      </div>
       <div>
         <div>{ticket.name}</div>
         <div>{ticket.description}</div>
@@ -68,32 +72,45 @@ const FerryStations: NextPage<props> = ({ DEV_API_KEY, NODE_ENV }) => {
   ))
 
   return (
-    <div>
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 3fr',
-        background: 'darkblue',
-        color: 'white',
-      }}>
-        <div style={{
-          background: `url(${hslFerryImage})`,
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
-        }}/>
-        <div style={{
-          display: 'grid',
-          gridTemplateRows: '1fr 1fr',
-        }}>
-          <div>Ferry Tickets</div>
-          <div>Helsinki archipelago</div>
-        </div>
+    <div style={{
+      height: '95vh',
+      display: 'grid',
+      gridTemplateRows: '3fr 2fr'
+    }}>
+      <div className="top"
+           style={{ background: 'purple' }}>Map here
       </div>
+      <div className="bottom">
+        <div style={{
+          padding: '12px',
+          display: 'grid',
+          gridTemplateColumns: '1fr 3fr',
+          background: 'darkblue',
+          color: 'white',
+        }}>
+          <div style={{
+            background: `url(${hslFerryImage})`,
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+          }}/>
+          <div style={{
 
-      <div>
-        <ul style={{ padding: '0', margin: '0' }}>
-          {ticketOptions}
-        </ul>
+            display: 'grid',
+            gridTemplateRows: '1fr 1fr',
+          }}>
+            <div>Ferry Tickets</div>
+            <div>Helsinki archipelago</div>
+          </div>
+        </div>
+
+        <div style={{
+          padding: '12px',
+        }}>
+          <ul style={{ padding: '0', margin: '0' }}>
+            {ticketOptions}
+          </ul>
+        </div>
       </div>
     </div>
   )
