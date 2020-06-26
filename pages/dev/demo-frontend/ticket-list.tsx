@@ -8,14 +8,14 @@ import { Ticket } from '../../../lib/types'
 import { readPublicKeyData } from '../../../lib/utils'
 
 interface props {
+  DEV_API_KEY: string
   NODE_ENV: string
   jwtPublicKey: string
 }
 
-const TicketListPage: NextPage<props> = ({ NODE_ENV, jwtPublicKey }) => {
+const TicketListPage: NextPage<props> = ({ DEV_API_KEY, NODE_ENV, jwtPublicKey }) => {
   const [tickets, setTickets] = React.useState<Ticket[]>([])
 
-  const token = ''
 
   React.useEffect(() => {
     async function getTickets() {
@@ -23,7 +23,7 @@ const TicketListPage: NextPage<props> = ({ NODE_ENV, jwtPublicKey }) => {
         `/api/tickets`,
         {
           headers: {
-            'x-api-key': token,
+            'x-api-key': DEV_API_KEY,
           },
         },
       )
@@ -48,6 +48,7 @@ export default TicketListPage
 export const getServerSideProps: GetServerSideProps = async () => {
   return {
     props: {
+      DEV_API_KEY: process.env.DEV_API_KEY,
       NODE_ENV: process.env.NODE_ENV,
       jwtPublicKey: await readPublicKeyData(),
     },
