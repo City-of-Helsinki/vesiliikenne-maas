@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { withApiKeyAuthentication } from '../../../../lib/middleware'
-import { parseString } from '../../../../lib/utils'
+import { isString} from '../../../../lib/utils'
 import { pool } from '../../../../lib/db';
 
 // language=PostgreSQL
@@ -32,6 +32,36 @@ select jsonb_agg(
          ) as aggregated_out
 from jtline_stops;
 `
+
+class TicketRequestValidationError extends Error {
+  constructor(message?: string) {
+    super(message);
+  }
+}
+
+const parseQuery = (query: { [key: string]: string | string[]; }) => {
+  const parseLocation = (locationString: string|string[]) => {
+    if (!isString(locationString)) {
+      throw new TicketRequestValidationError("Required query parameter 'location' is missing.")
+    }
+
+    const [latitude, longitude] = locationString.split(",")
+    return { latitude, longitude }
+  }
+
+  const parseRadius = (radius: string|string[]) => {
+    if (!isString(radius)) {
+      throw new TicketRequestValidationError("Required query parameter 'radius' is missing.")
+    }
+    return radius
+  }
+
+  const { location, radius } = query
+  return {
+    location: parseLocation(location),
+    distanceInMeters: parseRadius(radius)
+  }
+}
 
 /**
  * @swagger
@@ -97,20 +127,17 @@ export const handler = async (
   req: NextApiRequest,
   res: NextApiResponse,
 ): Promise<void> => {
-  const { location, radius } = req.query
-  let locationString
   try {
-    locationString = parseString(location, "location")
-  } catch (error) {
-    return res.status(400).send(error.message)
+    const { location: {latitude, longitude}, distanceInMeters } = parseQuery(req.query)
+    const queryResult = await pool.query(jtlineStopsQuery, [longitude, latitude, distanceInMeters])
+    res.json(queryResult.rows[0]['aggregated_out'])
+  } catch (e) {
+    if (e instanceof TicketRequestValidationError) {
+      res.status(400).send(e.message)
+    } else {
+      throw e;
+    }
   }
-  const [latitude, longitude] = locationString.split(",")
-  const distanceInMeters = radius
-  if (distanceInMeters == null) {
-    return res.status(400).send("Required parameter 'radius' is missing.")
-  }
-  const queryResult = await pool.query(jtlineStopsQuery, [longitude, latitude, distanceInMeters])
-  res.json(queryResult.rows[0]['aggregated_out'])
 }
 
 export default withApiKeyAuthentication(handler)

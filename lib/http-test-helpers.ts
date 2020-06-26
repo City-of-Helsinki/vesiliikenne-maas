@@ -1,35 +1,30 @@
 import http, { IncomingMessage, ServerResponse } from 'http'
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import listen from 'test-listen'
-import fetch from 'isomorphic-unfetch'
+import axios, {  AxiosResponse } from 'axios';
 
-export const dummyApiContext = {
+const dummyApiContext = {
   previewModeEncryptionKey: '',
   previewModeId: '',
   previewModeSigningKey: '',
 }
 
-interface State {
-  response?: Response
-}
+export const performRequest = async (handler: any, params: any): Promise<AxiosResponse> => {
+  const requestHandler = (req: IncomingMessage, res: ServerResponse) => {
+    return apiResolver(req, res, params, handler, dummyApiContext)
+  }
 
-export const performRequest = (handler: any, params: any): State => {
-  let state: State = { response: undefined }
-  let server: http.Server
-
-  beforeAll(async () => {
-    const requestHandler = (req: IncomingMessage, res: ServerResponse) => {
-      return apiResolver(req, res, params, handler, dummyApiContext)
-    }
-
-    server = http.createServer(requestHandler)
+  const server = http.createServer(requestHandler)
+  try {
+    let response
     const url = await listen(server)
-    state.response = await fetch(url)
-  })
-
-  afterAll(async () => {
-    return server?.close()
-  })
-
-  return state
+    try {
+      response = await axios.get(url)
+    } catch (e) {
+      response = e.response;
+    }
+    return response
+  } finally {
+    server.close()
+  }
 }
