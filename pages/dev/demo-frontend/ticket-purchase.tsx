@@ -9,7 +9,7 @@ interface props {
 }
 
 
-const FerryStations: NextPage<props> = ({ DEV_API_KEY, NODE_ENV }) => {
+const TicketPurchase: NextPage<props> = ({ DEV_API_KEY, NODE_ENV }) => {
   if (NODE_ENV !== 'development') {
     return <NextError statusCode={404} />
   }
@@ -36,7 +36,7 @@ const FerryStations: NextPage<props> = ({ DEV_API_KEY, NODE_ENV }) => {
       <div>Ticket information</div>
       <form onSubmit={ e => {
         e.preventDefault()
-        handleClick().then()
+        handleClick()
       }
       }>
         <li><button>Confirm purchase</button></li>
@@ -45,7 +45,7 @@ const FerryStations: NextPage<props> = ({ DEV_API_KEY, NODE_ENV }) => {
   )
 }
 
-export default FerryStations
+export default TicketPurchase
 
 export const getServerSideProps: GetServerSideProps = async () => {
   return {
