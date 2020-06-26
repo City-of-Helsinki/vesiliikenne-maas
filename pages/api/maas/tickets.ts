@@ -21,6 +21,12 @@ import { TSPTicket } from '../../../lib/types'
  *         description: POSIX time in milliseconds
  *         schema:
  *           type: integer
+ *       - in: header
+ *         name: x-api-key
+ *         required: true
+ *         description: API key
+ *         schema:
+ *           type: string
  *     responses:
  *       '200':
  *         description: OK

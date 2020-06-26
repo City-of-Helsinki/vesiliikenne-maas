@@ -21,6 +21,12 @@ import { createJWT } from '../../../lib/utils'
  *         description: ticket id
  *         schema:
  *           type: string
+ *       - in: header
+ *         name: x-api-key
+ *         required: true
+ *         description: API key
+ *         schema:
+ *           type: string
  *     responses:
  *       '200':
  *         description: OK
