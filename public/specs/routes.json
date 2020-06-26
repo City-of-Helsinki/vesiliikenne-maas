@@ -120,6 +120,15 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "required": true,
+            "description": "API key",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -227,6 +236,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "required": true,
+            "description": "API key",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -311,6 +329,15 @@
                   "description": "ticket type"
                 }
               }
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "required": true,
+            "description": "API key",
+            "schema": {
+              "type": "string"
             }
           }
         ],

@@ -36,6 +36,12 @@ import { withApiKeyAuthentication } from '../../../lib/middleware'
  *               type: string
  *               example: island hopping
  *               description: ticket type
+ *       - in: header
+ *         name: x-api-key
+ *         required: true
+ *         description: API key
+ *         schema:
+ *           type: string
  *     responses:
  *       '200':
  *         description: Success
