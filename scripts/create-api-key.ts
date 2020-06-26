@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { randomBytes } from 'crypto'
 
 const saltRounds = 10

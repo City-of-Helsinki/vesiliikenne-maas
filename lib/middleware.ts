@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { isString } from './utils'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
 const MAAS_API_KEY_HASH = process.env.MAAS_API_KEY_HASH || ''
 
