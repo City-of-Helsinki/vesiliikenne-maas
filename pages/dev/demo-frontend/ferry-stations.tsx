@@ -1,7 +1,6 @@
 import { GetServerSideProps, NextPage } from 'next'
 import * as React from 'react'
 import NextError from 'next/error'
-import Link from 'next/link'
 import axios from 'axios'
 import moment from 'moment-timezone'
 
@@ -11,10 +10,10 @@ interface props {
 }
 
 interface TicketOption {
-  amount: number
+  amount: string
   currency: string
   description: string
-  id: number
+  id: string
   name: string
 }
 
@@ -44,8 +43,16 @@ const FerryStations: NextPage<props> = ({ DEV_API_KEY, NODE_ENV }) => {
     getTickets()
   }, [])
 
-  const ticketList = maasTickets.map(ticket => (
-    <li key={ticket.name}>{JSON.stringify(ticket, null, 2)}</li>
+  const ticketOptions = maasTickets.map(ticket => (
+    <li>
+      <div>
+        <div>{ticket.name}</div>
+        <div>{ticket.description}</div>
+      </div>
+      <div>
+        {ticket.amount}{(ticket.currency === 'EUR') ? '€' : ticket.currency}
+      </div>
+    </li>
   ))
 
   return (
@@ -53,7 +60,7 @@ const FerryStations: NextPage<props> = ({ DEV_API_KEY, NODE_ENV }) => {
     <div>JTLine stations on a map </div>
     <div>Ticket options
         <ul>
-            {ticketList}
+            {ticketOptions}
         </ul>
     </div>
     </div>
