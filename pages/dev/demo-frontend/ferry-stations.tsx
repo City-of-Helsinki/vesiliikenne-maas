@@ -1,8 +1,10 @@
 import { GetServerSideProps, NextPage } from 'next'
 import * as React from 'react'
 import NextError from 'next/error'
+import Router from 'next/router'
 import axios from 'axios'
 import moment from 'moment-timezone'
+import { formatPrice } from '../../../lib/currency'
 
 interface props {
   DEV_API_KEY: string
@@ -46,14 +48,14 @@ const FerryStations: NextPage<props> = ({ DEV_API_KEY, NODE_ENV }) => {
   }, [])
 
   const ticketOptions = maasTickets.map(ticket => (
-    <li style={{
+    <li key={ticket.id} style={{
       boxSizing: 'border-box',
 
       display: 'grid',
       gridTemplateColumns: '1fr 2fr 1fr',
       alignItems: 'center',
       border: '1px solid darkgrey',
-    }}>
+    }} onClickCapture={() => { Router.push({ pathname: "/dev/demo-frontend/ticket-purchase", query: { ...ticket }}).then() }}>
       <div style={{ padding: '12px', height: '100%' }}>
         <div style={{
           background: `url(/images/${ticket.logoId})`,
@@ -68,7 +70,7 @@ const FerryStations: NextPage<props> = ({ DEV_API_KEY, NODE_ENV }) => {
         <div>{ticket.description}</div>
       </div>
       <div style={{ margin: '12px', color: 'darkblue', fontWeight: 'bold' }}>
-        {ticket.amount}{(ticket.currency === 'EUR') ? '€' : ticket.currency}
+        { formatPrice(ticket.amount, ticket.currency) }
       </div>
     </li>
   ))
