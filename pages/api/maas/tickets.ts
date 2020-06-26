@@ -40,6 +40,9 @@ import { TSPTicket } from '../../../lib/types'
  *                   id:
  *                     type: string
  *                     description: "Ticket id"
+ *                   logoId:
+ *                     type: string
+ *                     description: "Id of the logo to display"
  *                   description:
  *                     type: string
  *                     description: "Ticket description"

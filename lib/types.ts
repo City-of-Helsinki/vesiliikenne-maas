@@ -54,6 +54,7 @@ export interface CrdResponse {
 
 export interface TSPTicket {
   id: string
+  logoId: string
   description: string
   name: string
   amount: string

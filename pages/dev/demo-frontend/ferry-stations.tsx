@@ -11,7 +11,7 @@ interface props {
 
 interface TicketOption {
   amount: string
-  logoUrl: string
+  logoId: string
   currency: string
   description: string
   id: string
@@ -53,7 +53,7 @@ const FerryStations: NextPage<props> = ({ DEV_API_KEY, NODE_ENV }) => {
   const ticketOptions = maasTickets.map(ticket => (
     <li style={liStyle}>
       <div style={{
-        background: 'url(https://www.jt-line.fi/kuvia/jt-logo.jpg)',
+        background: `url(/images/${ticket.logoId})`,
         backgroundSize: 'contain',
         backgroundRepeat: 'no-repeat',
       }}/>
