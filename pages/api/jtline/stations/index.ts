@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { withApiKeyAuthentication } from '../../../../lib/middleware'
-import { isString} from '../../../../lib/utils'
+import { isString } from '../../../../lib/utils'
+import { TicketRequestValidationError } from '../../../../lib/errors'
 import { pool } from '../../../../lib/db';
 
 // language=PostgreSQL
@@ -33,14 +34,8 @@ select jsonb_agg(
 from jtline_stops;
 `
 
-class TicketRequestValidationError extends Error {
-  constructor(message?: string) {
-    super(message);
-  }
-}
-
 const parseQuery = (query: { [key: string]: string | string[]; }) => {
-  const parseLocation = (locationString: string|string[]) => {
+  const parseLocation = (locationString: string | string[]) => {
     if (!isString(locationString)) {
       throw new TicketRequestValidationError("Required query parameter 'location' is missing.")
     }
@@ -49,7 +44,7 @@ const parseQuery = (query: { [key: string]: string | string[]; }) => {
     return { latitude, longitude }
   }
 
-  const parseRadius = (radius: string|string[]) => {
+  const parseRadius = (radius: string | string[]) => {
     if (!isString(radius)) {
       throw new TicketRequestValidationError("Required query parameter 'radius' is missing.")
     }
@@ -128,7 +123,7 @@ export const handler = async (
   res: NextApiResponse,
 ): Promise<void> => {
   try {
-    const { location: {latitude, longitude}, distanceInMeters } = parseQuery(req.query)
+    const { location: { latitude, longitude }, distanceInMeters } = parseQuery(req.query)
     const queryResult = await pool.query(jtlineStopsQuery, [longitude, latitude, distanceInMeters])
     res.json(queryResult.rows[0]['aggregated_out'])
   } catch (e) {

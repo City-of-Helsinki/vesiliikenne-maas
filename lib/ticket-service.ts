@@ -1,6 +1,8 @@
+import { promises as fs } from 'fs'
 import moment from 'moment-timezone'
 import { uuid } from 'uuidv4'
-import { NewTicketEntry, Ticket } from './types'
+import { NewTicketEntry, Ticket, TSPTicket } from './types'
+import { TicketRequestValidationError } from './errors'
 import { getTicketFields, getAllTicketFields, storeTicket } from './ticket-storage'
 
 export const calculateTicketValidTo = (validFrom: moment.Moment) => {
@@ -18,10 +20,21 @@ export const calculateTicketValidTo = (validFrom: moment.Moment) => {
   }
 }
 
+export const getTicketOptions = async () => {
+  return JSON.parse(
+    await fs.readFile('./JTline-tickets.json', 'utf-8'),
+  ) as TSPTicket[]
+}
+
+const getTicketOption = async (ticketTypeId: string) => {
+  const ticketOptions = await getTicketOptions()
+  return ticketOptions.find(ticketOption => ticketOption.id === ticketTypeId)
+}
+
 export const getTickets = async () => {
   const allTicketFields = await getAllTicketFields()
 
-  return allTicketFields.map(([
+  const allTickets = allTicketFields.map(([
     ticketUuid,
     agency,
     ticketTypeId,
@@ -38,6 +51,10 @@ export const getTickets = async () => {
       validTo,
     }
   })
+
+  const requiredTicketTypes = allTickets.reduce((acc, cur) => acc.add(cur.ticketTypeId), new Set<string>())
+
+  const ticketTypes = [...requiredTicketTypes].map(ticketTypeId => await getTicketOption(ticketTypeId))
 }
 
 export const findTicket = async (uuid: string) => {
@@ -54,26 +71,41 @@ export const findTicket = async (uuid: string) => {
     return {}
   }
 
+  const ticketTypeInfo = await getTicketOption(ticketTypeId)
+
+  if (!ticketTypeInfo) {
+    return {}
+  }
+
   return {
     uuid: ticketUuid,
     agency,
     ticketTypeId,
+    ticketTypeInfo,
     discountGroupId,
     validFrom,
     validTo,
   }
 }
 
-export const createTicket = ({
+export const createTicket = async ({
   agency,
   discountGroupId,
   ticketTypeId,
-}: NewTicketEntry): Ticket => {
+}: NewTicketEntry): Promise<Ticket> => {
   const now = moment().tz('Europe/Helsinki')
+
+  const ticketTypeInfo = await getTicketOption(ticketTypeId)
+
+  if (!ticketTypeInfo) {
+    throw new TicketRequestValidationError('Invalid ticketTypeId')
+  }
+
   return {
     uuid: uuid(),
     agency,
     ticketTypeId,
+    ticketTypeInfo,
     discountGroupId,
     validFrom: now.format(),
     validTo: calculateTicketValidTo(now).format(),

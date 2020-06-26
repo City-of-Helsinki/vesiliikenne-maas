@@ -28,6 +28,7 @@ export interface Ticket {
   uuid: string
   agency: string
   ticketTypeId: string
+  ticketTypeInfo: TSPTicket
   discountGroupId: string
   validFrom: string
   validTo: string

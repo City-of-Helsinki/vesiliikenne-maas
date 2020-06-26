@@ -26,7 +26,7 @@ const TicketList = ({ tickets }: Props) => {
     <TicketListItem
       agencyName={ticket.agency}
       discountGroupId={ticket.discountGroupId}
-      ticketName="Island Hopping"
+      ticketName={ticket.ticketTypeInfo?.name}
     />
   ))
 

@@ -29,6 +29,8 @@ const TicketListPage: NextPage<props> = ({ DEV_API_KEY, NODE_ENV, jwtPublicKey }
       )
       const decodedTickets: any = jsonwebtoken.verify(await response.data, jwtPublicKey)
 
+      console.log(decodedTickets)
+
       setTickets(decodedTickets.tickets)
     }
 

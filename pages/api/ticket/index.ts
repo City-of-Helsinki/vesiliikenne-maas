@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTicket, saveTicket } from '../../../lib/ticket-service'
 import { isString, toNewTicketEntry } from '../../../lib/utils'
-import { NewTicketEntry } from '../../../lib/types'
+import { NewTicketEntry, Ticket } from '../../../lib/types'
 import { postTicketToCRD } from '../../../lib/crd'
 import { withApiKeyAuthentication } from '../../../lib/middleware'
+import { TicketRequestValidationError } from 'lib/errors'
 
 /**
  * @swagger
@@ -34,8 +35,8 @@ import { withApiKeyAuthentication } from '../../../lib/middleware'
  *               description: discount group
  *             ticketTypeId:
  *               type: string
- *               example: island hopping
- *               description: ticket type
+ *               example: 1
+ *               description: ID of the ticket type
  *       - in: header
  *         name: x-api-key
  *         required: true
@@ -74,18 +75,27 @@ const handler = async (
     return res.status(400).send(error.message)
   }
 
-  const ticket = createTicket(newTicketEntry)
+  let ticket: Ticket
 
-  const crdUrl = process.env.CRD_URL
-  const apiToken = process.env.CRD_TOKEN
-  if (!isString(crdUrl) || !isString(apiToken)) {
-    return res.status(500).send('Server configuration error')
+  try {
+    ticket = await createTicket(newTicketEntry)
+  } catch (error) {
+    if (error instanceof TicketRequestValidationError) {
+      return res.status(400).send(error.message)
+    }
+    return res.status(500).send(error.message)
   }
-  const crdResponse = await postTicketToCRD(crdUrl, apiToken, ticket)
 
-  if (crdResponse.failed) {
-    return res.send(502)
-  }
+  // const crdUrl = process.env.CRD_URL
+  // const apiToken = process.env.CRD_TOKEN
+  // if (!isString(crdUrl) || !isString(apiToken)) {
+  //   return res.status(500).send('Server configuration error')
+  // }
+  // const crdResponse = await postTicketToCRD(crdUrl, apiToken, ticket)
+
+  // if (crdResponse.failed) {
+  //   return res.send(502)
+  // }
 
   const uuid = await saveTicket(ticket)
   res.json({ uuid })
