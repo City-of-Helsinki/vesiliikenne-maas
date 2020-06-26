@@ -19,7 +19,7 @@ const FerryStations: NextPage<props> = ({ DEV_API_KEY, NODE_ENV }) => {
   return (
     <div>
       <div>Ticket information</div>
-      <li><Link href="ticket-listing"><button>Confirm purchase</button></Link></li>
+      <li><Link href="ticket-list"><button>Confirm purchase</button></Link></li>
     </div>
   )
 }
