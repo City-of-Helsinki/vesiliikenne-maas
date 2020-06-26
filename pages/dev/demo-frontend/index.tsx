@@ -2,12 +2,11 @@ import { NextPage, GetServerSideProps } from 'next'
 import dynamic from 'next/dynamic'
 import * as React from 'react'
 import NextError from 'next/error'
-import axios from 'axios'
-import ApiKeyField from '../../../components/ApiKeyField'
-import Link from 'next/link'
-import FerryStations from './ferry-stations'
+import JTlineButton from '../../../components/JTlineButton'
 
-const MapComponent = dynamic(() => import('./MapComponent'), { ssr: false })
+const MapComponent = dynamic(() => import('../../../components/MapComponent'), {
+  ssr: false,
+})
 
 interface props {
   DEV_API_KEY: string
@@ -15,13 +14,7 @@ interface props {
   MAPBOX_ACCESS_KEY: string
 }
 
-const DemoIndex: NextPage<props> = ({
-  DEV_API_KEY,
-  NODE_ENV,
-  MAPBOX_ACCESS_KEY,
-}) => {
-  const [tokenValue, setTokenValue] = React.useState('')
-
+const DemoIndex: NextPage<props> = ({ NODE_ENV, MAPBOX_ACCESS_KEY }) => {
   if (NODE_ENV !== 'development') {
     return <NextError statusCode={404} />
   }
@@ -29,9 +22,15 @@ const DemoIndex: NextPage<props> = ({
   return (
     <div>
       <MapComponent accessToken={MAPBOX_ACCESS_KEY} />
-      <Link href="/dev/demo-frontend/ferry-stations">
-        <button>Open the ferry stations</button>
-      </Link>
+      <div
+        style={{
+          margin: '-100px',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <JTlineButton />
+      </div>
     </div>
   )
 }
