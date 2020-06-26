@@ -10,7 +10,13 @@ import { createJWT } from '../../../lib/utils'
  *   get:
  *     summary: List tickets saved in the backend
  *     description: Lists all tickets saved in the tickets.csv 
- *
+ *     parameters:
+ *       - in: header
+ *         name: x-api-key
+ *         required: true
+ *         description: API key
+ *         schema:
+ *           type: string
  *     responses:
  *       '200':
  *         description: OK
@@ -19,33 +25,30 @@ import { createJWT } from '../../../lib/utils'
  *             schema:
  *               type: object
  *               properties:
- *                ticketdata:
- *                  type: object
- *                  properties:
- *                    uuid:
- *                      type: string
- *                      example: be78e1f9-e4a4-48d2-b9fe-50aa335e5371
- *                    agency:
- *                      type: string
- *                      example: jt-line
- *                    ticketTypeId:
- *                      type: string
- *                      example: island-hopping
- *                    validFrom:
- *                      type: string
- *                      example: 2020-06-25T15:56:18+03:00
- *                    validTo:
- *                      type: string
- *                      example: 2020-06-26T03:00:00+03:00
- *                    ticket:
- *                      type: string
- *                      example: <div> ...Ticket... </div>
- *                      description: "The ticket in html format"
- *                    validUntil:
- *                      type: string
- *                      description: "Validity"
- *       '404':
- *         description: A ticket with the ticketId was not found
+ *                tickets:
+ *                  type: array
+ *                  items:
+ *                    type: object
+ *                    properties:
+ *                      uuid:
+ *                        type: string
+ *                        example: be78e1f9-e4a4-48d2-b9fe-50aa335e5371
+ *                      agency:
+ *                        type: string
+ *                        example: jt-line
+ *                      ticketTypeId:
+ *                        type: string
+ *                        example: island-hopping
+ *                      validFrom:
+ *                        type: string
+ *                        example: 2020-06-25T15:56:18+03:00
+ *                      validTo:
+ *                        type: string
+ *                        example: 2020-06-26T03:00:00+03:00
+ *       '401':
+ *         description: Invalid api key
+ *       '500':
+ *         description: Server error
  */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const tickets = await getTickets()

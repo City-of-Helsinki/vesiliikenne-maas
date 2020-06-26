@@ -2,7 +2,6 @@ import { NextPage, GetServerSideProps } from 'next'
 import * as React from 'react'
 import NextError from 'next/error'
 import axios from 'axios'
-import moment from 'moment-timezone'
 import jsonwebtoken from 'jsonwebtoken'
 import TicketList from '../../../components/ticket-list/TicketList'
 import { Ticket } from '../../../lib/types'
@@ -19,7 +18,6 @@ const TicketListPage: NextPage<props> = ({ NODE_ENV, jwtPublicKey }) => {
   const token = ''
 
   React.useEffect(() => {
-    // Update the document title using the browser API
     async function getTickets() {
       const response = await axios.get(
         `/api/tickets`,
