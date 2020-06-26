@@ -1,7 +1,7 @@
 import { NextPage, GetServerSideProps } from 'next'
 import * as React from 'react'
 import NextError from 'next/error'
-import Link from 'next/link'
+import Router from 'next/router'
 
 interface props {
   DEV_API_KEY: string
@@ -10,16 +10,37 @@ interface props {
 
 
 const FerryStations: NextPage<props> = ({ DEV_API_KEY, NODE_ENV }) => {
-  const [tokenValue, setTokenValue] = React.useState('')
-
   if (NODE_ENV !== 'development') {
     return <NextError statusCode={404} />
+  }
+
+  const handleClick = async () => {
+    const response = await fetch('/api/ticket', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': DEV_API_KEY,
+      },
+      body: JSON.stringify({
+        agency: 'JT-Line',
+        discountGroupId: 'Adult',
+        ticketTypeId: 'Day',
+      }),
+    })
+    await response.json()
+    await Router.push('/dev/demo-frontend/ticket-list')
   }
 
   return (
     <div>
       <div>Ticket information</div>
-      <li><Link href="ticket-list"><button>Confirm purchase</button></Link></li>
+      <form onSubmit={ e => {
+        e.preventDefault()
+        handleClick().then()
+      }
+      }>
+        <li><button>Confirm purchase</button></li>
+      </form>
     </div>
   )
 }
