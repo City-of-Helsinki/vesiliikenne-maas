@@ -6,6 +6,12 @@ const readTicketLines = async (): Promise<string[]> => {
   return ticketsCsv.split(/[\r\n]+/)
 }
 
+export const getAllTicketFields = async () => {
+  const ticketsAsLines = await readTicketLines()
+
+  return ticketsAsLines.map(ticketCsv => ticketCsv.split(','))
+}
+
 export const getTicketFields = async (uuid: string) => {
   const ticketsAsLines = await readTicketLines()
 
