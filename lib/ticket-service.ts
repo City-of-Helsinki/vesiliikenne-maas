@@ -54,7 +54,7 @@ export const getTickets = async () => {
 
   const requiredTicketTypes = allTickets.reduce((acc, cur) => acc.add(cur.ticketTypeId), new Set<string>())
 
-  const ticketTypes = [...requiredTicketTypes].map(ticketTypeId => await getTicketOption(ticketTypeId))
+  const ticketTypes = await Promise.all([...requiredTicketTypes].map(async ticketTypeId => await getTicketOption(ticketTypeId)))
 }
 
 export const findTicket = async (uuid: string) => {
