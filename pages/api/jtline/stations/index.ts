@@ -16,7 +16,7 @@ const jtlineStopsQuery = `with jtline_stops as
                join gtfs.stops using (stop_id)
                join gtfs.calendar using (service_id)
         where agency_name = 'JT-Line Oy'
-          and now() between start_date and end_date
+          and now()::date between start_date and end_date
           and ST_Distance(
                   the_geom::geography,
                   ST_SetSRID(ST_Point($1, $2), 4326)::geography
