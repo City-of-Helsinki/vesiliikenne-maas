@@ -1,10 +1,7 @@
 import { NextPage, GetServerSideProps } from 'next'
 import * as React from 'react'
 import NextError from 'next/error'
-import axios from 'axios'
-import ApiKeyField from '../../../components/ApiKeyField'
 import Link from 'next/link'
-import FerryStations from './ferry-stations'
 
 interface props {
   DEV_API_KEY: string
@@ -12,24 +9,22 @@ interface props {
 }
 
 
-const DemoIndex: NextPage<props> = ({ DEV_API_KEY, NODE_ENV }) => {
+const FerryStations: NextPage<props> = ({ DEV_API_KEY, NODE_ENV }) => {
   const [tokenValue, setTokenValue] = React.useState('')
 
   if (NODE_ENV !== 'development') {
     return <NextError statusCode={404} />
   }
-  
+
   return (
     <div>
-      <div>Here will be the initial map centered at users location</div>
-      <Link href="/dev/demo-frontend/ferry-stations">
-        <button>Open the ferry stations</button>
-      </Link>
+      <div>Ticket information</div>
+      <li><Link href="ticket-listing"><button>Confirm purchase</button></Link></li>
     </div>
   )
 }
 
-export default DemoIndex
+export default FerryStations
 
 export const getServerSideProps: GetServerSideProps = async () => {
   return {
