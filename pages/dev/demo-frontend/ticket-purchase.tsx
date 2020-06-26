@@ -14,7 +14,7 @@ const TicketPurchase: NextPage<props> = ({ DEV_API_KEY, NODE_ENV }) => {
     return <NextError statusCode={404} />
   }
 
-  const handleClick = async () => {
+  const handlePurchaseClick = async () => {
     const response = await fetch('/api/ticket', {
       method: 'POST',
       headers: {
@@ -31,15 +31,24 @@ const TicketPurchase: NextPage<props> = ({ DEV_API_KEY, NODE_ENV }) => {
     await Router.push('/dev/demo-frontend/ticket-list')
   }
 
+  const handleCancelClick =  async () => {
+    await Router.push('/dev/demo-frontend/ferry-stations')
+  }
+
   return (
     <div>
       <div>Ticket information</div>
       <form onSubmit={ e => {
         e.preventDefault()
-        handleClick()
+        handlePurchaseClick()
       }
       }>
-        <li><button>Confirm purchase</button></li>
+        <li>
+          <button onClick={ e => { e.preventDefault(); handleCancelClick()}}>Cancel</button>
+        </li>
+        <li>
+          <button>Confirm purchase</button>
+        </li>
       </form>
     </div>
   )
