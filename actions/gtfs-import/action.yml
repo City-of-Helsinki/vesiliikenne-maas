@@ -9,8 +9,8 @@ inputs:
     description: 'Postgres port'
     default: 5432
     required: true
-  postgres-username:
-    description: 'Postgres username'
+  postgres-user:
+    description: 'Postgres user'
     required: true
   postgres-password:
     description: 'Postgres password'
