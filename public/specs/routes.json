@@ -329,8 +329,8 @@
                 },
                 "ticketTypeId": {
                   "type": "string",
-                  "example": "island hopping",
-                  "description": "ticket type"
+                  "example": 1,
+                  "description": "ID of the ticket type"
                 }
               }
             }
