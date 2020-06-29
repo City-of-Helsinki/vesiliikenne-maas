@@ -122,16 +122,16 @@ const FerryStations: NextPage<props> = ({
         }}
       >
         <div className="topAndBot">
-          <div className="top" style={{ background: 'purple' }}>
+          <div className="top" style={{ background: 'purple', height:"58vh" }}>
             <Map
               accessToken={MAPBOX_ACCESS_KEY}
-              height={'60vh'}
+              height={'58vh'}
               zIndex={1}
               stations={stations}
             />
           </div>
 
-          <div className="bottom">
+          <div className="bottom" style={{ height: '32vh'}}>
             <div
               style={{
                 display: 'grid',
