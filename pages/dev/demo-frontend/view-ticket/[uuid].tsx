@@ -15,7 +15,6 @@ interface TicketPageProperties {
 }
 
 const bodyStyle = {
-  fontFamily: "'Roboto', sans-serif",
   margin: 0,
   display: 'grid',
   gridTemplateRows: '8% 92%',

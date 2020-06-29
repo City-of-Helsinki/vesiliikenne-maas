@@ -10,6 +10,13 @@ function MyApp({ Component, pageProps }: AppProps) {
           rel="stylesheet"
           href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
         />
+        <style>{`
+          html, body {
+            margin: 0;
+            font-family: Roboto, sans-serif;
+            padding: 0;
+          }
+        `}</style>
       </Head>
       <Component {...pageProps} />
     </div>

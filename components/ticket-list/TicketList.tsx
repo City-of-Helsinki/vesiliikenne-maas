@@ -9,7 +9,6 @@ const ticketListStyle = {
   fontSize: '18px',
   color: '#2f296a',
   textAlign: 'center' as const, // https://github.com/typestyle/typestyle/issues/281
-  fontFamily: "'Roboto', sans-serif",
 }
 
 const aStyle = {
