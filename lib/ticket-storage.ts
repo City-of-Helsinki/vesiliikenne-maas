@@ -3,7 +3,7 @@ import { Ticket } from './types'
 
 const readTicketLines = async (): Promise<string[]> => {
   const ticketsCsv = (await fs.readFile('./tickets.csv')).toString()
-  return ticketsCsv.split(/[\r\n]+/)
+  return ticketsCsv.split(/[\r\n]+/).filter(line => line !== '')
 }
 
 export const getAllTicketFields = async () => {
