@@ -36,15 +36,15 @@ const base64decode = (input: string): string => Buffer.from(input, 'base64').toS
 
 const base64encode = (input: string): string => Buffer.from(input).toString('base64')
 
-export const readPublicKeyData = async () => {
-  return Promise.resolve(base64decode(process.env.GWT_SIGNING_PUBLIC_KEY_BASE64 || ''))
+export const readPublicKeyData = (): string => {
+  return base64decode(process.env.GWT_SIGNING_PUBLIC_KEY_BASE64 || '')
 }
 
-const readPrivateKeyData = (): Promise<string> => {
-  return Promise.resolve(base64decode(process.env.GWT_SIGNING_PRIVATE_KEY_BASE64 || ''))
+const readPrivateKeyData = (): string => {
+  return base64decode(process.env.GWT_SIGNING_PRIVATE_KEY_BASE64 || '')
 }
 
 export const createJWT = async (object: any): Promise<string> => {
-  const privatekey = await readPrivateKeyData()
+  const privatekey = readPrivateKeyData()
   return jsonwebtoken.sign(object, privatekey, { algorithm: 'RS256' })
 }
