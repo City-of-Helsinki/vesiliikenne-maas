@@ -5,7 +5,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div>
       <Head>
-        <title>My page title</title>
+        <title>Ferry</title>
         <link
           rel="stylesheet"
           href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
