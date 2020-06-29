@@ -9,7 +9,7 @@ import { createJWT } from '../../../lib/utils'
  * /api/ticket:
  *   get:
  *     summary: List tickets saved in the backend
- *     description: Lists all tickets saved in the tickets.csv 
+ *     description: Lists all tickets saved in the tickets.csv
  *     parameters:
  *       - in: header
  *         name: x-api-key

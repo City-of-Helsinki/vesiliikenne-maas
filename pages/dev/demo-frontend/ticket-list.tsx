@@ -13,36 +13,35 @@ interface props {
   jwtPublicKey: string
 }
 
-const TicketListPage: NextPage<props> = ({ DEV_API_KEY, NODE_ENV, jwtPublicKey }) => {
+const TicketListPage: NextPage<props> = ({
+  DEV_API_KEY,
+  NODE_ENV,
+  jwtPublicKey,
+}) => {
   const [tickets, setTickets] = React.useState<Ticket[]>([])
-
 
   React.useEffect(() => {
     async function getTickets() {
-      const response = await axios.get(
-        `/api/tickets`,
-        {
-          headers: {
-            'x-api-key': DEV_API_KEY,
-          },
+      const response = await axios.get(`/api/tickets`, {
+        headers: {
+          'x-api-key': DEV_API_KEY,
         },
+      })
+      const decodedTickets: any = jsonwebtoken.verify(
+        await response.data,
+        jwtPublicKey,
       )
-      const decodedTickets: any = jsonwebtoken.verify(await response.data, jwtPublicKey)
-
-      console.log(decodedTickets)
 
       setTickets(decodedTickets.tickets)
     }
 
     getTickets()
-  }, []);
+  }, [])
 
   if (NODE_ENV !== 'development') {
     return <NextError statusCode={404} />
   }
-  return (
-    <TicketList tickets={tickets} />
-  )
+  return <TicketList tickets={tickets} />
 }
 
 export default TicketListPage

@@ -27,7 +27,10 @@ interface Props {
 
 const TicketList = ({ tickets }: Props) => {
   const ticketsList = tickets.map(ticket => (
-    <Link href={`/dev/demo-frontend/view-ticket/${ticket.uuid}`}>
+    <Link
+      key={ticket.uuid}
+      href={`/dev/demo-frontend/view-ticket/${ticket.uuid}`}
+    >
       <a style={aStyle}>
         <TicketListItem
           agencyName={ticket.agency}
