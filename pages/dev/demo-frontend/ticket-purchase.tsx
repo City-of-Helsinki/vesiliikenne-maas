@@ -30,7 +30,7 @@ const TicketPurchase: NextPage<props> = ( { DEV_API_KEY, NODE_ENV, ticket }) => 
       body: JSON.stringify({
         agency: 'JT-Line',
         discountGroupId: 'Adult',
-        ticketTypeId: 'Day',
+        ticketTypeId: '1',
       }),
     })
     await response.json()
