@@ -1,4 +1,5 @@
 import * as React from 'react'
+import Link from 'next/link'
 import { Ticket } from '../../lib/types'
 import TicketListItem from './TicketListItem'
 
@@ -9,6 +10,10 @@ const ticketListStyle = {
   color: '#2f296a',
   textAlign: 'center' as const, // https://github.com/typestyle/typestyle/issues/281
   fontFamily: "'Roboto', sans-serif",
+}
+
+const aStyle = {
+  textDecoration: 'none',
 }
 
 const h1Style = {
@@ -22,21 +27,25 @@ interface Props {
 }
 
 const TicketList = ({ tickets }: Props) => {
-  const ticketsLi = tickets.map(ticket => (
-    <TicketListItem
-      agencyName={ticket.agency}
-      discountGroupId={ticket.discountGroupId}
-      ticketName={ticket.ticketTypeInfo?.name}
-      description={ticket.ticketTypeInfo?.description}
-      validFrom={ticket.validFrom}
-      validTo={ticket.validTo}
-    />
+  const ticketsList = tickets.map(ticket => (
+    <Link href={`/dev/demo-frontend/view-ticket/${ticket.uuid}`}>
+      <a style={aStyle}>
+        <TicketListItem
+          agencyName={ticket.agency}
+          discountGroupId={ticket.discountGroupId}
+          ticketName={ticket.ticketTypeInfo?.name}
+          description={ticket.ticketTypeInfo?.description}
+          validFrom={ticket.validFrom}
+          validTo={ticket.validTo}
+        />
+      </a>
+    </Link>
   ))
 
   return (
     <div style={ticketListStyle}>
       <h1 style={h1Style}>Tickets</h1>
-      {ticketsLi}
+      {ticketsList}
     </div>
   )
 }
