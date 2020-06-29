@@ -283,7 +283,7 @@
                         },
                         "ticketTypeId": {
                           "type": "string",
-                          "example": 1
+                          "example": "1"
                         },
                         "validFrom": {
                           "type": "string",
