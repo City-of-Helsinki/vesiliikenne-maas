@@ -1,8 +1,9 @@
 [
   {
     "id": "1",
+    "logoId": "jt-logo.jpg",
     "description": "Hop-on hop-off -style ticket at the islands Lonna, Vallisaari and Suomenlinna.",
-    "name": "Island Hopping - MaaS",
+    "name": "Island Hopping",
     "amount": "12.00",
     "currency": "EUR"
   }

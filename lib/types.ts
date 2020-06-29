@@ -28,6 +28,7 @@ export interface Ticket {
   uuid: string
   agency: string
   ticketTypeId: string
+  ticketTypeInfo: TSPTicket
   discountGroupId: string
   validFrom: string
   validTo: string
@@ -54,9 +55,18 @@ export interface CrdResponse {
 
 export interface TSPTicket {
   id: string
+  logoId: string
   description: string
   name: string
   amount: string
   currency: string
   validityseconds?: number
+}
+
+export interface Station {
+  id: string
+  name: string
+  agencyId: string
+  location: string
+  services: string[]
 }

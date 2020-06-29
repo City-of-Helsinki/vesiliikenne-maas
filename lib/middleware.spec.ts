@@ -1,5 +1,5 @@
 import { authenticateApiKey } from './middleware'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
 const generateHash = async (string: string) => await bcrypt.hash(string, 10)
 

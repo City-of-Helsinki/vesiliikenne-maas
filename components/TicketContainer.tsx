@@ -8,7 +8,6 @@ const bodyStyle = {
   color: 'hsl(200, 10%, 30%)',
   backgroundColor: 'hsl(200, 10%, 96%)',
   display: 'grid',
-  fontFamily: "'Roboto', sans-serif",
 }
 
 const ticketStyle = {

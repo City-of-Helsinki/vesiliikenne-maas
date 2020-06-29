@@ -46,7 +46,7 @@ import { createJWT } from '../../../lib/utils'
  *                      example: jt-line
  *                    ticketTypeId:
  *                      type: string
- *                      example: island-hopping
+ *                      example: "1"
  *                    validFrom:
  *                      type: string
  *                      example: 2020-06-25T15:56:18+03:00

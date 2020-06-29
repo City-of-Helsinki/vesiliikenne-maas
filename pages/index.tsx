@@ -6,8 +6,8 @@ import { NextPage } from 'next'
 const Home: NextPage = () => {
   const routes = [
     {
-      name: 'HSL route visualization',
-      route: 'hsl-routes.html',
+      name: 'Demo frontend',
+      route: 'dev/demo-frontend',
     },
     {
       name: 'API docs',
@@ -36,6 +36,10 @@ const Home: NextPage = () => {
     {
       name: 'Dev - List available stations',
       route: 'dev/stations',
+    },
+    {
+      name: 'HSL route visualization',
+      route: 'hsl-routes.html',
     },
   ]
   return (

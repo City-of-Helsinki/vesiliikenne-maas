@@ -2,7 +2,6 @@ import { getFilteredRoutes } from '../../../lib/create-routes-json'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 /**
- * @swagger
  *
  * /api/routes:
  *   get:

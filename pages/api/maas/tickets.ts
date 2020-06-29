@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { promises as fs } from 'fs'
 import moment from 'moment-timezone'
 import { withApiKeyAuthentication } from '../../../lib/middleware'
-import { calculateTicketValidTo } from '../../../lib/ticket-service'
+import { calculateTicketValidTo, getTicketOptions } from '../../../lib/ticket-service'
 import { parseNumber } from '../../../lib/utils'
 import { TSPTicket } from '../../../lib/types'
 
@@ -40,6 +40,9 @@ import { TSPTicket } from '../../../lib/types'
  *                   id:
  *                     type: string
  *                     description: "Ticket id"
+ *                   logoId:
+ *                     type: string
+ *                     description: "Id of the logo to display"
  *                   description:
  *                     type: string
  *                     description: "Ticket description"
@@ -83,9 +86,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   )
 
   try {
-    const tickets = JSON.parse(
-      await fs.readFile('./JTline-tickets.json', 'utf-8'),
-    ) as TSPTicket[]
+    const tickets = await getTicketOptions()
 
     const ticketsWithSeconds = tickets.map(ticket => ({
       ...ticket,
