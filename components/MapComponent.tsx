@@ -1,7 +1,7 @@
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 import * as React from 'react'
 import { NextPage } from 'next'
-import { station } from '../lib/types'
+import { Station } from '../lib/types'
 import L from 'leaflet'
 
 const hslFerryImage =
@@ -10,7 +10,7 @@ const hslFerryImage =
 interface props {
   accessToken: string
   height: string
-  stations: station[] | false
+  stations: Station[] | false
 }
 
 const ferryIcon = L.icon({

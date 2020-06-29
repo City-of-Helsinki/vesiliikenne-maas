@@ -6,6 +6,7 @@ import Router from 'next/router'
 import axios from 'axios'
 import moment from 'moment-timezone'
 import { formatPrice } from '../../../lib/currency'
+import { Station } from 'lib/types'
 
 const Map = dynamic(() => import('../../../components/MapComponent'), {
   ssr: false,
@@ -35,7 +36,7 @@ const FerryStations: NextPage<props> = ({
   MAPBOX_ACCESS_KEY,
 }) => {
   const [maasTickets, setMaasTickets] = React.useState<TicketOption[]>([])
-  const [stations, setStations] = React.useState<TicketOption[]>([])
+  const [stations, setStations] = React.useState<Station[]>([])
 
   if (NODE_ENV !== 'development') {
     return <NextError statusCode={404} />
