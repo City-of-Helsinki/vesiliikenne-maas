@@ -82,6 +82,8 @@ const FerryStations: NextPage<props> = ({
         gridTemplateColumns: '1fr 2fr 1fr',
         alignItems: 'center',
         border: '1px solid darkgrey',
+        paddingBottom: '12px',
+        paddingLeft: '12px'
       }}
       onClickCapture={() => {
         void Router.push({
@@ -90,7 +92,7 @@ const FerryStations: NextPage<props> = ({
         }).then()
       }}
     >
-      <div style={{ padding: '12px', height: '100%' }}>
+      <div style={{ paddingRight: '12px', height: '100%' }}>
         <div
           style={{
             background: `url(/images/${ticket.logoId})`,
