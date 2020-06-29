@@ -78,7 +78,6 @@ const FerryStations: NextPage<props> = ({
       key={ticket.id}
       style={{
         boxSizing: 'border-box',
-
         display: 'grid',
         gridTemplateColumns: '1fr 2fr 1fr',
         alignItems: 'center',
@@ -113,63 +112,62 @@ const FerryStations: NextPage<props> = ({
   ))
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateRows: '3fr 2fr',
-      }}
-    >
-      <div className="top" style={{ background: 'purple' }}>
-        <Map
-          accessToken={MAPBOX_ACCESS_KEY}
-          height={'60vh'}
-          zIndex={1}
-          stations={stations}
-        />
-      </div>
+    <div>
       <div
         style={{
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
+          height: '100vh',
         }}
-        className="flex"
       >
-        <div className="bottom">
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 3fr',
-              background: 'darkblue',
-              color: 'white',
-            }}
-          >
-            <div style={{ padding: '12px' }}>
-              <div
-                style={{
-                  height: '100%',
-                  background: `url(${hslFerryImage})`,
-                  backgroundSize: 'contain',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center',
-                }}
-              />
-            </div>
+        <div className="topAndBot">
+          <div className="top" style={{ background: 'purple' }}>
+            <Map
+              accessToken={MAPBOX_ACCESS_KEY}
+              height={'60vh'}
+              zIndex={1}
+              stations={stations}
+            />
+          </div>
+
+          <div className="bottom">
             <div
               style={{
                 display: 'grid',
-                gridTemplateRows: '2fr 1fr',
+                gridTemplateColumns: '1fr 3fr',
+                background: 'darkblue',
+                color: 'white',
               }}
             >
-              <h2>Ferry Tickets</h2>
-              <div>Helsinki archipelago</div>
+              <div style={{ padding: '12px' }}>
+                <div
+                  style={{
+                    height: '100%',
+                    background: `url(${hslFerryImage})`,
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateRows: '2fr 1fr',
+                }}
+              >
+                <h2>Ferry Tickets</h2>
+                <div>Helsinki archipelago</div>
+              </div>
+            </div>
+
+            <div style={{}}>
+              <ul style={{ padding: '0', margin: '0' }}>{ticketOptions}</ul>
             </div>
           </div>
-
-          <div style={{}}>
-            <ul style={{ padding: '0', margin: '0' }}>{ticketOptions}</ul>
-          </div>
         </div>
+
         <BottomNavbar />
       </div>
     </div>
