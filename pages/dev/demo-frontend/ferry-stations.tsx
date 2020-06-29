@@ -124,6 +124,7 @@ const FerryStations: NextPage<props> = ({
         <Map
           accessToken={MAPBOX_ACCESS_KEY}
           height={'60vh'}
+          zIndex={1}
           stations={stations}
         />
       </div>
