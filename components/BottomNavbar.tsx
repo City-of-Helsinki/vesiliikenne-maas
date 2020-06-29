@@ -12,6 +12,9 @@ const buttonStyle: CSSProperties = {
   height: '10vh',
   fontSize: '2em',
   minHeight: '50px',
+  borderRadius: '10px',
+  backgroundColor: '#4c81af',
+  color: 'white',
 }
 
 const BottomNavbar = () => {

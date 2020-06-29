@@ -51,7 +51,9 @@ const TicketListPage: NextPage<props> = ({
         justifyContent: 'space-between',
       }}
     >
-      <TicketList tickets={tickets} />
+      <div style={{ overflowY: 'scroll' }}>
+        <TicketList tickets={tickets} />
+      </div>
 
       <BottomNavbar />
     </div>
