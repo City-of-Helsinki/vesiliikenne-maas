@@ -283,7 +283,7 @@
                         },
                         "ticketTypeId": {
                           "type": "string",
-                          "example": "island-hopping"
+                          "example": 1
                         },
                         "validFrom": {
                           "type": "string",
@@ -418,7 +418,7 @@
                           },
                           "ticketTypeId": {
                             "type": "string",
-                            "example": "island-hopping"
+                            "example": "1"
                           },
                           "validFrom": {
                             "type": "string",
