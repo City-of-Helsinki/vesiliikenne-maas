@@ -11,12 +11,12 @@ const MapComponent = dynamic(() => import('../../../components/MapComponent'), {
 
 interface props {
   DEV_API_KEY: string
-  NODE_ENV: string
+  ALLOW_DEMO_FRONTEND: string
   MAPBOX_ACCESS_KEY: string
 }
 
-const DemoIndex: NextPage<props> = ({ NODE_ENV, MAPBOX_ACCESS_KEY }) => {
-  if (NODE_ENV !== 'development') {
+const DemoIndex: NextPage<props> = ({ ALLOW_DEMO_FRONTEND, MAPBOX_ACCESS_KEY }) => {
+  if (ALLOW_DEMO_FRONTEND !== 'allow') {
     return <NextError statusCode={404} />
   }
 
@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: {
       DEV_API_KEY: process.env.DEV_API_KEY,
       MAPBOX_ACCESS_KEY: process.env.MAPBOX_ACCESS_KEY,
-      NODE_ENV: process.env.NODE_ENV,
+      ALLOW_DEMO_FRONTEND: process.env.ALLOW_DEMO_FRONTEND,
     },
   }
 }

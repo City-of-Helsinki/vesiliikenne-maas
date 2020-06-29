@@ -10,13 +10,13 @@ import BottomNavbar from '../../../components/BottomNavbar'
 
 interface props {
   DEV_API_KEY: string
-  NODE_ENV: string
+  ALLOW_DEMO_FRONTEND: string
   jwtPublicKey: string
 }
 
 const TicketListPage: NextPage<props> = ({
   DEV_API_KEY,
-  NODE_ENV,
+  ALLOW_DEMO_FRONTEND,
   jwtPublicKey,
 }) => {
   const [tickets, setTickets] = React.useState<Ticket[]>([])
@@ -39,7 +39,7 @@ const TicketListPage: NextPage<props> = ({
     getTickets()
   }, [])
 
-  if (NODE_ENV !== 'development') {
+  if (ALLOW_DEMO_FRONTEND !== 'allow') {
     return <NextError statusCode={404} />
   }
   return (
@@ -66,7 +66,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   return {
     props: {
       DEV_API_KEY: process.env.DEV_API_KEY,
-      NODE_ENV: process.env.NODE_ENV,
+      ALLOW_DEMO_FRONTEND: process.env.ALLOW_DEMO_FRONTEND,
       jwtPublicKey: await readPublicKeyData(),
     },
   }

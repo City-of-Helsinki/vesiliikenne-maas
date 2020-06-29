@@ -15,7 +15,7 @@ const Map = dynamic(() => import('../../../components/MapComponent'), {
 
 interface props {
   DEV_API_KEY: string
-  NODE_ENV: string
+  ALLOW_DEMO_FRONTEND: string
   MAPBOX_ACCESS_KEY: string
 }
 
@@ -33,13 +33,13 @@ const hslFerryImage =
 
 const FerryStations: NextPage<props> = ({
   DEV_API_KEY,
-  NODE_ENV,
+  ALLOW_DEMO_FRONTEND,
   MAPBOX_ACCESS_KEY,
 }) => {
   const [maasTickets, setMaasTickets] = React.useState<TicketOption[]>([])
   const [stations, setStations] = React.useState<Station[]>([])
 
-  if (NODE_ENV !== 'development') {
+  if (ALLOW_DEMO_FRONTEND !== 'allow') {
     return <NextError statusCode={404} />
   }
 
@@ -181,7 +181,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   return {
     props: {
       DEV_API_KEY: process.env.DEV_API_KEY,
-      NODE_ENV: process.env.NODE_ENV,
+      ALLOW_DEMO_FRONTEND: process.env.ALLOW_DEMO_FRONTEND,
       MAPBOX_ACCESS_KEY: process.env.MAPBOX_ACCESS_KEY,
     },
   }

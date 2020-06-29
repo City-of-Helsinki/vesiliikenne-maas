@@ -11,12 +11,12 @@ import BottomNavbar from '../../../components/BottomNavbar'
 
 interface props {
   DEV_API_KEY: string
-  NODE_ENV: string
+  ALLOW_DEMO_FRONTEND: string
   ticket: TSPTicket | null
 }
 
-const TicketPurchase: NextPage<props> = ({ DEV_API_KEY, NODE_ENV, ticket }) => {
-  if (NODE_ENV !== 'development') {
+const TicketPurchase: NextPage<props> = ({ DEV_API_KEY, ALLOW_DEMO_FRONTEND, ticket }) => {
+  if (ALLOW_DEMO_FRONTEND !== 'allow') {
     return <NextError statusCode={404} />
   }
 
@@ -181,7 +181,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   return {
     props: {
       DEV_API_KEY: process.env.DEV_API_KEY,
-      NODE_ENV: process.env.NODE_ENV,
+      ALLOW_DEMO_FRONTEND: process.env.ALLOW_DEMO_FRONTEND,
       ticket: parseTicket(context.query),
     },
   }

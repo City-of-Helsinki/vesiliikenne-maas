@@ -11,7 +11,7 @@ import Link from 'next/link'
 interface TicketPageProperties {
   ticket: Ticket
   qrCodeContents: string
-  NODE_ENV: string
+  ALLOW_DEMO_FRONTEND: string
 }
 
 const bodyStyle = {
@@ -52,9 +52,9 @@ const ticketInfoStyle = {
 const TicketPage: NextPage<TicketPageProperties> = ({
   ticket,
   qrCodeContents,
-  NODE_ENV,
+  ALLOW_DEMO_FRONTEND,
 }) => {
-  if (!ticket.uuid || NODE_ENV !== 'development') {
+  if (!ticket.uuid || ALLOW_DEMO_FRONTEND !== 'allow') {
     return <NextError statusCode={404} />
   }
   return (
@@ -103,7 +103,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
     props: {
       ticket: ticket,
       qrCodeContents: await qrcode.toDataURL(uuid),
-      NODE_ENV: process.env.NODE_ENV,
+      ALLOW_DEMO_FRONTEND: process.env.ALLOW_DEMO_FRONTEND,
     },
   }
 }
