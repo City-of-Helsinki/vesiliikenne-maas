@@ -6,6 +6,7 @@ import jsonwebtoken from 'jsonwebtoken'
 import TicketList from '../../../components/ticket-list/TicketList'
 import { Ticket } from '../../../lib/types'
 import { readPublicKeyData } from '../../../lib/utils'
+import BottomNavbar from '../../../components/BottomNavbar'
 
 interface props {
   DEV_API_KEY: string
@@ -41,7 +42,20 @@ const TicketListPage: NextPage<props> = ({
   if (NODE_ENV !== 'development') {
     return <NextError statusCode={404} />
   }
-  return <TicketList tickets={tickets} />
+  return (
+    <div
+      style={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+      }}
+    >
+      <TicketList tickets={tickets} />
+
+      <BottomNavbar />
+    </div>
+  )
 }
 
 export default TicketListPage

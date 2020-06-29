@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 import * as React from 'react'
 import NextError from 'next/error'
 import JTlineButton from '../../../components/JTlineButton'
+import BottomNavbar from '../../../components/BottomNavbar'
 
 const MapComponent = dynamic(() => import('../../../components/MapComponent'), {
   ssr: false,
@@ -23,14 +24,14 @@ const DemoIndex: NextPage<props> = ({ NODE_ENV, MAPBOX_ACCESS_KEY }) => {
     <div>
       <MapComponent
         accessToken={MAPBOX_ACCESS_KEY}
-        height={'100vh'}
+        height={'90vh'}
         zIndex={1}
         stations={false}
       />
       <div
         style={{
           position: 'absolute',
-          bottom: '50px',
+          bottom: '15vh',
           left: '50%',
           transform: 'translateX(-50%)',
           zIndex: 100,
@@ -38,6 +39,7 @@ const DemoIndex: NextPage<props> = ({ NODE_ENV, MAPBOX_ACCESS_KEY }) => {
       >
         <JTlineButton />
       </div>
+      <BottomNavbar />
     </div>
   )
 }

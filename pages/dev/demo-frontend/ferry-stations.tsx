@@ -7,6 +7,7 @@ import axios from 'axios'
 import moment from 'moment-timezone'
 import { formatPrice } from '../../../lib/currency'
 import { Station } from 'lib/types'
+import BottomNavbar from '../../../components/BottomNavbar'
 
 const Map = dynamic(() => import('../../../components/MapComponent'), {
   ssr: false,
@@ -69,7 +70,6 @@ const FerryStations: NextPage<props> = ({
       setStations(response.data)
     }
     void getStations()
-    console.log(stations)
     void getTickets()
   }, [])
 
@@ -115,7 +115,6 @@ const FerryStations: NextPage<props> = ({
   return (
     <div
       style={{
-        height: '95vh',
         display: 'grid',
         gridTemplateRows: '3fr 2fr',
       }}
@@ -128,40 +127,50 @@ const FerryStations: NextPage<props> = ({
           stations={stations}
         />
       </div>
-      <div className="bottom">
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 3fr',
-            background: 'darkblue',
-            color: 'white',
-          }}
-        >
-          <div style={{ padding: '12px' }}>
-            <div
-              style={{
-                height: '100%',
-                background: `url(${hslFerryImage})`,
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
-              }}
-            />
-          </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+        className="flex"
+      >
+        <div className="bottom">
           <div
             style={{
               display: 'grid',
-              gridTemplateRows: '2fr 1fr',
+              gridTemplateColumns: '1fr 3fr',
+              background: 'darkblue',
+              color: 'white',
             }}
           >
-            <h2>Ferry Tickets</h2>
-            <div>Helsinki archipelago</div>
+            <div style={{ padding: '12px' }}>
+              <div
+                style={{
+                  height: '100%',
+                  background: `url(${hslFerryImage})`,
+                  backgroundSize: 'contain',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
+                }}
+              />
+            </div>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateRows: '2fr 1fr',
+              }}
+            >
+              <h2>Ferry Tickets</h2>
+              <div>Helsinki archipelago</div>
+            </div>
+          </div>
+
+          <div style={{}}>
+            <ul style={{ padding: '0', margin: '0' }}>{ticketOptions}</ul>
           </div>
         </div>
-
-        <div style={{}}>
-          <ul style={{ padding: '0', margin: '0' }}>{ticketOptions}</ul>
-        </div>
+        <BottomNavbar />
       </div>
     </div>
   )
