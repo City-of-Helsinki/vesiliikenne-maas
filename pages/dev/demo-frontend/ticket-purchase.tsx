@@ -42,11 +42,6 @@ const TicketPurchase: NextPage<props> = ({ DEV_API_KEY, NODE_ENV, ticket }) => {
 
   const accentColor: ColorProperty = '#4c81af'
 
-  const buttonItemStyle: CSSProperties = {
-    display: 'inline',
-    //float: "left",
-  }
-
   const baseButtonStyle: CSSProperties = {
     border: 'none',
     color: 'white',
@@ -61,6 +56,7 @@ const TicketPurchase: NextPage<props> = ({ DEV_API_KEY, NODE_ENV, ticket }) => {
     borderStyle: 'solid',
     borderWidth: '2px',
     borderColor: accentColor,
+    width: '100%'
   }
 
   const secondaryButtonStyle: CSSProperties = {
@@ -82,15 +78,15 @@ const TicketPurchase: NextPage<props> = ({ DEV_API_KEY, NODE_ENV, ticket }) => {
 
   return (
     <div>
-      <h1 style={{ fontSize: '1em' }}>Confirm ticket</h1>
-      <table>
+      <h1 style={{ fontSize: '1em', margin: '12px', textAlign: 'center' }}>Confirm ticket</h1>
+      <table style={{width: '100%'}}>
         <tbody>
           <tr>
-            <td>{ticket.name}</td>
-            <td align="right">{formatPrice(ticket.amount, ticket.currency)}</td>
+            <td style={{ padding: '12px' }}>{ticket.name}</td>
+            <td style={{ padding: '12px' }} align="right">{formatPrice(ticket.amount, ticket.currency)}</td>
           </tr>
           <tr>
-            <td colSpan={2} align={'right'}>
+            <td colSpan={2} align={'right'} style={{ padding: '12px', borderBottom: '1px solid #ddd', borderTop: '1px solid #ddd' }}>
               <span>To pay&nbsp;</span>
               <span style={{ fontSize: '1.4em' }}>
                 {formatPrice(ticket.amount, ticket.currency)}
@@ -100,27 +96,37 @@ const TicketPurchase: NextPage<props> = ({ DEV_API_KEY, NODE_ENV, ticket }) => {
         </tbody>
       </table>
 
+      <div style={{ margin: '12px', color: "#999" }}>
+        {ticket.description}
+      </div>
+
+      <hr style={{ borderTop: '1px solid #ddd', borderBottom: "none" }} />
+
       <form
         onSubmit={e => {
           e.preventDefault()
           handlePurchaseClick().then()
         }}
       >
-        <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-          <li style={buttonItemStyle}>
-            <button
-              style={secondaryButtonStyle}
-              onClickCapture={() => {
-                handleCancelClick().then()
-              }}
-            >
-              Cancel
-            </button>
-          </li>
-          <li style={buttonItemStyle}>
-            <button style={primaryButtonStyle}>Confirm purchase</button>
-          </li>
-        </ul>
+        <table style={{ width: '100%', tableLayout: 'fixed',  borderCollapse: 'collapse' }}>
+          <tbody>
+          <tr>
+            <td style={{paddingLeft: '12px', paddingRight: '6px'}}>
+              <button
+                style={secondaryButtonStyle}
+                onClickCapture={() => {
+                  handleCancelClick().then()
+                }}
+              >
+                Cancel
+              </button>
+            </td>
+            <td style={{paddingLeft: '6px', paddingRight: '12px'}}>
+              <button style={primaryButtonStyle}>Pay</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
       </form>
     </div>
   )
