@@ -77,11 +77,9 @@ const FerryStations: NextPage<props> = ({
     <li
       key={ticket.id}
       style={{
-        boxSizing: 'border-box',
         display: 'grid',
         gridTemplateColumns: '1fr 2fr 1fr',
         alignItems: 'center',
-        border: '1px solid darkgrey',
         paddingBottom: '12px',
         paddingLeft: '12px'
       }}
@@ -140,9 +138,10 @@ const FerryStations: NextPage<props> = ({
                 gridTemplateColumns: '1fr 3fr',
                 background: 'darkblue',
                 color: 'white',
+                paddingLeft: '12px'
               }}
             >
-              <div style={{ padding: '12px' }}>
+              <div style={{ paddingRight: '12px' }}>
                 <div
                   style={{
                     height: '100%',
