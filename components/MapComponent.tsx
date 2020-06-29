@@ -31,7 +31,7 @@ const MapComponent: NextPage<props> = ({
   return (
     <div>
       <Map
-        center={[60.167121, 24.955411]}
+        center={[60.154020, 24.978618]}
         zoom={13}
         style={{ height, position: 'relative', zIndex }}
       >
