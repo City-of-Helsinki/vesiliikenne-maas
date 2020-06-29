@@ -10,6 +10,7 @@ const hslFerryImage =
 interface props {
   accessToken: string
   height: string
+  zIndex: number
   stations: Station[] | false
 }
 
@@ -21,10 +22,19 @@ const ferryIcon = L.icon({
   popupAnchor: [0, -10],
 })
 
-const MapComponent: NextPage<props> = ({ accessToken, height, stations }) => {
+const MapComponent: NextPage<props> = ({
+  accessToken,
+  height,
+  zIndex,
+  stations,
+}) => {
   return (
     <div>
-      <Map center={[60.167121, 24.955411]} zoom={13} style={{ height }}>
+      <Map
+        center={[60.167121, 24.955411]}
+        zoom={13}
+        style={{ height, position: 'relative', zIndex }}
+      >
         <TileLayer
           url={`https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${accessToken}`}
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

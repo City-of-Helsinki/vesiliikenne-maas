@@ -23,14 +23,17 @@ const DemoIndex: NextPage<props> = ({ NODE_ENV, MAPBOX_ACCESS_KEY }) => {
     <div>
       <MapComponent
         accessToken={MAPBOX_ACCESS_KEY}
-        height={'97vh'}
+        height={'100vh'}
+        zIndex={1}
         stations={false}
       />
       <div
         style={{
-          margin: '-100px',
-          display: 'flex',
-          justifyContent: 'center',
+          position: 'absolute',
+          bottom: '50px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 100,
         }}
       >
         <JTlineButton />
