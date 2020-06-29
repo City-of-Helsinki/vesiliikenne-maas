@@ -86,16 +86,16 @@ const handler = async (
     return res.status(500).send(error.message)
   }
 
-  // const crdUrl = process.env.CRD_URL
-  // const apiToken = process.env.CRD_TOKEN
-  // if (!isString(crdUrl) || !isString(apiToken)) {
-  //   return res.status(500).send('Server configuration error')
-  // }
-  // const crdResponse = await postTicketToCRD(crdUrl, apiToken, ticket)
+  const crdUrl = process.env.CRD_URL
+  const apiToken = process.env.CRD_TOKEN
+  if (!isString(crdUrl) || !isString(apiToken)) {
+    return res.status(500).send('Server configuration error')
+  }
+  const crdResponse = await postTicketToCRD(crdUrl, apiToken, ticket)
 
-  // if (crdResponse.failed) {
-  //   return res.send(502)
-  // }
+  if (crdResponse.failed) {
+    return res.send(502)
+  }
 
   const uuid = await saveTicket(ticket)
   res.json({ uuid })
