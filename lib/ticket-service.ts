@@ -34,7 +34,7 @@ const getTicketOption = async (ticketTypeId: string) => {
 export const getTickets = async () => {
   const allTicketFields = await getAllTicketFields()
 
-  const allTickets = allTicketFields.map(([
+  return await Promise.all(allTicketFields.map(async ([
     ticketUuid,
     agency,
     ticketTypeId,
@@ -46,15 +46,12 @@ export const getTickets = async () => {
       uuid: ticketUuid,
       agency,
       ticketTypeId,
+      ticketTypeInfo: await getTicketOption(ticketTypeId),
       discountGroupId,
       validFrom,
       validTo,
     }
-  })
-
-  const requiredTicketTypes = allTickets.reduce((acc, cur) => acc.add(cur.ticketTypeId), new Set<string>())
-
-  const ticketTypes = await Promise.all([...requiredTicketTypes].map(async ticketTypeId => await getTicketOption(ticketTypeId)))
+  }))
 }
 
 export const findTicket = async (uuid: string) => {
