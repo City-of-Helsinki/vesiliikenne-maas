@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 /**
- * @swagger
  *
  * /api/mapbox-token:
  *   get:

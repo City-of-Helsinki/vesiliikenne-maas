@@ -6,24 +6,6 @@
   },
   "swagger": "2.0",
   "paths": {
-    "/api/dev-api-key": {
-      "get": {
-        "summary": "Dev api key",
-        "description": "MaaS api key for frontend development",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/jtline/stations": {
       "get": {
         "summary": "JT-Line stations",
@@ -183,46 +165,6 @@
           },
           "500": {
             "description": "Server error"
-          }
-        }
-      }
-    },
-    "/api/mapbox-token": {
-      "get": {
-        "summary": "MapBox token",
-        "description": "MapBox token for the HSL based ferry route display",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/routes": {
-      "get": {
-        "summary": "JT-Line ferry routes",
-        "description": "Returns JT-Line ferry routes and their patterns. Fetched from [digitransit](https://digitransit.fi/en/developers/)",
-        "parameters": null,
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Routes not found"
           }
         }
       }

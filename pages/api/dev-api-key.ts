@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 /**
- * @swagger
  *
  * /api/dev-api-key:
  *   get:
