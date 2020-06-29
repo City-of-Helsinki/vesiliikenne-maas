@@ -62,3 +62,11 @@ export interface TSPTicket {
   currency: string
   validityseconds?: number
 }
+
+export interface station {
+  id: string
+  name: string
+  agencyId: string
+  location: string
+  services: string[]
+}

@@ -21,7 +21,11 @@ const DemoIndex: NextPage<props> = ({ NODE_ENV, MAPBOX_ACCESS_KEY }) => {
 
   return (
     <div>
-      <MapComponent accessToken={MAPBOX_ACCESS_KEY} />
+      <MapComponent
+        accessToken={MAPBOX_ACCESS_KEY}
+        height={'97vh'}
+        stations={false}
+      />
       <div
         style={{
           margin: '-100px',
