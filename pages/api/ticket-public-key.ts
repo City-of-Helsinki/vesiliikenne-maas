@@ -13,7 +13,5 @@ import { readPublicKeyData } from '../../lib/utils'
  *         description: OK
  */
 export default (req: NextApiRequest, res: NextApiResponse) => {
-  if (process.env.NODE_ENV === 'development') {
-    res.send(readPublicKeyData())
-  }
+  res.send(readPublicKeyData())
 }
