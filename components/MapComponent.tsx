@@ -18,7 +18,7 @@ const ferryIcon = L.icon({
   iconUrl: hslFerryImage,
   iconRetinaUrl: hslFerryImage,
   iconSize: new L.Point(20, 20),
-  className: 'leaflet-div-icon',
+  className: 'leaflet-div-icon-borderless',
   popupAnchor: [0, -10],
 })
 
