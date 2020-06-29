@@ -35,7 +35,7 @@ import { TicketRequestValidationError } from 'lib/errors'
  *               description: discount group
  *             ticketTypeId:
  *               type: string
- *               example: 1
+ *               example: island_hopping
  *               description: ID of the ticket type
  *       - in: header
  *         name: x-api-key

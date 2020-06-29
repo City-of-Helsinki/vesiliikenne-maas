@@ -7,3 +7,7 @@ describe('Database', () => {
     expect(result.rows.length).toEqual(1)
   })
 })
+
+afterAll(async () => {
+  return await pool.end()
+})

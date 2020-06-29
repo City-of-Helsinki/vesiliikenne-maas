@@ -329,7 +329,7 @@
                 },
                 "ticketTypeId": {
                   "type": "string",
-                  "example": 1,
+                  "example": "island_hopping",
                   "description": "ID of the ticket type"
                 }
               }
