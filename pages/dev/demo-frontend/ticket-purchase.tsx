@@ -8,6 +8,7 @@ import { CSSProperties } from 'react'
 import { ColorProperty } from 'csstype'
 import { ParsedUrlQuery } from 'querystring'
 import BottomNavbar from '../../../components/BottomNavbar'
+import hslFerryImage from '../../../lib/hsl-ferry-image'
 
 interface props {
   DEV_API_KEY: string
@@ -93,14 +94,24 @@ const TicketPurchase: NextPage<props> = ({ DEV_API_KEY, ALLOW_DEMO_FRONTEND, tic
         <table style={{ width: '100%' }}>
           <tbody>
             <tr>
-              <td style={{ padding: '12px' }}>{ticket.name}</td>
+              <td style={{ paddingLeft: '12px' }}>
+                <div style={{
+                  width: '32px',
+                  height: '32px',
+                  background: `url(${hslFerryImage})`,
+                  backgroundSize: 'contain',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
+                }}/>
+              </td>
+              <td style={{ width: '100%', paddingLeft: '12px' }}>{ticket.name}</td>
               <td style={{ padding: '12px' }} align="right">
                 {formatPrice(ticket.amount, ticket.currency)}
               </td>
             </tr>
             <tr>
               <td
-                colSpan={2}
+                colSpan={3}
                 align={'right'}
                 style={{
                   padding: '12px',
@@ -141,7 +152,8 @@ const TicketPurchase: NextPage<props> = ({ DEV_API_KEY, ALLOW_DEMO_FRONTEND, tic
                 <td style={{ paddingLeft: '12px', paddingRight: '6px' }}>
                   <button
                     style={secondaryButtonStyle}
-                    onClickCapture={() => {
+                    onClick={(e) => {
+                      e.preventDefault()
                       handleCancelClick().then()
                     }}
                   >
