@@ -153,7 +153,8 @@ const TicketPurchase: NextPage<props> = ({
                 <td style={{ paddingLeft: '12px', paddingRight: '6px' }}>
                   <button
                     style={secondaryButtonStyle}
-                    onClickCapture={() => {
+                    onClick={(e) => {
+                      e.preventDefault()
                       handleCancelClick().then()
                     }}
                   >
