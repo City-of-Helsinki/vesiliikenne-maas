@@ -13,7 +13,7 @@ import { parseNumber } from '../../../lib/utils'
  * /api/maas/tickets:
  *   get:
  *     summary: Lists tickets available for purchase
- *     description: Lists tickets provided by JT-Line for purchase via the MaaS app
+ *     description: Lists tickets provided by ferry operators for purchase via the MaaS app
  *
  *     parameters:
  *       - name: startTime
