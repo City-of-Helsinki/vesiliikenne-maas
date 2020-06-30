@@ -20,18 +20,17 @@ review:
     K8S_SECRET_CRD_URL: '$GL_SECRET_CRD_URL'
     K8S_SECRET_CRD_TOKEN: '$GL_SECRET_CRD_TOKEN'
     K8S_SECRET_MAAS_API_KEY_HASH: '$GL_SECRET_MAAS_API_KEY_HASH'
+# staging:
+#   # By default the staging environment is created from the master-branch.
+#   # Here we define that it should be created from the branch called "develop" instead.
+#   only:
+#     refs:
+#       - develop
+#   # These variables are available only for staging env and are merged with the general variables defined above.
+#   variables:
+#     POSTGRES_ENABLED: 0
+#     K8S_SECRET_CRD_URL: '$GL_SECRET_CRD_URL'
+#     K8S_SECRET_CRD_TOKEN: '$GL_SECRET_CRD_TOKEN'
+#     K8S_SECRET_MAAS_API_KEY_HASH: '$GL_SECRET_MAAS_API_KEY_HASH'
 
-staging:
-  # By default the staging environment is created from the master-branch.
-  # Here we define that it should be created from the branch called "develop" instead.
-  only:
-    refs:
-      - develop
-  # These variables are available only for staging env and are merged with the general variables defined above.
-  variables:
-    POSTGRES_ENABLED: 0
-    K8S_SECRET_CRD_URL: '$GL_SECRET_CRD_URL'
-    K8S_SECRET_CRD_TOKEN: '$GL_SECRET_CRD_TOKEN'
-    K8S_SECRET_MAAS_API_KEY_HASH: '$GL_SECRET_MAAS_API_KEY_HASH'
-
-production: {}
+# production: {}
