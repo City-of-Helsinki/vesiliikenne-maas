@@ -24,7 +24,7 @@ export const parseNumber = (num: any): number => {
 export const toNewTicketEntry = (object: any): NewTicketEntry => {
   const agency = parseString(object.agency, 'Agency')
   const discountGroupId = parseString(object.discountGroupId, 'DiscountGroupId')
-  const ticketTypeId = parseString(object.ticketTypeId, 'ticketTypeId')
+  const ticketTypeId = parseInt(object.ticketTypeId, 10)
   return {
     agency,
     discountGroupId,
@@ -32,9 +32,11 @@ export const toNewTicketEntry = (object: any): NewTicketEntry => {
   }
 }
 
-const base64decode = (input: string): string => Buffer.from(input, 'base64').toString('utf-8')
+const base64decode = (input: string): string =>
+  Buffer.from(input, 'base64').toString('utf-8')
 
-const base64encode = (input: string): string => Buffer.from(input).toString('base64')
+const base64encode = (input: string): string =>
+  Buffer.from(input).toString('base64')
 
 export const readPublicKeyData = (): string => {
   return base64decode(process.env.GWT_SIGNING_PUBLIC_KEY_BASE64 || '')

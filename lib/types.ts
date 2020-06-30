@@ -27,7 +27,7 @@ interface Agency {
 export interface Ticket {
   uuid: string
   agency: string
-  ticketTypeId: string
+  ticketTypeId: number
   ticketTypeInfo: TSPTicket
   discountGroupId: string
   validFrom: string
@@ -37,7 +37,7 @@ export interface Ticket {
 export interface NewTicketEntry {
   agency: string
   discountGroupId: string
-  ticketTypeId: string
+  ticketTypeId: number
 }
 
 interface crdResponses {
@@ -54,11 +54,11 @@ export interface CrdResponse {
 }
 
 export interface TSPTicket {
-  id: string
-  logoId: string
+  id: number
+  logoId?: string
   description: string
   name: string
-  amount: string
+  amount: number
   currency: string
   validityseconds?: number
 }
