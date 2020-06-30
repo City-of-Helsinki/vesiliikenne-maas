@@ -152,7 +152,8 @@ const TicketPurchase: NextPage<props> = ({ DEV_API_KEY, ALLOW_DEMO_FRONTEND, tic
                 <td style={{ paddingLeft: '12px', paddingRight: '6px' }}>
                   <button
                     style={secondaryButtonStyle}
-                    onClickCapture={() => {
+                    onClick={(e) => {
+                      e.preventDefault()
                       handleCancelClick().then()
                     }}
                   >
