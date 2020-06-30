@@ -1,11 +1,27 @@
+SET search_path TO public;
+
 CREATE TABLE IF NOT EXISTS ticket_types(
-  `id` INTEGER NOT NULL,
-  `description` VARCHAR(255),
-  `name` VARCHAR(100) NOT NULL,
+  "id" INTEGER NOT NULL,
+  "description" VARCHAR(255),
+  "name" VARCHAR(100) NOT NULL,
   amount INTEGER NOT NULL,
   currency VARCHAR(10) NOT NULL,
   PRIMARY KEY (id)
-)
+);
+
+INSERT INTO ticket_types (
+  "id",
+  "description",
+  "name",
+  amount,
+  currency
+) VALUES (
+  1,
+  'Hop-on hop-off -style ticket at the islands Lonna, Vallisaari and Suomenlinna.',
+  'Island Hopping',
+  1200,
+  'EUR'
+);
 
 
 CREATE TABLE IF NOT EXISTS tickets(
@@ -16,4 +32,4 @@ CREATE TABLE IF NOT EXISTS tickets(
   valid_from TIMESTAMPTZ NOT NULL,
   valid_to TIMESTAMPTZ NOT NULL,
   PRIMARY KEY (uuid)
-)
+);
