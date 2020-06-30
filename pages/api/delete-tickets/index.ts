@@ -3,7 +3,7 @@ import { withApiKeyAuthentication } from '../../../lib/middleware'
 import { unlink } from 'fs/promises'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (process.env.ALLOW_DEMO_FRONTEND !== 'allow') return res.status(401)
+  if (process.env.ALLOW_DEMO_FRONTEND !== 'allow') return res.status(401).end()
   if (req.method !== 'POST') {
     return res.status(405).json({ Error: 'Cannot GET' })
   }
