@@ -10,8 +10,7 @@ interface props {
 }
 
 interface TicketOption {
-  amount: number
-  currency: string
+  amount: string
   description: string
   id: number
   name: string

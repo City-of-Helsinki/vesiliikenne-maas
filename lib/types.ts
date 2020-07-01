@@ -58,8 +58,7 @@ export interface TSPTicket {
   logoId?: string
   description: string
   name: string
-  amount: number
-  currency: string
+  amount: string
   validityseconds?: number
 }
 

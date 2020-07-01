@@ -5,7 +5,6 @@ import NextError from 'next/error'
 import Router from 'next/router'
 import axios from 'axios'
 import moment from 'moment-timezone'
-import { formatPrice } from '../../../lib/currency'
 import { Station } from 'lib/types'
 import BottomNavbar from '../../../components/BottomNavbar'
 import hslFerryImage from '../../../lib/hsl-ferry-image'
@@ -79,7 +78,7 @@ const FerryStations: NextPage<props> = ({
         gridTemplateColumns: '1fr 2fr 1fr',
         alignItems: 'center',
         paddingBottom: '12px',
-        paddingLeft: '12px'
+        paddingLeft: '12px',
       }}
       onClickCapture={() => {
         void Router.push({
@@ -104,7 +103,7 @@ const FerryStations: NextPage<props> = ({
         <div>{ticket.description}</div>
       </div>
       <div style={{ margin: '12px', color: 'darkblue', fontWeight: 'bold' }}>
-        {formatPrice(ticket.amount, ticket.currency)}
+        {ticket.amount}
       </div>
     </li>
   ))
@@ -120,7 +119,11 @@ const FerryStations: NextPage<props> = ({
         }}
       >
         <div className="topAndBot">
+<<<<<<< HEAD
           <div className="top" style={{ background: 'purple', height:"50vh" }}>
+=======
+          <div className="top" style={{ background: 'purple', height: '58vh' }}>
+>>>>>>> b34f9a8... Use Postgres currency for ticket option amount
             <Map
               accessToken={MAPBOX_ACCESS_KEY}
               height={'50vh'}
@@ -129,14 +132,18 @@ const FerryStations: NextPage<props> = ({
             />
           </div>
 
+<<<<<<< HEAD
           <div className="bottom" style={{ height: '40vh'}}>
+=======
+          <div className="bottom" style={{ height: '32vh' }}>
+>>>>>>> b34f9a8... Use Postgres currency for ticket option amount
             <div
               style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr 3fr',
                 background: 'darkblue',
                 color: 'white',
-                paddingLeft: '12px'
+                paddingLeft: '12px',
               }}
             >
               <div style={{ paddingRight: '12px' }}>
