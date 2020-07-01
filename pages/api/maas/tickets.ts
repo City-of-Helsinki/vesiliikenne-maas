@@ -1,10 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { promises as fs } from 'fs'
 import moment from 'moment-timezone'
 import { withApiKeyAuthentication } from '../../../lib/middleware'
-import { calculateTicketValidTo, getTicketOptions } from '../../../lib/ticket-service'
+import {
+  calculateTicketValidTo,
+  getTicketOptions,
+} from '../../../lib/ticket-service'
 import { parseNumber } from '../../../lib/utils'
-import { TSPTicket } from '../../../lib/types'
 
 /**
  * @swagger
@@ -52,9 +53,6 @@ import { TSPTicket } from '../../../lib/types'
  *                   amount:
  *                     type: string
  *                     description: "Ticket price"
- *                   currency:
- *                     type: string
- *                     description: "Ticket currency"
  *                   validityseconds:
  *                     type: number
  *                     description: "How long ticket is valid in seconds"

@@ -3,7 +3,6 @@ import * as React from 'react'
 import NextError from 'next/error'
 import Router from 'next/router'
 import { TSPTicket } from '../../../lib/types'
-import { formatPrice } from '../../../lib/currency'
 import { CSSProperties } from 'react'
 import { ColorProperty } from 'csstype'
 import { ParsedUrlQuery } from 'querystring'
@@ -15,7 +14,11 @@ interface props {
   ticket: TSPTicket | null
 }
 
-const TicketPurchase: NextPage<props> = ({ DEV_API_KEY, ALLOW_DEMO_FRONTEND, ticket }) => {
+const TicketPurchase: NextPage<props> = ({
+  DEV_API_KEY,
+  ALLOW_DEMO_FRONTEND,
+  ticket,
+}) => {
   if (ALLOW_DEMO_FRONTEND !== 'allow') {
     return <NextError statusCode={404} />
   }
@@ -95,7 +98,7 @@ const TicketPurchase: NextPage<props> = ({ DEV_API_KEY, ALLOW_DEMO_FRONTEND, tic
             <tr>
               <td style={{ padding: '12px' }}>{ticket.name}</td>
               <td style={{ padding: '12px' }} align="right">
-                {formatPrice(ticket.amount, ticket.currency)}
+                {ticket.amount}
               </td>
             </tr>
             <tr>
@@ -109,9 +112,7 @@ const TicketPurchase: NextPage<props> = ({ DEV_API_KEY, ALLOW_DEMO_FRONTEND, tic
                 }}
               >
                 <span>To pay&nbsp;</span>
-                <span style={{ fontSize: '1.4em' }}>
-                  {formatPrice(ticket.amount, ticket.currency)}
-                </span>
+                <span style={{ fontSize: '1.4em' }}>{ticket.amount}</span>
               </td>
             </tr>
           </tbody>
@@ -166,9 +167,7 @@ const parseTicket = (query: ParsedUrlQuery): TSPTicket | null => {
   if (result.id === undefined) {
     return null
   }
-  if (result.currency === undefined) {
-    return null
-  }
+
   if (result.amount === undefined) {
     return null
   }

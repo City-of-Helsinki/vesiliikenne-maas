@@ -24,16 +24,14 @@ export const getTicketOptions = async () => {
         select id,
         description,
         name,
-        amount,
-        currency
+        amount
   from public.ticket_types)
   select jsonb_agg(
       json_build_object(
           'id', id,
           'description', description,
           'name', name,
-          'amount', amount,
-          'currency', currency
+          'amount', amount
       )
   ) as aggregated_out
   from ticket_options;
@@ -61,8 +59,7 @@ export const getTickets = async () => {
         'id', id,
         'description', description,
         'name', name,
-        'amount', amount,
-        'currency', currency
+        'amount', amount
     ) as ticket_type_info
   from public.tickets
       join public.ticket_types on ticket_type_id = id)
@@ -101,8 +98,7 @@ export const findTicket = async (uuid: string) => {
         'id', id,
         'description', description,
         'name', name,
-        'amount', amount,
-        'currency', currency
+        'amount', amount
     ) as ticket_type_info
   from public.tickets
       join public.ticket_types on ticket_type_id = id

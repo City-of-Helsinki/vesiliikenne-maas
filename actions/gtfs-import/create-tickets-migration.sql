@@ -4,8 +4,7 @@ CREATE TABLE IF NOT EXISTS ticket_types(
   "id" INTEGER NOT NULL,
   "description" VARCHAR(255),
   "name" VARCHAR(100) NOT NULL,
-  amount INTEGER NOT NULL,
-  currency VARCHAR(10) NOT NULL,
+  amount MONEY NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -13,14 +12,12 @@ INSERT INTO ticket_types (
   "id",
   "description",
   "name",
-  amount,
-  currency
+  amount
 ) VALUES (
   1,
   'Hop-on hop-off -style ticket at the islands Lonna, Vallisaari and Suomenlinna.',
   'Island Hopping',
-  1200,
-  'EUR'
+  12.00
 );
 
 
