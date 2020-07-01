@@ -12,7 +12,7 @@ describe('/api/jtline/stations', () => {
     let response: AxiosResponse
 
     beforeAll(async () => {
-      response = await performRequest(jtlineStations, {})
+      response = await performRequest(jtlineStations, { agencyId: 'jtline' })
     })
 
     it('should produce response', () => {
@@ -32,7 +32,7 @@ describe('/api/jtline/stations', () => {
     let response: AxiosResponse
 
     beforeAll(async () => {
-      response = await performRequest(jtlineStations, { location: "60.1676,24.9552", radius: "10000" })
+      response = await performRequest(jtlineStations, { agencyId: 'jtline', location: "60.1676,24.9552", radius: "10000" })
     })
 
     it('responds with status code 200', () => {
