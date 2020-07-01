@@ -6,11 +6,20 @@
   },
   "swagger": "2.0",
   "paths": {
-    "/api/jtline/stations": {
+    "/api/{agencyId}/stations": {
       "get": {
-        "summary": "JT-Line stations",
-        "description": "Lists JT-Line stations on the map",
+        "summary": "Agency stations",
+        "description": "Lists stations of the specified agency on the map",
         "parameters": [
+          {
+            "in": "path",
+            "name": "agencyId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The agency ID"
+          },
           {
             "name": "location",
             "in": "query",
@@ -61,7 +70,7 @@
                       },
                       "agencyId": {
                         "type": "string",
-                        "description": "Agency id: 'jtline'"
+                        "description": "Agency id: the same as specified in the path"
                       },
                       "location": {
                         "type": "string",
