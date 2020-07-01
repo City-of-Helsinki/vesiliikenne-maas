@@ -4,8 +4,13 @@ import { isString } from '../../../../lib/utils'
 import { TicketRequestValidationError } from '../../../../lib/errors'
 import { pool } from '../../../../lib/db';
 
+// Mapping from supported agencyIds to their name in GTFS
+const agencyIdToAgencyName: { [key: string]: string } = {
+  "jtline": "JT-Line Oy"
+}
+
 // language=PostgreSQL
-const jtlineStopsQuery = `with jtline_stops as
+const stopsQuery = `with result_tops as
        (select distinct stop_id,
                         stop_lat,
                         stop_lon,
@@ -16,22 +21,22 @@ const jtlineStopsQuery = `with jtline_stops as
                join gtfs.stop_times using (trip_id)
                join gtfs.stops using (stop_id)
                join gtfs.calendar using (service_id)
-        where agency_name = 'JT-Line Oy'
+        where agency_name = $2
           and now()::date between start_date and end_date
           and ST_Distance(
                   the_geom::geography,
-                  ST_SetSRID(ST_Point($1, $2), 4326)::geography
-                ) <= cast($3 as integer))
+                  ST_SetSRID(ST_Point($3, $4), 4326)::geography
+                ) <= cast($5 as integer))
 select jsonb_agg(
            json_build_object(
                'id', stop_id,
                'location', concat(stop_lat, ',', stop_lon),
-               'agencyId', 'jtline',
+               'agencyId', $1::text,
                'name', stop_name,
                'services', jsonb_build_array('FERRY')
              )
          ) as aggregated_out
-from jtline_stops;
+from result_tops;
 `
 
 const parseQuery = (query: { [key: string]: string | string[]; }) => {
@@ -61,11 +66,17 @@ const parseQuery = (query: { [key: string]: string | string[]; }) => {
 /**
  * @swagger
  *
- * /api/jtline/stations:
+ * /api/{agencyId}/stations:
  *   get:
- *     summary: JT-Line stations
- *     description: Lists JT-Line stations on the map
+ *     summary: Agency stations
+ *     description: Lists stations of the specified agency on the map
  *     parameters:
+ *       - in: path
+ *         name: agencyId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The agency ID
  *       - name: location
  *         in: query
  *         required: true
@@ -104,7 +115,7 @@ const parseQuery = (query: { [key: string]: string | string[]; }) => {
  *                     description: "Station name"
  *                   agencyId:
  *                     type: string
- *                     description: "Agency id: 'jtline'"
+ *                     description: "Agency id: the same as specified in the path"
  *                   location:
  *                     type: string
  *                     description: "Location in 'lat,lon' format"
@@ -122,9 +133,18 @@ export const handler = async (
   req: NextApiRequest,
   res: NextApiResponse,
 ): Promise<void> => {
+  const agencyId = req.query["agencyId"]
+  if (!isString(agencyId)) {
+    return res.status(400).json({ message: 'Invalid agencyId' })
+  }
+  const agencyName = agencyIdToAgencyName[agencyId]
+  if (!agencyName) {
+    return res.status(404).json({ message: 'Unknown agencyId: ${agencyId}' })
+  }
+
   try {
     const { location: { latitude, longitude }, distanceInMeters } = parseQuery(req.query)
-    const queryResult = await pool.query(jtlineStopsQuery, [longitude, latitude, distanceInMeters])
+    const queryResult = await pool.query(stopsQuery, [agencyId, agencyName, longitude, latitude, distanceInMeters])
     res.json(queryResult.rows[0]['aggregated_out'])
   } catch (e) {
     if (e instanceof TicketRequestValidationError) {
