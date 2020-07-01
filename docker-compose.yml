@@ -15,7 +15,8 @@ services:
     ports:
       - '3000:3000'
   postgis:
-    image: postgis/postgis:12-3.0
+    build:
+      context: ./db
     environment:
       - POSTGRES_PASSWORD=hki-vesiliikenne
     ports:
@@ -26,7 +27,7 @@ services:
     command: /entrypoint.sh --wait-until-ready
     environment:
       - PGHOST=postgis
-      - PGPORT=5432 
+      - PGPORT=5432
       - PGUSER=postgres
       - PGPASSWORD=hki-vesiliikenne
     depends_on:
