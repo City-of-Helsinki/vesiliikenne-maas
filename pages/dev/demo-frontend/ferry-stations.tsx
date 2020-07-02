@@ -116,11 +116,7 @@ const FerryStations: NextPage<props> = ({
         }}
       >
         <div className="topAndBot">
-<<<<<<< HEAD
-          <div className="top" style={{ background: 'purple', height:"50vh" }}>
-=======
           <div className="top" style={{ background: 'purple', height: '58vh' }}>
->>>>>>> b34f9a8... Use Postgres currency for ticket option amount
             <Map
               accessToken={MAPBOX_ACCESS_KEY}
               height={'50vh'}
@@ -129,11 +125,7 @@ const FerryStations: NextPage<props> = ({
             />
           </div>
 
-<<<<<<< HEAD
-          <div className="bottom" style={{ height: '40vh'}}>
-=======
           <div className="bottom" style={{ height: '32vh' }}>
->>>>>>> b34f9a8... Use Postgres currency for ticket option amount
             <div
               style={{
                 display: 'grid',
