@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS ticket_types(
   amount MONEY NOT NULL,
   discount_group VARCHAR(100) NOT NULL,
   agency VARCHAR(100) NOT NULL,
+  logoId VARCHAR(100),
   PRIMARY KEY (id)
 );
 
@@ -15,12 +16,14 @@ INSERT INTO ticket_types (
   "name",
   discount_group,
   agency,
+  logoId,
   amount
 ) VALUES (
   'Hop-on hop-off -style ticket at the islands Lonna, Vallisaari and Suomenlinna.',
   'Island Hopping',
   'adult',
   'JT-Line',
+  'jt-logo.jpg',
   12.00
 );
 

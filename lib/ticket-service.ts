@@ -26,7 +26,8 @@ export const getTicketOptions = async () => {
         name,
         discount_group,
         agency,
-        amount
+        amount,
+        logoId
   from public.ticket_types)
   select jsonb_agg(
       json_build_object(
@@ -35,7 +36,8 @@ export const getTicketOptions = async () => {
           'name', name,
           'amount', amount,
           'agency', agency,
-          'discount_group', discount_group
+          'discount_group', discount_group,
+          'logoId', logoId
       )
   ) as aggregated_out
   from ticket_options;
