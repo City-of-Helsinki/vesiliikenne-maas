@@ -39,9 +39,8 @@ const FerryStations: NextPage<props> = ({
   if (ALLOW_DEMO_FRONTEND !== 'allow') {
     return <NextError statusCode={404} />
   }
-
   React.useEffect(() => {
-    async function getTickets() {
+    const getTickets = async () => {
       const currentTimeMS = moment().tz('Europe/Helsinki').valueOf()
       const response = await axios.get(
         `/api/maas/tickets?startTime=${currentTimeMS}`,
@@ -51,11 +50,10 @@ const FerryStations: NextPage<props> = ({
           },
         },
       )
-
       setMaasTickets(response.data)
     }
 
-    async function getStations() {
+    const getStations = async () => {
       const response = await axios.get(
         `/api/jtline/stations?location=60.17699706032358,24.948799833655357&radius=15000`,
         {
@@ -69,7 +67,6 @@ const FerryStations: NextPage<props> = ({
     void getStations()
     void getTickets()
   }, [])
-
   const ticketOptions = maasTickets.map(ticket => (
     <li
       key={ticket.id}
