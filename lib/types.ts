@@ -41,12 +41,6 @@ export const TicketType = t.strict({
 
 export type Ticket = t.TypeOf<typeof TicketType>
 
-export interface NewTicketEntry {
-  agency: string
-  discountGroupId: string
-  ticketOptionId: number
-}
-
 interface crdResponses {
   saleId: string
   status: number

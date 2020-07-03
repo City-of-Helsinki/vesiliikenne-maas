@@ -1,10 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTicket, saveTicket } from '../../../lib/ticket-service'
-import { isString, toNewTicketEntry } from '../../../lib/utils'
-import { NewTicketEntry, Ticket } from '../../../lib/types'
+import { isString } from '../../../lib/utils'
+import { Ticket } from '../../../lib/types'
 import { postTicketToCRD } from '../../../lib/crd'
 import { withApiKeyAuthentication } from '../../../lib/middleware'
-import { TicketRequestValidationError } from 'lib/errors'
 
 /**
  * @swagger
