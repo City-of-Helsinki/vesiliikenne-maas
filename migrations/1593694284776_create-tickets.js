@@ -8,7 +8,8 @@ exports.up = pgm => {
     id INT GENERATED ALWAYS AS IDENTITY,
     "description" VARCHAR(255),
     "name" VARCHAR(100) NOT NULL,
-    amount MONEY NOT NULL,
+    amount INT NOT NULL,
+    currency VARCHAR(10) NOT NULL,
     discount_group VARCHAR(100) NOT NULL,
     agency VARCHAR(100) NOT NULL,
     logoId VARCHAR(100),
@@ -23,14 +24,16 @@ exports.up = pgm => {
     discount_group,
     agency,
     logoId,
-    amount
+    amount,
+    currency
   ) VALUES (
     'Hop-on hop-off -style ticket at the islands Lonna, Vallisaari and Suomenlinna.',
     'Island Hopping',
     'adult',
     'JT-Line',
     'jt-logo.jpg',
-    12.00
+    1200,
+    'EUR'
   );
   `)
 
@@ -45,4 +48,7 @@ exports.up = pgm => {
   `)
 }
 
-exports.down = pgm => {}
+exports.down = pgm => {
+  pgm.sql(`DROP TABLE tickets;`)
+  pgm.sql(`DROP TABLE ticket_types;`)
+}

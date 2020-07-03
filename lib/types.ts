@@ -59,6 +59,7 @@ export interface TSPTicket {
   description: string
   name: string
   amount: string
+  currency: string
   validityseconds?: number
 }
 

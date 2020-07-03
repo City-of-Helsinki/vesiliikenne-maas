@@ -3,6 +3,7 @@ import * as React from 'react'
 import NextError from 'next/error'
 import Router from 'next/router'
 import { TSPTicket } from '../../../lib/types'
+import { formatPrice } from '../../../lib/currency'
 import { CSSProperties } from 'react'
 import { ColorProperty } from 'csstype'
 import { ParsedUrlQuery } from 'querystring'
@@ -98,18 +99,22 @@ const TicketPurchase: NextPage<props> = ({
           <tbody>
             <tr>
               <td style={{ paddingLeft: '12px' }}>
-                <div style={{
-                  width: '32px',
-                  height: '32px',
-                  background: `url(${hslFerryImage})`,
-                  backgroundSize: 'contain',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center',
-                }}/>
+                <div
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    background: `url(${hslFerryImage})`,
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                  }}
+                />
               </td>
-              <td style={{ width: '100%', paddingLeft: '12px' }}>{ticket.name}</td>
+              <td style={{ width: '100%', paddingLeft: '12px' }}>
+                {ticket.name}
+              </td>
               <td style={{ padding: '12px' }} align="right">
-                {ticket.amount}
+                {formatPrice(ticket.amount, ticket.currency)}
               </td>
             </tr>
             <tr>
@@ -123,7 +128,9 @@ const TicketPurchase: NextPage<props> = ({
                 }}
               >
                 <span>To pay&nbsp;</span>
-                <span style={{ fontSize: '1.4em' }}>{ticket.amount}</span>
+                <span style={{ fontSize: '1.4em' }}>
+                  {formatPrice(ticket.amount, ticket.currency)}
+                </span>
               </td>
             </tr>
           </tbody>
@@ -153,7 +160,7 @@ const TicketPurchase: NextPage<props> = ({
                 <td style={{ paddingLeft: '12px', paddingRight: '6px' }}>
                   <button
                     style={secondaryButtonStyle}
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault()
                       handleCancelClick().then()
                     }}
@@ -177,6 +184,10 @@ const TicketPurchase: NextPage<props> = ({
 const parseTicket = (query: ParsedUrlQuery): TSPTicket | null => {
   const result = (query as unknown) as TSPTicket
   if (result.id === undefined) {
+    return null
+  }
+
+  if (result.currency === undefined) {
     return null
   }
 

@@ -5,6 +5,7 @@ import NextError from 'next/error'
 import Router from 'next/router'
 import axios from 'axios'
 import moment from 'moment-timezone'
+import { formatPrice } from '../../../lib/currency'
 import { Station } from 'lib/types'
 import BottomNavbar from '../../../components/BottomNavbar'
 import hslFerryImage from '../../../lib/hsl-ferry-image'
@@ -100,7 +101,7 @@ const FerryStations: NextPage<props> = ({
         <div>{ticket.description}</div>
       </div>
       <div style={{ margin: '12px', color: 'darkblue', fontWeight: 'bold' }}>
-        {ticket.amount}
+        {formatPrice(ticket.amount, ticket.currency)}
       </div>
     </li>
   ))

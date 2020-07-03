@@ -27,6 +27,7 @@ export const getTicketOptions = async () => {
         discount_group,
         agency,
         amount,
+        currency,
         logoId
   from public.ticket_types)
   select jsonb_agg(
@@ -34,7 +35,8 @@ export const getTicketOptions = async () => {
           'id', id,
           'description', description,
           'name', name,
-          'amount', amount,
+          'amount', to_char(amount / 100, 'FM9999.00'),
+          'currency', currency,
           'agency', agency,
           'discount_group', discount_group,
           'logoId', logoId
@@ -65,7 +67,8 @@ export const getTickets = async () => {
         'id', id,
         'description', description,
         'name', name,
-        'amount', amount
+        'amount', to_char(amount / 100, 'FM9999.00'),
+        'currency', currency
     ) as ticket_type_info
   from public.tickets
       join public.ticket_types on ticket_type_id = id)
@@ -101,7 +104,8 @@ export const findTicket = async (uuid: string) => {
         'id', id,
         'description', description,
         'name', name,
-        'amount', amount,
+        'amount', to_char(amount / 100, 'FM9999.00'),
+        'currency', currency,
         'agency', agency
     ) as ticket_type_info
   from public.tickets
