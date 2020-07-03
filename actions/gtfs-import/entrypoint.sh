@@ -19,3 +19,5 @@ cd gtfs-sql-importer
 make init
 make load GTFS=../gtfs.zip
 echo "::set-output name=message::Done"
+psql -h "$PGHOST" -U "$PGUSER" postgres < /create-tickets-migration.sql
+echo "Ticket database structure created"
