@@ -42,7 +42,7 @@ jobs:
           postgres-password: postgres
       - run: npm i
       - run: npm run build --if-present
-      - run: npm run run-migrations-dev
+      - run: DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres npm run migrate up
       - name: Run tests
         run: npm test
         env:
