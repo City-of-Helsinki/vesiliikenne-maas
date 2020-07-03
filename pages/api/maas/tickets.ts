@@ -53,6 +53,9 @@ import { parseNumber } from '../../../lib/utils'
  *                   amount:
  *                     type: string
  *                     description: "Ticket price"
+ *                   currency:
+ *                     type: string
+ *                     description: "Ticket currency"
  *                   validityseconds:
  *                     type: number
  *                     description: "How long ticket is valid in seconds"
