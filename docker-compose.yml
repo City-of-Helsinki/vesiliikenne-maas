@@ -15,8 +15,7 @@ services:
     ports:
       - '3000:3000'
   postgis:
-    build:
-      context: ./db
+    image: postgis/postgis:12-3.0
     environment:
       - POSTGRES_PASSWORD=hki-vesiliikenne
     ports:
