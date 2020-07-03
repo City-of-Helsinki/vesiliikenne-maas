@@ -21,22 +21,12 @@ import { TicketRequestValidationError } from 'lib/errors'
  *         schema:
  *           type: object
  *           required:
- *             agency
- *             discountGroupId
- *             ticketTypeId
+ *             ticketOptionId
  *           properties:
- *             agency:
- *               type: string
- *               example: jt-line
- *               description: ferry agency
- *             discountGroupId:
- *               type: string
- *               example: adult
- *               description: discount group
- *             ticketTypeId:
- *               type: string
- *               example: island_hopping
- *               description: ID of the ticket type
+ *             ticketOptionId:
+ *               type: number
+ *               example: 1
+ *               description: ID of the ticket option
  *       - in: header
  *         name: x-api-key
  *         required: true
@@ -67,21 +57,13 @@ const handler = async (
     return res.status(405).json({ Error: 'Cannot GET' })
   }
 
-  let newTicketEntry: NewTicketEntry
-
-  try {
-    newTicketEntry = toNewTicketEntry(req.body)
-  } catch (error) {
-    return res.status(400).send(error.message)
-  }
-
   let ticket: Ticket
 
   try {
-    ticket = await createTicket(newTicketEntry)
+    ticket = await createTicket(req.body.ticketOptionId)
   } catch (error) {
-    if (error instanceof TicketRequestValidationError) {
-      return res.status(400).send(error.message)
+    if (error.name === 'TypeError') {
+      return res.status(400).json({ error: 'Invalid ticketOptionId' })
     }
     return res.status(500).send(error.message)
   }

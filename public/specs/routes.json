@@ -230,11 +230,11 @@
                         },
                         "agency": {
                           "type": "string",
-                          "example": "jt-line"
+                          "example": "waterbus OY"
                         },
                         "ticketTypeId": {
-                          "type": "string",
-                          "example": "1"
+                          "type": "number",
+                          "example": 1
                         },
                         "validFrom": {
                           "type": "string",
@@ -249,9 +249,25 @@
                           "example": "<div> ...Ticket... </div>",
                           "description": "The ticket in html format"
                         },
-                        "validUntil": {
+                        "discountGroup": {
                           "type": "string",
-                          "description": "Validity"
+                          "description": "customer discount group",
+                          "example": "adult"
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "ticket description",
+                          "example": "island hopping"
+                        },
+                        "logoid": {
+                          "type": "string",
+                          "description": "agencys logoid",
+                          "example": "waterbusoy.jpg"
+                        },
+                        "qrcode": {
+                          "type": "string",
+                          "description": "qrcode png image in base64",
+                          "example": "data:image/png;base64,iVBORw0KGg..."
                         }
                       }
                     }
@@ -277,22 +293,12 @@
             "description": "the ticket to buy",
             "schema": {
               "type": "object",
-              "required": "agency discountGroupId ticketTypeId",
+              "required": "ticketOptionId",
               "properties": {
-                "agency": {
-                  "type": "string",
-                  "example": "jt-line",
-                  "description": "ferry agency"
-                },
-                "discountGroupId": {
-                  "type": "string",
-                  "example": "adult",
-                  "description": "discount group"
-                },
-                "ticketTypeId": {
-                  "type": "string",
-                  "example": "island_hopping",
-                  "description": "ID of the ticket type"
+                "ticketOptionId": {
+                  "type": "number",
+                  "example": 1,
+                  "description": "ID of the ticket option"
                 }
               }
             }
