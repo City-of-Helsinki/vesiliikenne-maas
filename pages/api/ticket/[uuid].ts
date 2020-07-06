@@ -90,7 +90,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         qrCodeContents: qrCode,
       }),
     )
-    console.log(qrCode)
     const jwToken = await createJWT({ ...ticket, ticket: html, qrCode })
     res.json({ ticketdata: jwToken })
   } catch (error) {

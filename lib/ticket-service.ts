@@ -135,13 +135,13 @@ export const findTicket = async (uuid: string): Promise<Ticket> => {
     ticket_option_id,
     valid_from,
     valid_to,
+    ticket_option_id,
     ticket_options.agency as agency,
-    ticket_options.id as ticketTypeId,
-    ticket_options.discount_group as discountGroup,
+    ticket_options.discount_group as discount_group,
     ticket_options.description as description,
-    ticket_options.logoid as logoId,
+    ticket_options.logoid as logoid,
     ticket_options.amount as amount,
-    ticket_options.name as ticketName,
+    ticket_options.name as ticket_name,
     ticket_options.currency as currency
   from public.tickets
       join public.ticket_options on ticket_option_id = id
@@ -149,17 +149,16 @@ export const findTicket = async (uuid: string): Promise<Ticket> => {
   select jsonb_agg(
     json_build_object(
         'uuid', uuid,
-        'ticketTypeId', ticket_option_id,
+        'ticketOptionId', ticket_option_id,
         'validFrom', valid_from,
         'validTo', valid_to,
         'agency', agency,
-        'ticketOptionId', ticketTypeId,
-        'discountGroup', discountGroup,
+        'discountGroup', discount_group,
         'description', description,
-        'logoId', logoId,
+        'logoId', logoid,
         'amount', to_char(amount / 100, 'FM9999.00'),
         'currency', currency,
-        'ticketName', ticketName
+        'ticketName', ticket_name
     )
   ) as aggregated_out
   from single_ticket;
