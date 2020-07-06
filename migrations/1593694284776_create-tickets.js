@@ -4,7 +4,7 @@ exports.shorthands = undefined
 
 exports.up = pgm => {
   pgm.sql(`
-  CREATE TABLE IF NOT EXISTS ticket_types(
+  CREATE TABLE IF NOT EXISTS ticket_options(
     id INT GENERATED ALWAYS AS IDENTITY,
     "description" VARCHAR(255),
     "name" VARCHAR(100) NOT NULL,
@@ -18,7 +18,7 @@ exports.up = pgm => {
   `)
 
   pgm.sql(`
-  INSERT INTO ticket_types (
+  INSERT INTO ticket_options(
     "description",
     "name",
     discount_group,
@@ -40,7 +40,7 @@ exports.up = pgm => {
   pgm.sql(`
   CREATE TABLE IF NOT EXISTS tickets(
     uuid VARCHAR(64) NOT NULL,
-    ticket_type_id INTEGER REFERENCES ticket_types(id) NOT NULL,
+    ticket_type_id INTEGER REFERENCES ticket_options(id) NOT NULL,
     valid_from TIMESTAMPTZ NOT NULL,
     valid_to TIMESTAMPTZ NOT NULL,
     PRIMARY KEY (uuid)
@@ -50,5 +50,5 @@ exports.up = pgm => {
 
 exports.down = pgm => {
   pgm.sql(`DROP TABLE tickets;`)
-  pgm.sql(`DROP TABLE ticket_types;`)
+  pgm.sql(`DROP TABLE ticket_options;`)
 }
