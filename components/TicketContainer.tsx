@@ -1,36 +1,82 @@
-import TicketHeader from './TicketHeader'
-import TicketBody from './TicketBody'
 import * as React from 'react'
-
-const bodyStyle = {
-  minHeight: '100vh',
-  margin: 0,
-  color: 'hsl(200, 10%, 30%)',
-  backgroundColor: 'hsl(200, 10%, 96%)',
-  display: 'grid',
-}
-
-const ticketStyle = {
-  width: '80vw',
-  backgroundColor: 'white',
-  margin: 'auto',
-  boxShadow: '0 2px 4px hsla(200, 20%, 20%, 0.25)',
-  borderRadius: '0.375em 0.375em 0.375em 0.375em',
-}
+import moment from 'moment-timezone'
+import { Ticket } from '../lib/types'
+import Link from 'next/link'
 
 interface Props {
-  discountGroup: string
-  validTo: moment.Moment
+  ticket: Ticket
   qrCodeContents: string
 }
 
-const TicketContainer = ({ discountGroup, validTo, qrCodeContents }: Props) => (
-  <div style={bodyStyle}>
-    <div className="ticket" style={ticketStyle}>
-      <TicketHeader discountGroup={discountGroup} validTo={validTo} />
-      <TicketBody qrCodeContents={qrCodeContents} />
-    </div>
-  </div>
-)
+const bodyStyle = {
+  margin: 0,
+  display: 'grid',
+  gridTemplateRows: '8% 92%',
+  height: '90vh',
+  textAlign: 'center' as const, // https://github.com/typestyle/typestyle/issues/281
+}
 
-export default TicketContainer
+const navStyle = {
+  background: '#2f296a',
+  padding: '10px',
+  display: 'grid',
+  gridTemplateColumns: '50% 50%',
+  alignContent: 'center',
+  textAlign: 'left' as const,
+}
+
+const linkStyle = {
+  color: '#fff',
+  textDecoration: 'none',
+}
+
+const ticketContainerStyle = {
+  margin: 'auto',
+}
+
+const qrCodeStyle = {
+  marginLeft: 'auto',
+  marginRight: 'auto',
+}
+
+const ticketInfoStyle = {
+  fontWeight: 600,
+}
+
+const TicketPage = ({ ticket, qrCodeContents }: Props) => {
+  return (
+    <main style={bodyStyle}>
+      <nav style={navStyle}>
+        <Link href="/dev/demo-frontend/ticket-list">
+          <a style={linkStyle}>&lt; Back</a>
+        </Link>
+      </nav>
+      <div style={ticketContainerStyle}>
+        <img alt="the qr code" style={qrCodeStyle} src={qrCodeContents} />
+        <div>
+          <div style={ticketInfoStyle}>
+            <p>{ticket.ticketName}</p>
+            <p>
+              {ticket.agency}, {ticket.discountGroup}
+            </p>
+            <time>
+              {moment(ticket.validFrom)
+                .tz('Europe/Helsinki')
+                .format('Do MMMM HH:mm')}{' '}
+              –{' '}
+              {moment(ticket.validTo)
+                .tz('Europe/Helsinki')
+                .format('Do MMMM HH:mm')}
+            </time>
+          </div>
+          <div>
+            <img width={'30%'} src="/images/jt-logo.jpg" alt="JT-logo" />
+          </div>
+          <p>{ticket.description}</p>
+        </div>
+      </div>
+    </main>
+  )
+}
+
+export default TicketPage

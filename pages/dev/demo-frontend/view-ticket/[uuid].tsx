@@ -1,12 +1,11 @@
 import { GetServerSideProps, NextPage } from 'next'
 import NextError from 'next/error'
-import moment from 'moment-timezone'
 import qrcode from 'qrcode'
 import * as React from 'react'
 import { parseString } from '../../../../lib/utils'
 import { findTicket } from '../../../../lib/ticket-service'
 import { Ticket } from '../../../../lib/types'
-import Link from 'next/link'
+import TicketContainer from '../../../../components/TicketContainer'
 
 interface TicketPageProperties {
   ticket: Ticket
@@ -57,39 +56,7 @@ const TicketPage: NextPage<TicketPageProperties> = ({
   if (!ticket.uuid || ALLOW_DEMO_FRONTEND !== 'allow') {
     return <NextError statusCode={404} />
   }
-  return (
-    <main style={bodyStyle}>
-      <nav style={navStyle}>
-        <Link href="/dev/demo-frontend/ticket-list">
-          <a style={linkStyle}>&lt; Back</a>
-        </Link>
-      </nav>
-      <div style={ticketContainerStyle}>
-        <img alt="the qr code" style={qrCodeStyle} src={qrCodeContents} />
-        <div>
-          <div style={ticketInfoStyle}>
-            <p>{ticket.ticketName}</p>
-            <p>
-              {ticket.agency}, {ticket.discountGroup}
-            </p>
-            <time>
-              {moment(ticket.validFrom)
-                .tz('Europe/Helsinki')
-                .format('Do MMMM HH:mm')}{' '}
-              –{' '}
-              {moment(ticket.validTo)
-                .tz('Europe/Helsinki')
-                .format('Do MMMM HH:mm')}
-            </time>
-          </div>
-          <div>
-            <img width={'30%'} src="/images/jt-logo.jpg" alt="JT-logo" />
-          </div>
-          <p>{ticket.description}</p>
-        </div>
-      </div>
-    </main>
-  )
+  return <TicketContainer ticket={ticket} qrCodeContents={qrCodeContents} />
 }
 
 export default TicketPage

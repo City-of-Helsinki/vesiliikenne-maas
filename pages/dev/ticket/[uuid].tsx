@@ -1,6 +1,5 @@
 import { GetServerSideProps, NextPage } from 'next'
 import { findTicket } from '../../../lib/ticket-service'
-import moment from 'moment-timezone'
 import qrcode from 'qrcode'
 import * as React from 'react'
 import TicketContainer from '../../../components/TicketContainer'
@@ -22,13 +21,7 @@ const TicketPage: NextPage<TicketPageProperties> = ({
   if (!ticket.uuid || NODE_ENV !== 'development') {
     return <NextError statusCode={404} />
   }
-  return (
-    <TicketContainer
-      discountGroup={ticket.discountGroup}
-      validTo={moment(ticket.validTo)}
-      qrCodeContents={qrCodeContents}
-    />
-  )
+  return <TicketContainer ticket={ticket} qrCodeContents={qrCodeContents} />
 }
 
 export default TicketPage
