@@ -40,9 +40,8 @@ const FerryStations: NextPage<props> = ({
   if (ALLOW_DEMO_FRONTEND !== 'allow') {
     return <NextError statusCode={404} />
   }
-
   React.useEffect(() => {
-    async function getTickets() {
+    const getTickets = async () => {
       const currentTimeMS = moment().tz('Europe/Helsinki').valueOf()
       const response = await axios.get(
         `/api/maas/tickets?startTime=${currentTimeMS}`,
@@ -52,11 +51,10 @@ const FerryStations: NextPage<props> = ({
           },
         },
       )
-
       setMaasTickets(response.data)
     }
 
-    async function getStations() {
+    const getStations = async () => {
       const response = await axios.get(
         `/api/jtline/stations?location=60.17699706032358,24.948799833655357&radius=15000`,
         {
@@ -70,7 +68,6 @@ const FerryStations: NextPage<props> = ({
     void getStations()
     void getTickets()
   }, [])
-
   const ticketOptions = maasTickets.map(ticket => (
     <li
       key={ticket.id}
@@ -79,7 +76,7 @@ const FerryStations: NextPage<props> = ({
         gridTemplateColumns: '1fr 2fr 1fr',
         alignItems: 'center',
         paddingBottom: '12px',
-        paddingLeft: '12px'
+        paddingLeft: '12px',
       }}
       onClickCapture={() => {
         void Router.push({
@@ -120,7 +117,7 @@ const FerryStations: NextPage<props> = ({
         }}
       >
         <div className="topAndBot">
-          <div className="top" style={{ background: 'purple', height:"50vh" }}>
+          <div className="top" style={{ background: 'purple', height: '58vh' }}>
             <Map
               accessToken={MAPBOX_ACCESS_KEY}
               height={'50vh'}
@@ -129,14 +126,14 @@ const FerryStations: NextPage<props> = ({
             />
           </div>
 
-          <div className="bottom" style={{ height: '40vh'}}>
+          <div className="bottom" style={{ height: '32vh' }}>
             <div
               style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr 3fr',
                 background: 'darkblue',
                 color: 'white',
-                paddingLeft: '12px'
+                paddingLeft: '12px',
               }}
             >
               <div style={{ paddingRight: '12px' }}>

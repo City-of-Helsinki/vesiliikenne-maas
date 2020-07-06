@@ -1,9 +1,8 @@
-import { promises as fs } from 'fs'
 import moment from 'moment-timezone'
 import { uuid } from 'uuidv4'
 import { NewTicketEntry, Ticket, TSPTicket } from './types'
 import { TicketRequestValidationError } from './errors'
-import { getTicketFields, getAllTicketFields, storeTicket } from './ticket-storage'
+import { pool } from './db'
 
 export const calculateTicketValidTo = (validFrom: moment.Moment) => {
   // If ticket purchased between 00:00 and 03:00, it ends within the same day
@@ -21,68 +20,117 @@ export const calculateTicketValidTo = (validFrom: moment.Moment) => {
 }
 
 export const getTicketOptions = async () => {
-  return JSON.parse(
-    await fs.readFile('./JTline-tickets.json', 'utf-8'),
-  ) as TSPTicket[]
+  const ticketOptionsQuery = `with ticket_options as (
+        select id,
+        description,
+        name,
+        discount_group,
+        agency,
+        amount,
+        currency,
+        logoId
+  from public.ticket_options)
+  select jsonb_agg(
+      json_build_object(
+          'id', id,
+          'description', description,
+          'name', name,
+          'amount', to_char(amount / 100, 'FM9999.00'),
+          'currency', currency,
+          'agency', agency,
+          'discount_group', discount_group,
+          'logoId', logoId
+      )
+  ) as aggregated_out
+  from ticket_options;
+  `
+
+  const queryResult = await pool.query(ticketOptionsQuery)
+
+  return queryResult.rows[0]['aggregated_out'] as TSPTicket[]
 }
 
-const getTicketOption = async (ticketTypeId: string) => {
+const getTicketOption = async (ticketTypeId: number) => {
   const ticketOptions = await getTicketOptions()
   return ticketOptions.find(ticketOption => ticketOption.id === ticketTypeId)
 }
 
 export const getTickets = async () => {
-  const allTicketFields = await getAllTicketFields()
+  const findTicketQuery = `with single_ticket as (
+    select uuid,
+    ticket_type_id,
+    valid_from,
+    valid_to,
+    public.ticket_options.agency AS agency,
+    public.ticket_options.discount_group AS discount_group,
+    json_build_object(
+        'id', id,
+        'description', description,
+        'name', name,
+        'amount', to_char(amount / 100, 'FM9999.00'),
+        'currency', currency
+    ) as ticket_type_info
+  from public.tickets
+      join public.ticket_options on ticket_type_id = id)
+  select jsonb_agg(
+    json_build_object(
+        'uuid', uuid,
+        'agency', agency,
+        'discountGroupId', discount_group,
+        'ticketTypeId', ticket_type_id,
+        'ticketTypeInfo', ticket_type_info,
+        'validFrom', valid_from,
+        'validTo', valid_to
+    )
+  ) as aggregated_out
+  from single_ticket;
+  `
 
-  return await Promise.all(allTicketFields.map(async ([
-    ticketUuid,
-    agency,
-    ticketTypeId,
-    discountGroupId,
-    validFrom,
-    validTo,
-  ]) => {
-    return {
-      uuid: ticketUuid,
-      agency,
-      ticketTypeId,
-      ticketTypeInfo: await getTicketOption(ticketTypeId),
-      discountGroupId,
-      validFrom,
-      validTo,
-    }
-  }))
+  const queryResult = await pool.query(findTicketQuery)
+
+  if (queryResult.rows.length === 0) {
+    return []
+  }
+  return queryResult.rows[0]['aggregated_out']
 }
 
 export const findTicket = async (uuid: string) => {
-  const [
-    ticketUuid,
-    agency,
-    ticketTypeId,
-    discountGroupId,
-    validFrom,
-    validTo,
-  ] = await getTicketFields(uuid)
+  const findTicketQuery = `with single_ticket as (
+    select uuid,
+    ticket_type_id,
+    valid_from,
+    valid_to,
+    json_build_object(
+        'id', id,
+        'description', description,
+        'name', name,
+        'amount', to_char(amount / 100, 'FM9999.00'),
+        'currency', currency,
+        'agency', agency
+    ) as ticket_type_info
+  from public.tickets
+      join public.ticket_options on ticket_type_id = id
+  where uuid = $1)
+  select jsonb_agg(
+    json_build_object(
+        'uuid', uuid,
+        'ticketTypeId', ticket_type_id,
+        'ticketTypeInfo', ticket_type_info,
+        'validFrom', valid_from,
+        'validTo', valid_to
+    )
+  ) as aggregated_out
+  from single_ticket;
+  `
 
-  if (!ticketUuid) {
+  const queryResult = await pool.query(findTicketQuery, [uuid])
+  if (queryResult.rows.length === 0) {
     return {}
   }
 
-  const ticketTypeInfo = await getTicketOption(ticketTypeId)
+  const ticket = queryResult.rows[0]['aggregated_out'][0]
 
-  if (!ticketTypeInfo) {
-    return {}
-  }
-
-  return {
-    uuid: ticketUuid,
-    agency,
-    ticketTypeId,
-    ticketTypeInfo,
-    discountGroupId,
-    validFrom,
-    validTo,
-  }
+  return ticket
 }
 
 export const createTicket = async ({
@@ -110,7 +158,25 @@ export const createTicket = async ({
 }
 
 export const saveTicket = async (ticket: Ticket): Promise<string> => {
-  await storeTicket(ticket)
+  const ticketOptionsQuery = `insert into public.tickets (
+    uuid,
+    ticket_type_id,
+    valid_from,
+    valid_to
+  ) values (
+    $1,
+    $2,
+    $3,
+    $4
+  ) RETURNING uuid;
+  `
 
-  return ticket.uuid
+  const queryResult = await pool.query(ticketOptionsQuery, [
+    ticket.uuid,
+    ticket.ticketTypeId,
+    ticket.validFrom,
+    ticket.validTo,
+  ])
+
+  return queryResult.rows[0]['uuid']
 }

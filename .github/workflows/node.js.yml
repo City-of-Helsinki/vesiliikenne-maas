@@ -7,7 +7,6 @@ on: [push, pull_request]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     services:
@@ -28,24 +27,25 @@ jobs:
         node-version: [14.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: GTFS import
-      uses: ./actions/gtfs-import
-      id: gtfs-import
-      with:
-        postgres-host: postgres
-        postgres-port: 5432
-        postgres-user: postgres
-        postgres-password: postgres
-    - run: npm i
-    - run: npm run build --if-present
-    - name: Run tests
-      run: npm test
-      env:
-        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
-    - run: npm run doc
-    - run: ./scripts/check_dirty_wc.sh
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: GTFS import
+        uses: ./actions/gtfs-import
+        id: gtfs-import
+        with:
+          postgres-host: postgres
+          postgres-port: 5432
+          postgres-user: postgres
+          postgres-password: postgres
+      - run: npm i
+      - run: npm run build --if-present
+      - run: DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres npm run migrate up
+      - name: Run tests
+        run: npm test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+      - run: npm run doc
+      - run: ./scripts/check_dirty_wc.sh

@@ -110,6 +110,7 @@ dist
 build
 .idea
 *~
+.vscode
 
 api.http
 tickets.csv

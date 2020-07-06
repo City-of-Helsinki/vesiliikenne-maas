@@ -26,7 +26,7 @@ services:
     command: /entrypoint.sh --wait-until-ready
     environment:
       - PGHOST=postgis
-      - PGPORT=5432 
+      - PGPORT=5432
       - PGUSER=postgres
       - PGPASSWORD=hki-vesiliikenne
     depends_on:

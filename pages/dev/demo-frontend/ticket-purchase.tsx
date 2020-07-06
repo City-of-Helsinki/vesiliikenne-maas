@@ -16,7 +16,11 @@ interface props {
   ticket: TSPTicket | null
 }
 
-const TicketPurchase: NextPage<props> = ({ DEV_API_KEY, ALLOW_DEMO_FRONTEND, ticket }) => {
+const TicketPurchase: NextPage<props> = ({
+  DEV_API_KEY,
+  ALLOW_DEMO_FRONTEND,
+  ticket,
+}) => {
   if (ALLOW_DEMO_FRONTEND !== 'allow') {
     return <NextError statusCode={404} />
   }
@@ -95,16 +99,20 @@ const TicketPurchase: NextPage<props> = ({ DEV_API_KEY, ALLOW_DEMO_FRONTEND, tic
           <tbody>
             <tr>
               <td style={{ paddingLeft: '12px' }}>
-                <div style={{
-                  width: '32px',
-                  height: '32px',
-                  background: `url(${hslFerryImage})`,
-                  backgroundSize: 'contain',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center',
-                }}/>
+                <div
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    background: `url(${hslFerryImage})`,
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                  }}
+                />
               </td>
-              <td style={{ width: '100%', paddingLeft: '12px' }}>{ticket.name}</td>
+              <td style={{ width: '100%', paddingLeft: '12px' }}>
+                {ticket.name}
+              </td>
               <td style={{ padding: '12px' }} align="right">
                 {formatPrice(ticket.amount, ticket.currency)}
               </td>
@@ -152,7 +160,7 @@ const TicketPurchase: NextPage<props> = ({ DEV_API_KEY, ALLOW_DEMO_FRONTEND, tic
                 <td style={{ paddingLeft: '12px', paddingRight: '6px' }}>
                   <button
                     style={secondaryButtonStyle}
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault()
                       handleCancelClick().then()
                     }}
@@ -178,9 +186,11 @@ const parseTicket = (query: ParsedUrlQuery): TSPTicket | null => {
   if (result.id === undefined) {
     return null
   }
+
   if (result.currency === undefined) {
     return null
   }
+
   if (result.amount === undefined) {
     return null
   }
