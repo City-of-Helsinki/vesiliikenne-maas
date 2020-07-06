@@ -137,7 +137,6 @@ export const findTicket = async (uuid: string): Promise<Ticket> => {
     ticket_option_id,
     valid_from,
     valid_to,
-    ticket_option_id,
     ticket_options.agency as agency,
     ticket_options.discount_group as discount_group,
     ticket_options.description as description,
