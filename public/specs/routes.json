@@ -373,7 +373,7 @@
                             "type": "string",
                             "example": "jt-line"
                           },
-                          "ticketTypeId": {
+                          "ticketOptionId": {
                             "type": "string",
                             "example": "1"
                           },
