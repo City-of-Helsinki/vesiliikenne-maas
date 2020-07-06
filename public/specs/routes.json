@@ -232,7 +232,7 @@
                           "type": "string",
                           "example": "waterbus OY"
                         },
-                        "ticketTypeId": {
+                        "ticketOptionId": {
                           "type": "number",
                           "example": 1
                         },
