@@ -40,7 +40,7 @@ exports.up = pgm => {
   pgm.sql(`
   CREATE TABLE IF NOT EXISTS tickets(
     uuid VARCHAR(64) NOT NULL,
-    ticket_type_id INTEGER REFERENCES ticket_options(id) NOT NULL,
+    ticket_option_id INTEGER REFERENCES ticket_options(id) NOT NULL,
     valid_from TIMESTAMPTZ NOT NULL,
     valid_to TIMESTAMPTZ NOT NULL,
     PRIMARY KEY (uuid)
