@@ -68,9 +68,9 @@ const TicketPage: NextPage<TicketPageProperties> = ({
         <img alt="the qr code" style={qrCodeStyle} src={qrCodeContents} />
         <div>
           <div style={ticketInfoStyle}>
-            <p>{ticket.ticketTypeInfo?.name}</p>
+            <p>{ticket.ticketName}</p>
             <p>
-              {ticket.agency}, {ticket.discountGroupId}
+              {ticket.agency}, {ticket.discountGroup}
             </p>
             <time>
               {moment(ticket.validFrom)
@@ -85,7 +85,7 @@ const TicketPage: NextPage<TicketPageProperties> = ({
           <div>
             <img width={'30%'} src="/images/jt-logo.jpg" alt="JT-logo" />
           </div>
-          <p>{ticket.ticketTypeInfo?.description}</p>
+          <p>{ticket.description}</p>
         </div>
       </div>
     </main>
