@@ -33,6 +33,7 @@ export const TicketType = t.strict({
   description: t.string,
   ticketName: t.string,
   amount: t.string,
+  currency: t.string,
   agency: t.string,
   discountGroup: t.string,
   validTo: t.string,
