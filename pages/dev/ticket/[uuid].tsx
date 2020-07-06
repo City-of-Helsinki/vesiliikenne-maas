@@ -24,7 +24,7 @@ const TicketPage: NextPage<TicketPageProperties> = ({
   }
   return (
     <TicketContainer
-      discountGroup={ticket.discountGroupId}
+      discountGroup={ticket.discountGroup}
       validTo={moment(ticket.validTo)}
       qrCodeContents={qrCodeContents}
     />

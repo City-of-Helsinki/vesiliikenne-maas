@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NewTicketEntry } from './types'
 import jsonwebtoken from 'jsonwebtoken'
 
 export const isString = (text: any): text is string => {
@@ -19,17 +18,6 @@ export const parseNumber = (num: any): number => {
     throw new Error(`${num} is not a number`)
   }
   return Number(num)
-}
-
-export const toNewTicketEntry = (object: any): NewTicketEntry => {
-  const agency = parseString(object.agency, 'Agency')
-  const discountGroupId = parseString(object.discountGroupId, 'DiscountGroupId')
-  const ticketTypeId = parseInt(object.ticketTypeId, 10)
-  return {
-    agency,
-    discountGroupId,
-    ticketTypeId,
-  }
 }
 
 const base64decode = (input: string): string =>

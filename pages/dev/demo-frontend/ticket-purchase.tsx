@@ -2,8 +2,8 @@ import { GetServerSideProps, NextPage } from 'next'
 import * as React from 'react'
 import NextError from 'next/error'
 import Router from 'next/router'
-import { TSPTicket } from '../../../lib/types'
 import { formatPrice } from '../../../lib/currency'
+import { TicketOption } from '../../../lib/types'
 import { CSSProperties } from 'react'
 import { ColorProperty } from 'csstype'
 import { ParsedUrlQuery } from 'querystring'
@@ -13,7 +13,7 @@ import hslFerryImage from '../../../lib/hsl-ferry-image'
 interface props {
   DEV_API_KEY: string
   ALLOW_DEMO_FRONTEND: string
-  ticket: TSPTicket | null
+  ticket: TicketOption | null
 }
 
 const TicketPurchase: NextPage<props> = ({
@@ -33,8 +33,6 @@ const TicketPurchase: NextPage<props> = ({
         'x-api-key': DEV_API_KEY,
       },
       body: JSON.stringify({
-        agency: 'JT-Line',
-        discountGroupId: 'Adult',
         ticketTypeId: '1',
       }),
     })
@@ -111,7 +109,7 @@ const TicketPurchase: NextPage<props> = ({
                 />
               </td>
               <td style={{ width: '100%', paddingLeft: '12px' }}>
-                {ticket.name}
+                {ticket.ticketName}
               </td>
               <td style={{ padding: '12px' }} align="right">
                 {formatPrice(ticket.amount, ticket.currency)}
@@ -181,8 +179,8 @@ const TicketPurchase: NextPage<props> = ({
   )
 }
 
-const parseTicket = (query: ParsedUrlQuery): TSPTicket | null => {
-  const result = (query as unknown) as TSPTicket
+const parseTicket = (query: ParsedUrlQuery): TicketOption | null => {
+  const result = (query as unknown) as TicketOption
   if (result.id === undefined) {
     return null
   }

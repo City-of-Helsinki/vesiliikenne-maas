@@ -1,3 +1,5 @@
+import * as t from 'io-ts'
+
 export interface QueryResponse {
   data: QueryResponseData
 }
@@ -24,21 +26,21 @@ interface Agency {
   name: string
 }
 
-export interface Ticket {
-  uuid: string
-  agency: string
-  ticketTypeId: number
-  ticketTypeInfo: TSPTicket
-  discountGroupId: string
-  validFrom: string
-  validTo: string
-}
+export const TicketType = t.strict({
+  uuid: t.string,
+  ticketOptionId: t.number,
+  logoId: t.union([t.string, t.undefined]),
+  description: t.string,
+  ticketName: t.string,
+  amount: t.string,
+  currency: t.string,
+  agency: t.string,
+  discountGroup: t.string,
+  validTo: t.string,
+  validFrom: t.string,
+})
 
-export interface NewTicketEntry {
-  agency: string
-  discountGroupId: string
-  ticketTypeId: number
-}
+export type Ticket = t.TypeOf<typeof TicketType>
 
 interface crdResponses {
   saleId: string
@@ -53,15 +55,22 @@ export interface CrdResponse {
   status: number
 }
 
-export interface TSPTicket {
-  id: number
-  logoId?: string
-  description: string
-  name: string
-  amount: string
-  currency: string
-  validityseconds?: number
-}
+export const TicketOptionType = t.strict({
+  id: t.number,
+  logoId: t.union([t.string, t.undefined]),
+  description: t.string,
+  ticketName: t.string,
+  amount: t.string,
+  agency: t.string,
+  discountGroup: t.string,
+  currency: t.string,
+  validityseconds: t.union([t.number, t.undefined]),
+})
+
+export const TicketOptionsType = t.array(TicketOptionType)
+
+export type TicketOption = t.TypeOf<typeof TicketOptionType>
+export type TicketOptions = t.TypeOf<typeof TicketOptionsType>
 
 export interface Station {
   id: string

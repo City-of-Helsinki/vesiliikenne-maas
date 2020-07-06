@@ -34,9 +34,9 @@ const TicketList = ({ tickets }: Props) => {
       <a style={aStyle}>
         <TicketListItem
           agencyName={ticket.agency}
-          discountGroupId={ticket.discountGroupId}
-          ticketName={ticket.ticketTypeInfo?.name}
-          description={ticket.ticketTypeInfo?.description}
+          discountGroupId={ticket.discountGroup}
+          ticketName={ticket.ticketName}
+          description={ticket.description}
           validFrom={ticket.validFrom}
           validTo={ticket.validTo}
         />

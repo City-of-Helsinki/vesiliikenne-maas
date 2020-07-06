@@ -43,10 +43,10 @@ import { createJWT } from '../../../lib/utils'
  *                      example: be78e1f9-e4a4-48d2-b9fe-50aa335e5371
  *                    agency:
  *                      type: string
- *                      example: jt-line
- *                    ticketTypeId:
- *                      type: string
- *                      example: "1"
+ *                      example: waterbus OY
+ *                    ticketOptionId:
+ *                      type: number
+ *                      example: 1
  *                    validFrom:
  *                      type: string
  *                      example: 2020-06-25T15:56:18+03:00
@@ -57,9 +57,22 @@ import { createJWT } from '../../../lib/utils'
  *                      type: string
  *                      example: <div> ...Ticket... </div>
  *                      description: "The ticket in html format"
- *                    validUntil:
+ *                    discountGroup:
  *                      type: string
- *                      description: "Validity"
+ *                      description: customer discount group
+ *                      example: adult
+ *                    description:
+ *                      type: string
+ *                      description: ticket description
+ *                      example: island hopping
+ *                    logoid:
+ *                      type: string
+ *                      description: agencys logoid
+ *                      example: waterbusoy.jpg
+ *                    qrcode:
+ *                      type: string
+ *                      description: qrcode png image in base64
+ *                      example: data:image/png;base64,iVBORw0KGg...
  *       '404':
  *         description: A ticket with the ticketId was not found
  */
@@ -67,22 +80,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { uuid } = req.query
   if (typeof uuid !== 'string')
     throw new Error('Argument uuid is not of type string')
-
-  const ticket = await findTicket(uuid)
-
-  if (!ticket.uuid) {
-    return res.status(404).json({ error: 'Ticket not found.' })
+  try {
+    const ticket = await findTicket(uuid)
+    const qrCode = await qrcode.toDataURL(ticket.uuid)
+    const html = renderToString(
+      TicketContainer({
+        discountGroup: ticket.discountGroup,
+        validTo: moment(ticket.validTo),
+        qrCodeContents: qrCode,
+      }),
+    )
+    const jwToken = await createJWT({ ...ticket, ticket: html, qrCode })
+    res.json({ ticketdata: jwToken })
+  } catch (error) {
+    if (error.name === 'TypeError') {
+      return res.status(404).json({ error: 'invalid ticket UUID' })
+    }
+    res.status(500).send(error.message)
   }
-
-  const html = renderToString(
-    TicketContainer({
-      discountGroup: ticket.discountGroupId,
-      validTo: moment(ticket.validTo),
-      qrCodeContents: await qrcode.toDataURL(ticket.uuid),
-    }),
-  )
-  const jwToken = await createJWT({ ...ticket, ticket: html })
-  res.json({ ticketdata: jwToken })
 }
 
 export default withApiKeyAuthentication(handler)
