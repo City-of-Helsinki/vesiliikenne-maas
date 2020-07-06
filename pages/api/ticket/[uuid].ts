@@ -44,7 +44,7 @@ import { createJWT } from '../../../lib/utils'
  *                    agency:
  *                      type: string
  *                      example: waterbus OY
- *                    ticketTypeId:
+ *                    ticketOptionId:
  *                      type: number
  *                      example: 1
  *                    validFrom:
