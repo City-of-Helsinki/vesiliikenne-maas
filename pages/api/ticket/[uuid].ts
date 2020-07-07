@@ -84,7 +84,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const qrCode = await qrcode.toDataURL(ticket.uuid)
     const html = renderToString(
       TicketContainer({
-        ticket: ticket,
+        ticket,
         qrCodeContents: qrCode,
       }),
     )

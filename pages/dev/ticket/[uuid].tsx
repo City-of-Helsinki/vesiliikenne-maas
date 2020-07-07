@@ -33,7 +33,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   return {
     props: {
-      ticket: ticket,
+      ticket,
       qrCodeContents: await qrcode.toDataURL(uuid),
       NODE_ENV: process.env.NODE_ENV,
     },

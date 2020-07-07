@@ -374,8 +374,8 @@
                             "example": "jt-line"
                           },
                           "ticketOptionId": {
-                            "type": "string",
-                            "example": "1"
+                            "type": "number",
+                            "example": 1
                           },
                           "validFrom": {
                             "type": "string",

@@ -1,7 +1,6 @@
 import * as React from 'react'
 import moment from 'moment-timezone'
 import { Ticket } from '../lib/types'
-import Link from 'next/link'
 
 interface Props {
   ticket: Ticket
@@ -14,20 +13,6 @@ const bodyStyle = {
   gridTemplateRows: '8% 92%',
   height: '90vh',
   textAlign: 'center' as const, // https://github.com/typestyle/typestyle/issues/281
-}
-
-const navStyle = {
-  background: '#2f296a',
-  padding: '10px',
-  display: 'grid',
-  gridTemplateColumns: '50% 50%',
-  alignContent: 'center',
-  textAlign: 'left' as const,
-}
-
-const linkStyle = {
-  color: '#fff',
-  textDecoration: 'none',
 }
 
 const ticketContainerStyle = {

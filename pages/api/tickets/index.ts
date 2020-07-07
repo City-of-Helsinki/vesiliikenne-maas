@@ -37,8 +37,8 @@ import { createJWT } from '../../../lib/utils'
  *                        type: string
  *                        example: jt-line
  *                      ticketOptionId:
- *                        type: string
- *                        example: "1"
+ *                        type: number
+ *                        example: 1
  *                      validFrom:
  *                        type: string
  *                        example: 2020-06-25T15:56:18+03:00
