@@ -46,11 +46,6 @@ const ticketInfoStyle = {
 const TicketContainer = ({ ticket, qrCodeContents }: Props) => {
   return (
     <main style={bodyStyle}>
-      <nav style={navStyle}>
-        <Link href="/dev/demo-frontend/ticket-list">
-          <a style={linkStyle}>&lt; Back</a>
-        </Link>
-      </nav>
       <div style={ticketContainerStyle}>
         <img alt="the qr code" style={qrCodeStyle} src={qrCodeContents} />
         <div>
