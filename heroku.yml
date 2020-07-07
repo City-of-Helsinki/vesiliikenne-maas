@@ -4,4 +4,4 @@ build:
 release:
   image: web
   command:
-    - 'echo "$ALLOW_DEMO_FRONTEND" && yarn run node-pg-migrate up'
+    - 'yarn run node-pg-migrate up'
