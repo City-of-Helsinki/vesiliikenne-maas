@@ -26,23 +26,25 @@ interface Props {
 }
 
 const TicketList = ({ tickets }: Props) => {
-  const ticketsList = tickets.map(ticket => (
-    <Link
-      key={ticket.uuid}
-      href={`/dev/demo-frontend/view-ticket/${ticket.uuid}`}
-    >
-      <a style={aStyle}>
-        <TicketListItem
-          agencyName={ticket.agency}
-          discountGroupId={ticket.discountGroup}
-          ticketName={ticket.ticketName}
-          description={ticket.description}
-          validFrom={ticket.validFrom}
-          validTo={ticket.validTo}
-        />
-      </a>
-    </Link>
-  ))
+  const ticketsList = tickets.map(ticket => {
+    return (
+      <Link
+        key={ticket.uuid}
+        href={`/dev/demo-frontend/view-ticket/${ticket.uuid}`}
+      >
+        <a style={aStyle}>
+          <TicketListItem
+            agencyName={ticket.agency}
+            discountGroup={ticket.discountGroup}
+            ticketName={ticket.ticketName}
+            description={ticket.description}
+            validFrom={ticket.validFrom}
+            validTo={ticket.validTo}
+          />
+        </a>
+      </Link>
+    )
+  })
 
   return (
     <div style={ticketListStyle}>

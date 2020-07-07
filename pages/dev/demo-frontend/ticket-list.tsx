@@ -32,7 +32,6 @@ const TicketListPage: NextPage<props> = ({
         await response.data,
         jwtPublicKey,
       )
-
       setTickets(decodedTickets.tickets)
     }
 

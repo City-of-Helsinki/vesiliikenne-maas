@@ -23,7 +23,7 @@ const pStyle = {
 
 interface Props {
   agencyName: string
-  discountGroupId: string
+  discountGroup: string
   ticketName: string
   description: string
   validFrom: string
@@ -32,7 +32,7 @@ interface Props {
 
 const TicketListItem = ({
   agencyName,
-  discountGroupId,
+  discountGroup,
   ticketName,
   description,
   validFrom,
@@ -41,7 +41,7 @@ const TicketListItem = ({
   return (
     <div style={ticketStyle}>
       <h1 style={h1Style}>
-        {agencyName}, {discountGroupId}
+        {agencyName}, {discountGroup}
       </h1>
       <span>{ticketName} </span>
       <span>
