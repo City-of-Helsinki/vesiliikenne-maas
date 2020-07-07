@@ -17,8 +17,10 @@
     "doc": "swagger-jsdoc -o public/specs/routes.json -d public/specs/swaggerDef.js",
     "migrate": "node-pg-migrate",
     "run-migrations-dev": "DATABASE_URL=postgresql://postgres:hki-vesiliikenne@localhost:5432/postgres node-pg-migrate",
-    "test": "jest",
-    "heroku-postbuild": "next build && node-pg-migrate up"
+    "test": "DATABASE_URL=postgresql://postgres:hki-vesiliikenne@localhost:5432/postgres jest",
+    "heroku-postbuild": "next build && node-pg-migrate up",
+    "ci-test": "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres jest",
+    "ci-migrate-up": "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres node-pg-migrate up"
   },
   "dependencies": {
     "axios": "^0.19.2",

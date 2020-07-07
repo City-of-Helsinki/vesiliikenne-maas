@@ -33,7 +33,7 @@ const TicketPurchase: NextPage<props> = ({
         'x-api-key': DEV_API_KEY,
       },
       body: JSON.stringify({
-        ticketTypeId: '1',
+        ticketOptionId: 1,
       }),
     })
     await response.json()

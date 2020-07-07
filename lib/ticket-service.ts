@@ -93,34 +93,16 @@ from ticket_options;
 }
 
 export const getTickets = async () => {
-  const findTicketQuery = `with single_ticket as (
-    select uuid,
-    ticket_option_id,
-    valid_from,
-    valid_to,
-    public.ticket_options.agency AS agency,
-    public.ticket_options.discount_group AS discount_group,
-    json_build_object(
-        'id', id,
-        'description', description,
-        'name', name,
-        'amount', to_char(amount / 100, 'FM9999.00'),
-        'currency', currency
-    ) as ticket_type_info
-  from public.tickets
-      join public.ticket_options on ticket_option_id = id)
-  select jsonb_agg(
-    json_build_object(
-        'uuid', uuid,
-        'agency', agency,
-        'discountGroupId', discount_group,
-        'ticketOptionId', ticket_option_id,
-        'ticketTypeInfo', ticket_type_info,
-        'validFrom', valid_from,
-        'validTo', valid_to
-    )
-  ) as aggregated_out
-  from single_ticket;
+  const findTicketQuery = `
+  select
+      uuid,
+      valid_from as "validFrom",
+      valid_to as "validTo",
+      public.ticket_options.agency,
+      public.ticket_options.discount_group as "discountGroup",
+      public.ticket_options.name,
+      public.ticket_options.description
+    from public.tickets join public.ticket_options on ticket_option_id = id;
   `
 
   const queryResult = await pool.query(findTicketQuery)
@@ -128,7 +110,7 @@ export const getTickets = async () => {
   if (queryResult.rows.length === 0) {
     return []
   }
-  return queryResult.rows[0]['aggregated_out']
+  return queryResult.rows
 }
 
 export const findTicket = async (uuid: string): Promise<Ticket> => {
@@ -200,7 +182,6 @@ export const saveTicket = async (ticket: Ticket): Promise<string> => {
     $4
   ) RETURNING uuid;
   `
-
   const queryResult = await pool.query(ticketOptionsQuery, [
     ticket.uuid,
     ticket.ticketOptionId,
