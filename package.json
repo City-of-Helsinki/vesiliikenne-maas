@@ -18,7 +18,9 @@
     "migrate": "node-pg-migrate",
     "run-migrations-dev": "DATABASE_URL=postgresql://postgres:hki-vesiliikenne@localhost:5432/postgres node-pg-migrate",
     "test": "DATABASE_URL=postgresql://postgres:hki-vesiliikenne@localhost:5432/postgres jest",
-    "heroku-postbuild": "next build && node-pg-migrate up"
+    "heroku-postbuild": "next build && node-pg-migrate up",
+    "ci-test": "jest",
+    "ci-migrate-up": "node-pg-migrate up"
   },
   "dependencies": {
     "axios": "^0.19.2",
