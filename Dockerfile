@@ -29,4 +29,4 @@ COPY --from=build --chown=node:node /app/.next ./.next
 COPY --from=build --chown=node:node /app/public ./public
 COPY --from=build --chown=node:node /app/migrations ./migrations
 
-CMD ["yarn", "run", "next", "start", "-p", "$PORT"]
+CMD ["yarn", "run", "next", "start", "-p", "8080"]
