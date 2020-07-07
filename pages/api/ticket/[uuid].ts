@@ -1,4 +1,5 @@
 import { renderToString } from 'react-dom/server'
+import moment from 'moment-timezone'
 import qrcode from 'qrcode'
 import TicketContainer from '../../../components/TicketContainer'
 import { findTicket } from '../../../lib/ticket-service'
@@ -81,6 +82,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     throw new Error('Argument uuid is not of type string')
   try {
     const ticket = await findTicket(uuid)
+
+    const now = moment().tz('Europe/Helsinki')
+    const ticketExpiryDate = moment(ticket.validTo).tz('Europe/Helsinki')
+
+    if (now.isAfter(ticketExpiryDate)) {
+      return res.status(404).json({ error: 'Ticket expired' })
+    }
+
     const qrCode = await qrcode.toDataURL(ticket.uuid)
     const html = renderToString(
       TicketContainer({
@@ -92,7 +101,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.json({ ticketdata: jwToken })
   } catch (error) {
     if (error.name === 'TypeError') {
-      return res.status(404).json({ error: 'invalid ticket UUID' })
+      return res.status(404).json({ error: 'Invalid ticket UUID' })
     }
     res.status(500).send(error.message)
   }
