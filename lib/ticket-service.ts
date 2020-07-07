@@ -56,7 +56,9 @@ export const getTicketOptions = async (): Promise<TicketOptions> => {
   throw new Error(PathReporter.report(tickets).toString())
 }
 
-const getTicketOption = async (ticketTypeId: number): Promise<TicketOption> => {
+const getTicketOption = async (
+  ticketOptionId: number,
+): Promise<TicketOption> => {
   const ticketOptionsQuery = `with ticket_options as (
     select id,
     description,
@@ -82,7 +84,7 @@ select jsonb_agg(
 from ticket_options;
 `
 
-  const queryResult = await pool.query(ticketOptionsQuery, [ticketTypeId])
+  const queryResult = await pool.query(ticketOptionsQuery, [ticketOptionId])
   const ticket = TicketOptionType.decode(
     queryResult.rows[0]['aggregated_out'][0],
   )
@@ -112,7 +114,7 @@ export const getTickets = async () => {
         'uuid', uuid,
         'agency', agency,
         'discountGroupId', discount_group,
-        'ticketTypeId', ticket_option_id,
+        'ticketOptionId', ticket_option_id,
         'ticketTypeInfo', ticket_type_info,
         'validFrom', valid_from,
         'validTo', valid_to
@@ -135,7 +137,6 @@ export const findTicket = async (uuid: string): Promise<Ticket> => {
     ticket_option_id,
     valid_from,
     valid_to,
-    ticket_option_id,
     ticket_options.agency as agency,
     ticket_options.discount_group as discount_group,
     ticket_options.description as description,

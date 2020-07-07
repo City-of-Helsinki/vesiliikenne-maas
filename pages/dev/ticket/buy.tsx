@@ -20,9 +20,7 @@ const TicketPage: NextPage<props> = ({ NODE_ENV }) => {
         'x-api-key': token,
       },
       body: JSON.stringify({
-        agency: 'JT-Line',
-        discountGroupId: 'Adult',
-        ticketTypeId: '1',
+        ticketOptionId: 1,
       }),
     })
 
