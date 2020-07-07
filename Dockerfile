@@ -27,6 +27,7 @@ RUN yarn --frozen-lockfile --no-progress
 
 COPY --from=build --chown=node:node /app/.next ./.next
 COPY --from=build --chown=node:node /app/public ./public
+COPY --from=build --chown=node:node /app/migrations ./migrations
 
 EXPOSE 8080
 
