@@ -43,7 +43,7 @@ const ticketInfoStyle = {
   fontWeight: 600,
 }
 
-const TicketPage = ({ ticket, qrCodeContents }: Props) => {
+const TicketContainer = ({ ticket, qrCodeContents }: Props) => {
   return (
     <main style={bodyStyle}>
       <nav style={navStyle}>
@@ -79,4 +79,4 @@ const TicketPage = ({ ticket, qrCodeContents }: Props) => {
   )
 }
 
-export default TicketPage
+export default TicketContainer
