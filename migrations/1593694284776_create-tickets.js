@@ -24,7 +24,7 @@ exports.up = pgm => {
     "name",
     discount_group,
     agency,
-    logoId,
+    logo_id,
     amount,
     instructions,
     currency
@@ -35,7 +35,7 @@ exports.up = pgm => {
     'JT-Line',
     'jt-logo.jpg',
     1200,
-    'With this one-day-ticket passenger can travel as many journeys as she/he wishes during one day to Lonna, Vallisaari and Suomenlinna. Please show the bar code on your smartphone to the fare collector. The ticket is not for a specific departure. Passengers board in their order of arrival. Please note that the ticket is only valid for vessels operated by JT-Line.'
+    'With this one-day-ticket passenger can travel as many journeys as she/he wishes during one day to Lonna, Vallisaari and Suomenlinna. Please show the bar code on your smartphone to the fare collector. The ticket is not for a specific departure. Passengers board in their order of arrival. Please note that the ticket is only valid for vessels operated by JT-Line.',
     'EUR'
   );
   `)
