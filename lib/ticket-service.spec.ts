@@ -6,7 +6,6 @@ import {
   createTicket,
   findTicket,
 } from './ticket-service'
-import { pool } from '../lib/db'
 import { isUuid } from 'uuidv4'
 
 describe('ticket-service', () => {
@@ -38,11 +37,8 @@ describe('ticket-service', () => {
   })
 })
 
-describe('Buying ticket flow', () => {
-  afterAll(async () => {
-    await pool.end()
-  })
-  test('ticket can be bought from fetching ticketOptions', async () => {
+describe('Ticket purchase flow', () => {
+  test('Ticket can be purchased with ticket option information', async () => {
     const ticketOptions = await getTicketOptions()
     const ticketOptionId = ticketOptions[0].id
     expect(ticketOptionId).toEqual(1)
@@ -54,6 +50,6 @@ describe('Buying ticket flow', () => {
     expect(savedUuid).toEqual(newTicket.uuid)
 
     const ticketInDb = await findTicket(savedUuid)
-    expect(ticketInDb).toBeDefined()
+    expect(ticketInDb.uuid).toEqual(newTicket.uuid)
   })
 })
