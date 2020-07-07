@@ -27,7 +27,6 @@ RUN yarn --frozen-lockfile --no-progress
 
 COPY --from=build --chown=node:node /app/.next ./.next
 COPY --from=build --chown=node:node /app/public ./public
-
-EXPOSE 8080
+COPY --from=build --chown=node:node /app/migrations ./migrations
 
 CMD ["yarn", "run", "next", "start", "-p", "8080"]
