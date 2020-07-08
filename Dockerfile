@@ -2,6 +2,9 @@ FROM node:14-alpine AS node
 
 FROM node AS build
 
+# Required for running the test_and_import.sh as a scheduled command
+RUN apk add --update bash git unzip curl make postgresql-client
+
 WORKDIR /app
 COPY package.json yarn.lock ./
 
