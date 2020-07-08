@@ -39,26 +39,43 @@ import { parseNumber } from '../../../lib/utils'
  *                 type: object
  *                 properties:
  *                   id:
- *                     type: string
+ *                     type: number
  *                     description: "Ticket id"
+ *                     example: 1
  *                   logoId:
  *                     type: string
  *                     description: "Id of the logo to display"
+ *                     example: "waterbus.png"
+ *                   agency:
+ *                     type: string
+ *                     example: waterbusOY
+ *                   discountGroup:
+ *                     type: string
+ *                     example: adult
  *                   description:
  *                     type: string
  *                     description: "Ticket description"
- *                   name:
+ *                     example: "Hop-on hop-off ticket"
+ *                   instructions:
+ *                     type: string
+ *                     description: "Instructions how to use the ticket"
+ *                     example: "show ticket to inspector when boarding the ferry"
+ *                   ticketName:
  *                     type: string
  *                     description: "Ticket name"
+ *                     example: "island hopping"
  *                   amount:
  *                     type: string
  *                     description: "Ticket price"
+ *                     example: "10.00"
  *                   currency:
  *                     type: string
  *                     description: "Ticket currency"
+ *                     example: "EUR"
  *                   validityseconds:
  *                     type: number
  *                     description: "How long ticket is valid in seconds"
+ *                     example: 124232
  *       '400':
  *         description: Invalid startTime parameter
  *       '401':
