@@ -53,16 +53,19 @@ const handler = async (
   res: NextApiResponse,
 ): Promise<void> => {
   if (req.method !== 'POST') {
-    return res.status(405).json({ Error: 'Cannot GET' })
+    return res.status(405).json({ error: 'Cannot GET' })
   }
-
+  const ticketOptionId = req.body.ticketOptionId
+  if (isNaN(ticketOptionId)) {
+    return res.status(400).json({ error: 'ticketOptionId is not a number' })
+  }
   let ticket: Ticket
 
   try {
-    ticket = await createTicket(req.body.ticketOptionId)
+    ticket = await createTicket(ticketOptionId)
   } catch (error) {
     console.error(error.message)
-    if (error.name === 'TypeError') {
+    if (error instanceof TypeError) {
       return res.status(400).json({ error: 'Invalid ticketOptionId' })
     }
     return res.status(500).send('Failed creating ticket')
@@ -73,10 +76,13 @@ const handler = async (
   if (!isString(crdUrl) || !isString(apiToken)) {
     return res.status(500).send('Server configuration error')
   }
-  const crdResponse = await postTicketToCRD(crdUrl, apiToken, ticket)
 
-  if (crdResponse.failed) {
-    return res.send(502)
+  if (process.env.ALLOW_CRD === 'allow') {
+    const crdResponse = await postTicketToCRD(crdUrl, apiToken, ticket)
+
+    if (crdResponse.failed) {
+      return res.status(502).send('bartrace response failed')
+    }
   }
 
   const uuid = await saveTicket(ticket)
