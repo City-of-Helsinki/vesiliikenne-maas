@@ -11,6 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await unlink('./tickets.csv')
     res.status(200).send('Tickets deleted')
   } catch (error) {
+    console.error(error)
     res.status(500).send('Failed deleting tickets')
   }
 }

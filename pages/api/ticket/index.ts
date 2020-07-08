@@ -61,10 +61,11 @@ const handler = async (
   try {
     ticket = await createTicket(req.body.ticketOptionId)
   } catch (error) {
+    console.error(error.message)
     if (error.name === 'TypeError') {
       return res.status(400).json({ error: 'Invalid ticketOptionId' })
     }
-    return res.status(500).send(error.message)
+    return res.status(500).send('Failed creating ticket')
   }
 
   const crdUrl = process.env.CRD_URL

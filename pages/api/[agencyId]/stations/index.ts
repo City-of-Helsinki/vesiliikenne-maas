@@ -2,11 +2,11 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { withApiKeyAuthentication } from '../../../../lib/middleware'
 import { isString } from '../../../../lib/utils'
 import { TicketRequestValidationError } from '../../../../lib/errors'
-import { pool } from '../../../../lib/db';
+import { pool } from '../../../../lib/db'
 
 // Mapping from supported agencyIds to their name in GTFS
 const agencyIdToAgencyName: { [key: string]: string } = {
-  "jtline": "JT-Line Oy"
+  jtline: 'JT-Line Oy',
 }
 
 // language=PostgreSQL
@@ -39,19 +39,23 @@ select jsonb_agg(
 from result_tops;
 `
 
-const parseQuery = (query: { [key: string]: string | string[]; }) => {
+const parseQuery = (query: { [key: string]: string | string[] }) => {
   const parseLocation = (locationString: string | string[]) => {
     if (!isString(locationString)) {
-      throw new TicketRequestValidationError("Required query parameter 'location' is missing.")
+      throw new TicketRequestValidationError(
+        "Required query parameter 'location' is missing.",
+      )
     }
 
-    const [latitude, longitude] = locationString.split(",")
+    const [latitude, longitude] = locationString.split(',')
     return { latitude, longitude }
   }
 
   const parseRadius = (radius: string | string[]) => {
     if (!isString(radius)) {
-      throw new TicketRequestValidationError("Required query parameter 'radius' is missing.")
+      throw new TicketRequestValidationError(
+        "Required query parameter 'radius' is missing.",
+      )
     }
     return radius
   }
@@ -59,7 +63,7 @@ const parseQuery = (query: { [key: string]: string | string[]; }) => {
   const { location, radius } = query
   return {
     location: parseLocation(location),
-    distanceInMeters: parseRadius(radius)
+    distanceInMeters: parseRadius(radius),
   }
 }
 
@@ -128,12 +132,12 @@ const parseQuery = (query: { [key: string]: string | string[]; }) => {
  *         description: Invalid api key
  *       '500':
  *         description: Server error
-*/
+ */
 export const handler = async (
   req: NextApiRequest,
   res: NextApiResponse,
 ): Promise<void> => {
-  const agencyId = req.query["agencyId"]
+  const agencyId = req.query['agencyId']
   if (!isString(agencyId)) {
     return res.status(400).json({ message: 'Invalid agencyId' })
   }
@@ -143,14 +147,24 @@ export const handler = async (
   }
 
   try {
-    const { location: { latitude, longitude }, distanceInMeters } = parseQuery(req.query)
-    const queryResult = await pool.query(stopsQuery, [agencyId, agencyName, longitude, latitude, distanceInMeters])
+    const {
+      location: { latitude, longitude },
+      distanceInMeters,
+    } = parseQuery(req.query)
+    const queryResult = await pool.query(stopsQuery, [
+      agencyId,
+      agencyName,
+      longitude,
+      latitude,
+      distanceInMeters,
+    ])
     res.json(queryResult.rows[0]['aggregated_out'])
-  } catch (e) {
-    if (e instanceof TicketRequestValidationError) {
-      res.status(400).send(e.message)
+  } catch (error) {
+    console.error(error.message)
+    if (error instanceof TicketRequestValidationError) {
+      res.status(400).send(error.message)
     } else {
-      throw e;
+      res.status(500).send('Internal server error')
     }
   }
 }

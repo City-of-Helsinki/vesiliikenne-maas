@@ -96,7 +96,8 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.json(ticketsWithSeconds)
   } catch (error) {
-    return res.status(500).send(error.message)
+    console.error(error)
+    return res.status(500).send('Failed getting ticket options')
   }
 }
 
