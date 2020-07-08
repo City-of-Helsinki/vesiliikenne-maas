@@ -52,7 +52,7 @@ const TicketContainer = ({ ticket, qrCodeContents }: Props) => {
           <div>
             <img width={'30%'} src="/images/jt-logo.jpg" alt="JT-logo" />
           </div>
-          <p>{ticket.description}</p>
+          <p style={{ margin: '2em' }}>{ticket.instructions}</p>
         </div>
       </div>
     </main>
