@@ -5,6 +5,7 @@ import { findTicket } from '../../../lib/ticket-service'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { withApiKeyAuthentication } from '../../../lib/middleware'
 import { createJWT } from '../../../lib/utils'
+import { TicketNotFoundError } from 'lib/errors'
 
 /**
  * @swagger
@@ -58,22 +59,36 @@ import { createJWT } from '../../../lib/utils'
  *                      description: "The ticket in html format"
  *                    discountGroup:
  *                      type: string
- *                      description: customer discount group
+ *                      description: The discount group the ticket was purchased for
  *                      example: adult
+ *                    amount:
+ *                      type: string
+ *                      description: The price of the ticket as floating point representation in string format
+ *                      example: "12.00"
+ *                    currency:
+ *                      type: string
+ *                      description: The currency the ticket price is provided as
+ *                      example: EUR
+ *                    ticketName:
+ *                      type: string
+ *                      description: The name of ticket
+ *                      example: Island Hopping
  *                    description:
  *                      type: string
- *                      description: ticket description
- *                      example: island hopping
- *                    logoid:
+ *                      description: The longer description of the ticket
+ *                      example: Hop-on hop-off -style ticket at the islands Matinkylä, Porvoo, and Iisalmi.
+ *                    logoId:
  *                      type: string
- *                      description: agencys logoid
+ *                      description: The logo path of the agency operating the waterbus line
  *                      example: waterbusoy.jpg
- *                    qrcode:
+ *                    qrCode:
  *                      type: string
- *                      description: qrcode png image in base64
+ *                      description: QRCode as a base64 encoded PNG image
  *                      example: data:image/png;base64,iVBORw0KGg...
  *       '404':
  *         description: A ticket with the ticketId was not found
+ *       '500':
+ *         description: Internal server error
  */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { uuid } = req.query
@@ -81,6 +96,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     throw new Error('Argument uuid is not of type string')
   try {
     const ticket = await findTicket(uuid)
+
     const qrCode = await qrcode.toDataURL(ticket.uuid)
     const html = renderToString(
       TicketContainer({
@@ -91,10 +107,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const jwToken = await createJWT({ ...ticket, ticket: html, qrCode })
     res.json({ ticketdata: jwToken })
   } catch (error) {
-    if (error.name === 'TypeError') {
-      return res.status(404).json({ error: 'invalid ticket UUID' })
+    console.error(error.message)
+
+    if (error instanceof TicketNotFoundError) {
+      return res.status(404).json({ error: 'Ticket UUID incorrect' })
     }
-    res.status(500).send(error.message)
+
+    res.status(500).send('Internal server error')
   }
 }
 

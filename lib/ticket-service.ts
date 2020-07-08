@@ -5,6 +5,7 @@ import { pool } from './db'
 import { isRight } from 'fp-ts/lib/Either'
 import { PathReporter } from 'io-ts/lib/PathReporter'
 import { TicketOptionsType, TicketOptionType, TicketType } from './types'
+import { TicketNotFoundError } from './errors'
 
 export const calculateTicketValidTo = (validFrom: moment.Moment) => {
   // If ticket purchased between 00:00 and 03:00, it ends within the same day
@@ -85,15 +86,20 @@ from ticket_options;
 `
 
   const queryResult = await pool.query(ticketOptionsQuery, [ticketOptionId])
+
+  if (queryResult.rows.length === 0) {
+    throw new TicketNotFoundError()
+  }
+
   const ticket = TicketOptionType.decode(
     queryResult.rows[0]['aggregated_out'][0],
   )
   if (isRight(ticket)) return ticket.right
-  throw new Error(PathReporter.report(ticket).toString())
+  throw new TypeError(PathReporter.report(ticket).toString())
 }
 
 export const getTickets = async () => {
-  const findTicketQuery = `
+  const getTicketsQuery = `
   select
       uuid,
       valid_from as "validFrom",
@@ -105,7 +111,7 @@ export const getTickets = async () => {
     from public.tickets join public.ticket_options on ticket_option_id = id;
   `
 
-  const queryResult = await pool.query(findTicketQuery)
+  const queryResult = await pool.query(getTicketsQuery)
 
   if (queryResult.rows.length === 0) {
     return []
@@ -114,45 +120,30 @@ export const getTickets = async () => {
 }
 
 export const findTicket = async (uuid: string): Promise<Ticket> => {
-  const findTicketQuery = `with single_ticket as (
-    select uuid,
-    ticket_option_id,
-    valid_from,
-    valid_to,
-    ticket_options.agency as agency,
-    ticket_options.discount_group as discount_group,
-    ticket_options.description as description,
-    ticket_options.logo_id as logo_id,
-    ticket_options.amount as amount,
-    ticket_options.name as ticket_name,
-    ticket_options.currency as currency
-  from public.tickets
+  const findTicketQuery = `
+    select 
+      uuid,
+      ticket_option_id as "ticketOptionId",
+      to_char(valid_from at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') as "validFrom",
+      to_char(valid_to at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') as "validTo",
+      ticket_options.agency as agency,
+      ticket_options.discount_group as "discountGroup",
+      ticket_options.description,
+      ticket_options.logo_id as "logoId",
+      to_char(ticket_options.amount / 100, 'FM9999.00') as amount,
+      ticket_options.name as "ticketName",
+      ticket_options.currency
+    from public.tickets
       join public.ticket_options on ticket_option_id = id
-  where uuid = $1)
-  select jsonb_agg(
-    json_build_object(
-        'uuid', uuid,
-        'ticketOptionId', ticket_option_id,
-        'validFrom', valid_from,
-        'validTo', valid_to,
-        'agency', agency,
-        'discountGroup', discount_group,
-        'description', description,
-        'logoId', logo_id,
-        'amount', to_char(amount / 100, 'FM9999.00'),
-        'currency', currency,
-        'ticketName', ticket_name
-    )
-  ) as aggregated_out
-  from single_ticket;
+    where uuid = $1 and valid_to > now();
   `
 
   const queryResult = await pool.query(findTicketQuery, [uuid])
 
-  const ticket = TicketType.decode(queryResult.rows[0]['aggregated_out'][0])
+  const ticket = TicketType.decode(queryResult.rows[0])
 
   if (isRight(ticket)) return ticket.right
-  throw new Error(PathReporter.report(ticket).toString())
+  throw new TypeError(PathReporter.report(ticket).toString())
 }
 
 export const createTicket = async (optionId: number): Promise<Ticket> => {
