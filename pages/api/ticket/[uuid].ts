@@ -107,13 +107,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const jwToken = await createJWT({ ...ticket, ticket: html, qrCode })
     res.json({ ticketdata: jwToken })
   } catch (error) {
+    console.error(error.message)
+
     if (error instanceof TicketNotFoundError) {
       return res.status(404).json({ error: 'Ticket UUID incorrect' })
     }
-    if (error instanceof TypeError) {
-      return res.status(500).send('Internal server error')
-    }
-    res.status(500).send(error.message)
+
+    res.status(500).send('Internal server error')
   }
 }
 
