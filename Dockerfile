@@ -31,5 +31,7 @@ RUN yarn --frozen-lockfile --no-progress
 COPY --from=build --chown=node:node /app/.next ./.next
 COPY --from=build --chown=node:node /app/public ./public
 COPY --from=build --chown=node:node /app/migrations ./migrations
+COPY --from=build --chown=node:node /app/scripts/test_and_import_gtfs.sh ./scripts/
+RUN chmod +x ./scripts/test_and_import_gtfs.sh
 
 CMD ["yarn", "run", "next", "start", "-p", "8080"]
