@@ -86,11 +86,16 @@ from ticket_options;
 `
 
   const queryResult = await pool.query(ticketOptionsQuery, [ticketOptionId])
+
+  if (queryResult.rows.length === 0) {
+    throw new TicketNotFoundError()
+  }
+
   const ticket = TicketOptionType.decode(
     queryResult.rows[0]['aggregated_out'][0],
   )
   if (isRight(ticket)) return ticket.right
-  throw new Error(PathReporter.report(ticket).toString())
+  throw new TypeError(PathReporter.report(ticket).toString())
 }
 
 export const getTickets = async () => {

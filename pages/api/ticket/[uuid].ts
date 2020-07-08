@@ -111,7 +111,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(404).json({ error: 'Ticket UUID incorrect' })
     }
     if (error instanceof TypeError) {
-      return res.status(500).json({ error: 'Internal server error' })
+      return res.status(500).send('Internal server error')
     }
     res.status(500).send(error.message)
   }
