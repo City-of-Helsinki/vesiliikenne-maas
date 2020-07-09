@@ -22,43 +22,51 @@ export const calculateTicketValidTo = (validFrom: moment.Moment) => {
   }
 }
 
-export const getTicketOptions = async (): Promise<TicketOptions> => {
+export const getTicketOptions = async (
+  language: string | undefined,
+): Promise<TicketOptions> => {
   const ticketOptionsQuery = `
-        select id,
-        description,
-        name as "ticketName",
-        discount_group "discountGroup",
+        select ticket_options.id as id,
+        ticket_translations.description,
+        ticket_translations.name as "ticketName",
+        ticket_translations.discount_group "discountGroup",
         to_char(ticket_options.amount / 100, 'FM9999.00') as amount,
         currency,
         agency,
         logo_id as "logoId",
-        instructions
-  from public.ticket_options`
+        ticket_translations.instructions
+  from public.ticket_options
+  join public.ticket_translations on ticket_options.id = ticket_option_id
+  where language = $1;`
 
-  const queryResult = await pool.query(ticketOptionsQuery)
+  const queryResult = await pool.query(ticketOptionsQuery, [language || 'en'])
   const tickets = TicketOptionsType.decode(queryResult.rows)
-
   if (isRight(tickets)) return tickets.right
   throw new Error(PathReporter.report(tickets).toString())
 }
 
 const getTicketOption = async (
   ticketOptionId: number,
+  language = 'en',
 ): Promise<TicketOption> => {
-  const ticketOptionsQuery = `
-    select id,
-    description,
-    name as "ticketName",
-    discount_group as "discountGroup", 
-    to_char(ticket_options.amount / 100, 'FM9999.00') as amount,
-    currency,
-    agency,
-    logo_id as "logoId",
-    instructions
-from public.ticket_options where id = $1`
+  const ticketOptionQuery = `
+  select ticket_options.id as id,
+  ticket_translations.description,
+  ticket_translations.name as "ticketName",
+  ticket_translations.discount_group "discountGroup",
+  to_char(ticket_options.amount / 100, 'FM9999.00') as amount,
+  currency,
+  agency,
+  logo_id as "logoId",
+  ticket_translations.instructions
+from public.ticket_options
+join public.ticket_translations on ticket_options.id = ticket_option_id
+where language = $1 AND ticket_options.id = $2;`
 
-  const queryResult = await pool.query(ticketOptionsQuery, [ticketOptionId])
-
+  const queryResult = await pool.query(ticketOptionQuery, [
+    language,
+    ticketOptionId,
+  ])
   if (queryResult.rows.length === 0) {
     throw new TicketNotFoundError()
   }
@@ -75,10 +83,13 @@ export const getTickets = async () => {
       valid_from as "validFrom",
       valid_to as "validTo",
       public.ticket_options.agency,
-      public.ticket_options.discount_group as "discountGroup",
-      public.ticket_options.name,
-      public.ticket_options.description
-    from public.tickets join public.ticket_options on ticket_option_id = id;
+      public.ticket_translations.discount_group as "discountGroup",
+      public.ticket_translations.name,
+      public.ticket_translations.description
+    from tickets
+    join ticket_options on tickets.ticket_option_id = ticket_options.id
+    join ticket_translations on ticket_translations.ticket_option_id = ticket_options.id
+    where language = 'en';
   `
 
   const queryResult = await pool.query(getTicketsQuery)
@@ -89,38 +100,47 @@ export const getTickets = async () => {
   return queryResult.rows
 }
 
-export const findTicket = async (uuid: string): Promise<Ticket> => {
+export const findTicket = async (
+  uuid: string,
+  language = 'en',
+): Promise<Ticket> => {
   const findTicketQuery = `
     select 
       uuid,
-      ticket_option_id as "ticketOptionId",
+      tickets.ticket_option_id as "ticketOptionId",
       to_char(valid_from at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') as "validFrom",
       to_char(valid_to at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') as "validTo",
       ticket_options.agency as agency,
-      ticket_options.discount_group as "discountGroup",
-      ticket_options.description,
+      ticket_translations.discount_group as "discountGroup",
+      ticket_translations.description,
       ticket_options.logo_id as "logoId",
       to_char(ticket_options.amount / 100, 'FM9999.00') as amount,
-      ticket_options.name as "ticketName",
+      ticket_translations.name as "ticketName",
       ticket_options.currency,
-      ticket_options.instructions
+      ticket_translations.instructions
     from public.tickets
-      join public.ticket_options on ticket_option_id = id
-    where uuid = $1 and valid_to > now();
+      join public.ticket_options on ticket_options.id = tickets.ticket_option_id
+      join public.ticket_translations on ticket_translations.ticket_option_id = ticket_options.id
+    where uuid = $1 and valid_to > now() and ticket_translations.language = $2;
   `
 
-  const queryResult = await pool.query(findTicketQuery, [uuid])
+  const queryResult = await pool.query(findTicketQuery, [uuid, language])
 
   const ticket = TicketType.decode(queryResult.rows[0])
-
   if (isRight(ticket)) return ticket.right
   throw new TypeError(PathReporter.report(ticket).toString())
 }
 
-export const createTicket = async (optionId: number): Promise<Ticket> => {
+export const createTicket = async (
+  optionId: number,
+  language = 'en',
+): Promise<Ticket> => {
   const now = moment().tz('Europe/Helsinki')
 
-  const { id: ticketOptionId, ...rest } = await getTicketOption(optionId)
+  const { id: ticketOptionId, ...rest } = await getTicketOption(
+    optionId,
+    language,
+  )
 
   return {
     uuid: uuid(),

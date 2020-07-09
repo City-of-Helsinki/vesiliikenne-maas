@@ -64,10 +64,11 @@ const handler = async (
   try {
     ticket = await createTicket(ticketOptionId)
   } catch (error) {
-    console.error(error.message)
+    console.error(error)
     if (error instanceof TypeError) {
       return res.status(400).json({ error: 'Invalid ticketOptionId' })
     }
+
     return res.status(500).send('Failed creating ticket')
   }
 

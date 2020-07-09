@@ -1,11 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import moment from 'moment-timezone'
+import moment, { lang } from 'moment-timezone'
 import { withApiKeyAuthentication } from '../../../lib/middleware'
 import {
   calculateTicketValidTo,
   getTicketOptions,
 } from '../../../lib/ticket-service'
 import { parseNumber } from '../../../lib/utils'
+import { isString } from 'util'
+import { constant } from 'fp-ts/lib/function'
 
 /**
  * @swagger
@@ -86,7 +88,7 @@ import { parseNumber } from '../../../lib/utils'
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let startTime
-
+  const language = req.query.locale ? req.query.locale.toString() : undefined
   try {
     startTime = parseNumber(req.query.startTime)
   } catch (error) {
@@ -104,7 +106,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   )
 
   try {
-    const tickets = await getTicketOptions()
+    const tickets = await getTicketOptions(language)
 
     const ticketsWithSeconds = tickets.map(ticket => ({
       ...ticket,

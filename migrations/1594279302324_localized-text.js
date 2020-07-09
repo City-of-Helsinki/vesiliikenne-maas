@@ -6,7 +6,7 @@ exports.up = pgm => {
   pgm.sql(`
   CREATE TABLE IF NOT EXISTS ticket_translations(
     id INT GENERATED ALWAYS AS IDENTITY,
-    ticket_option_id INTEGER REFERENCES ticket_options(id) NOT NULL,
+    ticket_option_id INTEGER REFERENCES ticket_options(id) ON DELETE CASCADE,
     "language" VARCHAR(10) NOT NULL,
     discount_group VARCHAR(100) NOT NULL,
     instructions VARCHAR(500) NOT NULL,

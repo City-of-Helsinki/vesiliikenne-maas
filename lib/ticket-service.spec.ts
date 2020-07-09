@@ -1,4 +1,5 @@
 import moment from 'moment-timezone'
+import { pool } from '../lib/db'
 import {
   calculateTicketValidTo,
   getTicketOptions,
@@ -39,17 +40,61 @@ describe('ticket-service', () => {
 
 describe('Ticket purchase flow', () => {
   test('Ticket can be purchased with ticket option information', async () => {
-    const ticketOptions = await getTicketOptions()
+    const ticketOptions = await getTicketOptions('fi')
     const ticketOptionId = ticketOptions[0].id
     expect(ticketOptionId).toEqual(1)
 
-    const newTicket = await createTicket(ticketOptionId)
+    const newTicket = await createTicket(ticketOptionId, 'fi')
     expect(isUuid(newTicket.uuid)).toBe(true)
 
     const savedUuid = await saveTicket(newTicket)
     expect(savedUuid).toEqual(newTicket.uuid)
 
-    const ticketInDb = await findTicket(savedUuid)
+    const ticketInDb = await findTicket(savedUuid, 'fi')
     expect(ticketInDb.uuid).toEqual(newTicket.uuid)
+  })
+})
+
+describe('Ticketoptions query', () => {
+  beforeAll(async () => {
+    await pool.query(`
+    INSERT INTO ticket_options(
+      amount,
+      currency,
+      agency
+    ) VALUES (
+      1000,
+      'DLR',
+      'waterbus'
+    );`)
+
+    await pool.query(`
+    INSERT INTO ticket_translations(
+      name,
+      ticket_option_id,
+      description,
+      instructions,
+      discount_group,
+      language
+    ) VALUES (
+      'pihlaja island',
+      (select id from ticket_options where agency = 'waterbus'),
+      'test ticket description',
+      'test instructions',
+      'adult',
+      'en'
+    );`)
+  })
+
+  afterAll(async () => {
+    await pool.query(`
+    DELETE FROM ticket_options
+    WHERE agency = 'waterbus';
+    `)
+  })
+
+  it('should not return duplicate ticketoptions having different language', async () => {
+    const ticketOptions = await getTicketOptions()
+    expect(ticketOptions.length).toBe(2)
   })
 })

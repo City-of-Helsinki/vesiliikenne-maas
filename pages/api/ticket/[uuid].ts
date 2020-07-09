@@ -95,11 +95,12 @@ import { TicketNotFoundError } from 'lib/errors'
  *         description: Internal server error
  */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { uuid } = req.query
+  const { uuid, locale } = req.query
+  const language = locale ? locale.toString() : undefined
   if (typeof uuid !== 'string')
     throw new Error('Argument uuid is not of type string')
   try {
-    const ticket = await findTicket(uuid)
+    const ticket = await findTicket(uuid, language)
 
     const qrCode = await qrcode.toDataURL(ticket.uuid)
     const html = renderToString(
