@@ -307,7 +307,7 @@
                         "instructions": {
                           "type": "string",
                           "description": "Instructions how to use the ticket",
-                          "example": "show ticket to inspector when boarding the ferry"
+                          "example": "Show ticket to inspector when boarding the ferry."
                         }
                       }
                     }

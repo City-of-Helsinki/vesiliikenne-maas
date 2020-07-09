@@ -88,7 +88,7 @@ import { TicketNotFoundError } from 'lib/errors'
  *                    instructions:
  *                     type: string
  *                     description: "Instructions how to use the ticket"
- *                     example: "show ticket to inspector when boarding the ferry"
+ *                     example: "Show ticket to inspector when boarding the ferry."
  *       '404':
  *         description: A ticket with the ticketId was not found
  *       '500':
