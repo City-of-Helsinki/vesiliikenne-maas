@@ -2,6 +2,11 @@
 
 Building a Proof of Concept to connect MaaS apps to ferry operators via a common integration platform.
 
+## Requirements
+
+- Docker
+- Docker Compose
+
 ## Getting started
 
 To set up the development environment:
