@@ -85,6 +85,10 @@ import { TicketNotFoundError } from 'lib/errors'
  *                      type: string
  *                      description: QRCode as a base64 encoded PNG image
  *                      example: data:image/png;base64,iVBORw0KGg...
+ *                    instructions:
+ *                     type: string
+ *                     description: "Instructions how to use the ticket"
+ *                     example: "Show ticket to inspector when boarding the ferry."
  *       '404':
  *         description: A ticket with the ticketId was not found
  *       '500':

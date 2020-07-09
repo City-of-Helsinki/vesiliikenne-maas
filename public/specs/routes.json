@@ -133,32 +133,52 @@
                     "type": "object",
                     "properties": {
                       "id": {
-                        "type": "string",
-                        "description": "Ticket id"
+                        "type": "number",
+                        "description": "Ticket id",
+                        "example": 1
                       },
                       "logoId": {
                         "type": "string",
-                        "description": "Id of the logo to display"
+                        "description": "Id of the logo to display",
+                        "example": "waterbus.png"
+                      },
+                      "agency": {
+                        "type": "string",
+                        "example": "waterbusOY"
+                      },
+                      "discountGroup": {
+                        "type": "string",
+                        "example": "adult"
                       },
                       "description": {
                         "type": "string",
-                        "description": "Ticket description"
+                        "description": "Ticket description",
+                        "example": "Hop-on hop-off ticket"
                       },
-                      "name": {
+                      "instructions": {
                         "type": "string",
-                        "description": "Ticket name"
+                        "description": "Instructions how to use the ticket",
+                        "example": "show ticket to inspector when boarding the ferry"
+                      },
+                      "ticketName": {
+                        "type": "string",
+                        "description": "Ticket name",
+                        "example": "island hopping"
                       },
                       "amount": {
                         "type": "string",
-                        "description": "Ticket price"
+                        "description": "Ticket price",
+                        "example": "10.00"
                       },
                       "currency": {
                         "type": "string",
-                        "description": "Ticket currency"
+                        "description": "Ticket currency",
+                        "example": "EUR"
                       },
                       "validityseconds": {
                         "type": "number",
-                        "description": "How long ticket is valid in seconds"
+                        "description": "How long ticket is valid in seconds",
+                        "example": 124232
                       }
                     }
                   }
@@ -283,6 +303,11 @@
                           "type": "string",
                           "description": "QRCode as a base64 encoded PNG image",
                           "example": "data:image/png;base64,iVBORw0KGg..."
+                        },
+                        "instructions": {
+                          "type": "string",
+                          "description": "Instructions how to use the ticket",
+                          "example": "Show ticket to inspector when boarding the ferry."
                         }
                       }
                     }

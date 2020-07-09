@@ -38,6 +38,7 @@ export const TicketType = t.strict({
   discountGroup: t.string,
   validTo: t.string,
   validFrom: t.string,
+  instructions: t.string,
 })
 
 export type Ticket = t.TypeOf<typeof TicketType>
@@ -65,6 +66,7 @@ export const TicketOptionType = t.strict({
   discountGroup: t.string,
   currency: t.string,
   validityseconds: t.union([t.number, t.undefined]),
+  instructions: t.string,
 })
 
 export const TicketOptionsType = t.array(TicketOptionType)

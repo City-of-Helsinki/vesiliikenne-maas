@@ -23,35 +23,20 @@ export const calculateTicketValidTo = (validFrom: moment.Moment) => {
 }
 
 export const getTicketOptions = async (): Promise<TicketOptions> => {
-  const ticketOptionsQuery = `with ticket_options as (
+  const ticketOptionsQuery = `
         select id,
         description,
-        name,
-        discount_group,
-        amount,
+        name as "ticketName",
+        discount_group "discountGroup",
+        to_char(ticket_options.amount / 100, 'FM9999.00') as amount,
         currency,
         agency,
-        logo_id
-  from public.ticket_options)
-  select jsonb_agg(
-      json_build_object(
-          'id', id,
-          'description', description,
-          'amount', to_char(amount / 100, 'FM9999.00'),
-          'currency', currency,
-          'ticketName', name,
-          'agency', agency,
-          'discountGroup', discount_group,
-          'logoId', logo_id
-      )
-  ) as aggregated_out
-  from ticket_options;
-  `
+        logo_id as "logoId",
+        instructions
+  from public.ticket_options`
 
   const queryResult = await pool.query(ticketOptionsQuery)
-  const tickets = TicketOptionsType.decode(
-    queryResult.rows[0]['aggregated_out'],
-  )
+  const tickets = TicketOptionsType.decode(queryResult.rows)
 
   if (isRight(tickets)) return tickets.right
   throw new Error(PathReporter.report(tickets).toString())
@@ -60,30 +45,17 @@ export const getTicketOptions = async (): Promise<TicketOptions> => {
 const getTicketOption = async (
   ticketOptionId: number,
 ): Promise<TicketOption> => {
-  const ticketOptionsQuery = `with ticket_options as (
+  const ticketOptionsQuery = `
     select id,
     description,
-    name,
-    discount_group,
-    amount,
+    name as "ticketName",
+    discount_group as "discountGroup", 
+    to_char(ticket_options.amount / 100, 'FM9999.00') as amount,
     currency,
     agency,
-    logo_id
-from public.ticket_options where id = $1)
-select jsonb_agg(
-  json_build_object(
-      'id', id,
-      'description', description,
-      'ticketName', name,
-      'amount', to_char(amount / 100, 'FM9999.00'),
-      'currency', currency,
-      'agency', agency,
-      'discountGroup', discount_group,
-      'logoId', logo_id
-  )
-) as aggregated_out
-from ticket_options;
-`
+    logo_id as "logoId",
+    instructions
+from public.ticket_options where id = $1`
 
   const queryResult = await pool.query(ticketOptionsQuery, [ticketOptionId])
 
@@ -91,9 +63,7 @@ from ticket_options;
     throw new TicketNotFoundError()
   }
 
-  const ticket = TicketOptionType.decode(
-    queryResult.rows[0]['aggregated_out'][0],
-  )
+  const ticket = TicketOptionType.decode(queryResult.rows[0])
   if (isRight(ticket)) return ticket.right
   throw new TypeError(PathReporter.report(ticket).toString())
 }
@@ -132,7 +102,8 @@ export const findTicket = async (uuid: string): Promise<Ticket> => {
       ticket_options.logo_id as "logoId",
       to_char(ticket_options.amount / 100, 'FM9999.00') as amount,
       ticket_options.name as "ticketName",
-      ticket_options.currency
+      ticket_options.currency,
+      ticket_options.instructions
     from public.tickets
       join public.ticket_options on ticket_option_id = id
     where uuid = $1 and valid_to > now();
