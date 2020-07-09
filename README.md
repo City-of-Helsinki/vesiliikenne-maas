@@ -23,3 +23,14 @@ To set up the development environment:
 ## Architecture diagram
 
 The architecture diagram can be found under `doc/`.
+
+## Configuration
+
+The application is configured using environment variables. The following variables are used:
+
+- `CRD_URL` - The URL to the CRD Systems Bartrace API
+- `CRD_TOKEN` - The access token to the aforementioned API
+- `MAAS_API_KEY_HASH` - The hash of the API key that the MaaS frontend provider uses in their requests. Generated with `yarn run create-api-key`.
+- `GWT_SIGNING_PRIVATE_KEY` - The private key used to sign responses with JWT. Generated with `./scripts/generate_keys.sh`
+- `GWT_SIGNING_PUBLIC_KEY` - The public key which is used by the end user to verify responses from the API. Generated with `./scripts/generate_keys.sh` and accessible from `/api/ticket-public-key`.
+- `DATABASE_URL` The url of the PostgreSQL instance used by the application.
