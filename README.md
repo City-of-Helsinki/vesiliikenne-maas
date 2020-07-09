@@ -14,3 +14,7 @@ To set up the development environment:
 1. `docker-compose up`
 1. `yarn run-migrations-dev up`
 1. Navigate to http://localhost:3000/
+
+## Architecture diagram
+
+The architecture diagram can be found under `doc/`.
