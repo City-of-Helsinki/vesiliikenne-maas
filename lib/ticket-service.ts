@@ -23,7 +23,7 @@ export const calculateTicketValidTo = (validFrom: moment.Moment) => {
 }
 
 export const getTicketOptions = async (
-  language: string | undefined,
+  language = 'en',
 ): Promise<TicketOptions> => {
   const ticketOptionsQuery = `
         select ticket_options.id as id,
@@ -39,7 +39,7 @@ export const getTicketOptions = async (
   join public.ticket_translations on ticket_options.id = ticket_option_id
   where language = $1;`
 
-  const queryResult = await pool.query(ticketOptionsQuery, [language || 'en'])
+  const queryResult = await pool.query(ticketOptionsQuery, [language])
   const tickets = TicketOptionsType.decode(queryResult.rows)
   if (isRight(tickets)) return tickets.right
   throw new Error(PathReporter.report(tickets).toString())
