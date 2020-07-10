@@ -1,13 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import moment, { lang } from 'moment-timezone'
+import moment from 'moment-timezone'
 import { withApiKeyAuthentication } from '../../../lib/middleware'
 import {
   calculateTicketValidTo,
   getTicketOptions,
 } from '../../../lib/ticket-service'
 import { parseNumber } from '../../../lib/utils'
-import { isString } from 'util'
-import { constant } from 'fp-ts/lib/function'
 
 /**
  * @swagger
