@@ -44,7 +44,7 @@ describe('Ticket purchase flow', () => {
     const ticketOptionId = ticketOptions[0].id
     expect(ticketOptionId).toEqual(1)
 
-    const newTicket = await createTicket(ticketOptionId, 'fi')
+    const newTicket = await createTicket(ticketOptionId)
     expect(isUuid(newTicket.uuid)).toBe(true)
 
     const savedUuid = await saveTicket(newTicket)
@@ -98,7 +98,7 @@ describe('Ticketoptions query', () => {
     expect(ticketOptions.length).toBe(2)
   })
 
-  it.only('should fallback to english if language is not found', async () => {
+  it('should fallback to english if language is not found', async () => {
     const ticketOptions = await getTicketOptions('li')
     expect(ticketOptions.length).toBe(2)
   })

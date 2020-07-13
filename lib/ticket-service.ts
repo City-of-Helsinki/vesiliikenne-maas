@@ -1,10 +1,10 @@
 import moment from 'moment-timezone'
 import { uuid } from 'uuidv4'
-import { Ticket, TicketOptions, TicketOption } from './types'
+import { Ticket, TicketOptions, TicketToSave } from './types'
 import { pool } from './db'
 import { isRight } from 'fp-ts/lib/Either'
 import { PathReporter } from 'io-ts/lib/PathReporter'
-import { TicketOptionsType, TicketOptionType, TicketType } from './types'
+import { TicketOptionsType, TicketType } from './types'
 import { TicketNotFoundError } from './errors'
 
 export const calculateTicketValidTo = (validFrom: moment.Moment) => {
@@ -64,37 +64,6 @@ export const getTicketOptions = async (
   throw new Error(PathReporter.report(tickets).toString())
 }
 
-const getTicketOption = async (
-  ticketOptionId: number,
-  language = 'en',
-): Promise<TicketOption> => {
-  const ticketOptionQuery = `
-  select ticket_options.id as id,
-  ticket_translations.description,
-  ticket_translations.name as "ticketName",
-  ticket_translations.discount_group "discountGroup",
-  to_char(ticket_options.amount / 100, 'FM9999.00') as amount,
-  currency,
-  agency,
-  logo_id as "logoId",
-  ticket_translations.instructions
-from public.ticket_options
-join public.ticket_translations on ticket_options.id = ticket_option_id
-where language = $1 AND ticket_options.id = $2;`
-
-  const queryResult = await pool.query(ticketOptionQuery, [
-    language,
-    ticketOptionId,
-  ])
-  if (queryResult.rows.length === 0) {
-    throw new TicketNotFoundError()
-  }
-
-  const ticket = TicketOptionType.decode(queryResult.rows[0])
-  if (isRight(ticket)) return ticket.right
-  throw new TypeError(PathReporter.report(ticket).toString())
-}
-
 export const getTickets = async () => {
   const getTicketsQuery = `
   select
@@ -152,27 +121,18 @@ export const findTicket = async (
   throw new TypeError(PathReporter.report(ticket).toString())
 }
 
-export const createTicket = async (
-  optionId: number,
-  language = 'en',
-): Promise<Ticket> => {
+export const createTicket = async (optionId: number): Promise<TicketToSave> => {
   const now = moment().tz('Europe/Helsinki')
-
-  const { id: ticketOptionId, ...rest } = await getTicketOption(
-    optionId,
-    language,
-  )
 
   return {
     uuid: uuid(),
-    ticketOptionId,
+    ticketOptionId: optionId,
     validFrom: now.format(),
     validTo: calculateTicketValidTo(now).format(),
-    ...rest,
   }
 }
 
-export const saveTicket = async (ticket: Ticket): Promise<string> => {
+export const saveTicket = async (ticket: TicketToSave): Promise<string> => {
   const ticketOptionsQuery = `insert into public.tickets (
     uuid,
     ticket_option_id,
