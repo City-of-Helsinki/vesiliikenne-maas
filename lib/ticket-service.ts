@@ -1,6 +1,6 @@
 import moment from 'moment-timezone'
 import { uuid } from 'uuidv4'
-import { Ticket, TicketOptions, TicketToSave } from './types'
+import { Ticket, TicketOptions, TicketInDB } from './types'
 import { pool } from './db'
 import { isRight } from 'fp-ts/lib/Either'
 import { PathReporter } from 'io-ts/lib/PathReporter'
@@ -129,7 +129,7 @@ export const findTicket = async (
   throw new TypeError(PathReporter.report(ticket).toString())
 }
 
-export const createTicket = async (optionId: number): Promise<TicketToSave> => {
+export const createTicket = async (optionId: number): Promise<TicketInDB> => {
   const now = moment().tz('Europe/Helsinki')
 
   return {
@@ -140,7 +140,7 @@ export const createTicket = async (optionId: number): Promise<TicketToSave> => {
   }
 }
 
-export const saveTicket = async (ticket: TicketToSave): Promise<string> => {
+export const saveTicket = async (ticket: TicketInDB): Promise<string> => {
   const ticketOptionsQuery = `INSERT INTO public.tickets (
     uuid,
     ticket_option_id,

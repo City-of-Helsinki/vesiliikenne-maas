@@ -93,13 +93,13 @@ describe('Ticketoptions query', () => {
     `)
   })
 
-  it('should not return duplicate ticketoptions having different language', async () => {
+  it('should not return duplicate ticketoptions in different language', async () => {
     const ticketOptions = await getTicketOptions()
     expect(ticketOptions.length).toBe(2)
   })
 
   it('should fallback to english if language is not found', async () => {
-    const ticketOptions = await getTicketOptions('li')
+    const ticketOptions = await getTicketOptions('fi')
     expect(ticketOptions.length).toBe(2)
   })
 })
