@@ -93,29 +93,37 @@ export const findTicket = async (
   language = 'en',
 ): Promise<Ticket> => {
   const findTicketQuery = `
-    select 
+    WITH validlanguages AS (
+      SELECT language 
+      FROM public.tickets
+      JOIN public.ticket_options on ticket_options.id = tickets.ticket_option_id
+      JOIN public.ticket_translations on ticket_translations.ticket_option_id = ticket_options.id
+      WHERE uuid = $1
+    )
+    SELECT 
       uuid,
-      tickets.ticket_option_id as "ticketOptionId",
-      to_char(valid_from at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') as "validFrom",
-      to_char(valid_to at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') as "validTo",
-      ticket_options.agency as agency,
-      ticket_translations.discount_group as "discountGroup",
+      tickets.ticket_option_id AS "ticketOptionId",
+      to_char(valid_from at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "validFrom",
+      to_char(valid_to at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "validTo",
+      ticket_options.agency AS agency,
+      ticket_translations.discount_group AS "discountGroup",
       ticket_translations.description,
-      ticket_options.logo_id as "logoId",
-      to_char(ticket_options.amount / 100, 'FM9999.00') as amount,
-      ticket_translations.name as "ticketName",
+      ticket_options.logo_id AS "logoId",
+      to_char(ticket_options.amount / 100, 'FM9999.00') AS amount,
+      ticket_translations.name AS "ticketName",
       ticket_options.currency,
       ticket_translations.instructions
-    from public.tickets
-      join public.ticket_options on ticket_options.id = tickets.ticket_option_id
-      join public.ticket_translations on ticket_translations.ticket_option_id = ticket_options.id
-    where uuid = $1 and valid_to > now() and ticket_translations.language = $2;
-  `
+    FROM public.tickets
+      JOIN public.ticket_options on ticket_options.id = tickets.ticket_option_id
+      JOIN public.ticket_translations on ticket_translations.ticket_option_id = ticket_options.id
+    WHERE uuid = $1 AND valid_to > now() AND ticket_translations.language = (CASE WHEN ($2 IN (SELECT * FROM validlanguages)) THEN $2 ELSE 'en' END)
+    ;`
 
   const queryResult = await pool.query(findTicketQuery, [uuid, language])
   if (queryResult.rows.length === 0) {
     throw new TicketNotFoundError()
   }
+
   const ticket = TicketType.decode(queryResult.rows[0])
   if (isRight(ticket)) return ticket.right
   throw new TypeError(PathReporter.report(ticket).toString())
