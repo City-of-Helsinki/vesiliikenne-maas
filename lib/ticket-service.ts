@@ -145,7 +145,9 @@ export const findTicket = async (
   `
 
   const queryResult = await pool.query(findTicketQuery, [uuid, language])
-
+  if (queryResult.rows.length === 0) {
+    throw new TicketNotFoundError()
+  }
   const ticket = TicketType.decode(queryResult.rows[0])
   if (isRight(ticket)) return ticket.right
   throw new TypeError(PathReporter.report(ticket).toString())
