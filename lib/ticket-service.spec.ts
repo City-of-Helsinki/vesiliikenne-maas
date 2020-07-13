@@ -97,4 +97,9 @@ describe('Ticketoptions query', () => {
     const ticketOptions = await getTicketOptions()
     expect(ticketOptions.length).toBe(2)
   })
+
+  it.only('should fallback to english if language is not found', async () => {
+    const ticketOptions = await getTicketOptions('li')
+    expect(ticketOptions.length).toBe(2)
+  })
 })

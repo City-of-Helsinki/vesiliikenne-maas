@@ -57,7 +57,9 @@ const handler = async (
   }
   const ticketOptionId = req.body.ticketOptionId
   if (isNaN(ticketOptionId)) {
-    return res.status(400).json({ error: 'ticketOptionId is not a number' })
+    return res.status(400).json({
+      error: `Invalid parameter ticketOptionId: ${ticketOptionId} is not a number`,
+    })
   }
   let ticket: Ticket
 

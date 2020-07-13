@@ -26,18 +26,38 @@ export const getTicketOptions = async (
   language = 'en',
 ): Promise<TicketOptions> => {
   const ticketOptionsQuery = `
-        select ticket_options.id as id,
-        ticket_translations.description,
-        ticket_translations.name as "ticketName",
-        ticket_translations.discount_group "discountGroup",
-        to_char(ticket_options.amount / 100, 'FM9999.00') as amount,
-        currency,
-        agency,
-        logo_id as "logoId",
-        ticket_translations.instructions
-  from public.ticket_options
-  join public.ticket_translations on ticket_options.id = ticket_option_id
-  where language = $1;`
+  WITH paramtable as (
+    select 
+      ticket_options.id as id,
+      ticket_translations.description,
+      ticket_translations.name as "ticketName",
+      ticket_translations.discount_group "discountGroup",
+      to_char(ticket_options.amount / 100, 'FM9999.00') as amount,
+      currency,
+      agency,
+      logo_id as "logoId",
+      ticket_translations.instructions
+    from public.ticket_options
+    join public.ticket_translations on ticket_options.id = ticket_option_id
+    where language = $1),
+  entable as (
+    select 
+      ticket_options.id as id,
+      ticket_translations.description,
+      ticket_translations.name as "ticketName",
+      ticket_translations.discount_group "discountGroup",
+      to_char(ticket_options.amount / 100, 'FM9999.00') as amount,
+      currency,
+      agency,
+      logo_id as "logoId",
+      ticket_translations.instructions
+    from public.ticket_options
+    join public.ticket_translations on ticket_options.id = ticket_option_id
+    where ticket_options.id NOT IN (SELECT id FROM paramtable) AND language = 'en')
+  SELECT * FROM entable
+  UNION ALL
+  SELECT * from paramtable
+    ;`
 
   const queryResult = await pool.query(ticketOptionsQuery, [language])
   const tickets = TicketOptionsType.decode(queryResult.rows)
