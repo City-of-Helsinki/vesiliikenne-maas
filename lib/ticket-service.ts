@@ -26,34 +26,34 @@ export const getTicketOptions = async (
   language = 'en',
 ): Promise<TicketOptions> => {
   const ticketOptionsQuery = `
-  WITH paramtable as (
-    select 
-      ticket_options.id as id,
+  WITH paramtable AS (
+    SELECT 
+      ticket_options.id AS id,
       ticket_translations.description,
-      ticket_translations.name as "ticketName",
+      ticket_translations.name AS "ticketName",
       ticket_translations.discount_group "discountGroup",
-      to_char(ticket_options.amount / 100, 'FM9999.00') as amount,
+      to_char(ticket_options.amount / 100, 'FM9999.00') AS amount,
       currency,
       agency,
-      logo_id as "logoId",
+      logo_id AS "logoId",
       ticket_translations.instructions
-    from public.ticket_options
-    join public.ticket_translations on ticket_options.id = ticket_option_id
-    where language = $1),
-  entable as (
-    select 
-      ticket_options.id as id,
+    FROM public.ticket_options
+    JOIN public.ticket_translations ON ticket_options.id = ticket_option_id
+    WHERE language = $1),
+  entable AS (
+    SELECT 
+      ticket_options.id AS id,
       ticket_translations.description,
-      ticket_translations.name as "ticketName",
+      ticket_translations.name AS "ticketName",
       ticket_translations.discount_group "discountGroup",
-      to_char(ticket_options.amount / 100, 'FM9999.00') as amount,
+      to_char(ticket_options.amount / 100, 'FM9999.00') AS amount,
       currency,
       agency,
-      logo_id as "logoId",
+      logo_id AS "logoId",
       ticket_translations.instructions
-    from public.ticket_options
-    join public.ticket_translations on ticket_options.id = ticket_option_id
-    where ticket_options.id NOT IN (SELECT id FROM paramtable) AND language = 'en')
+    FROM public.ticket_options
+    JOIN public.ticket_translations ON ticket_options.id = ticket_option_id
+    WHERE ticket_options.id NOT IN (SELECT id FROM paramtable) AND language = 'en')
   SELECT * FROM entable
   UNION ALL
   SELECT * from paramtable;`
@@ -66,18 +66,18 @@ export const getTicketOptions = async (
 
 export const getTickets = async () => {
   const getTicketsQuery = `
-  select
+  SELECT
       uuid,
-      valid_from as "validFrom",
-      valid_to as "validTo",
+      valid_from AS "validFrom",
+      valid_to AS "validTo",
       public.ticket_options.agency,
       public.ticket_translations.discount_group as "discountGroup",
       public.ticket_translations.name,
       public.ticket_translations.description
-    from tickets
-    join ticket_options on tickets.ticket_option_id = ticket_options.id
-    join ticket_translations on ticket_translations.ticket_option_id = ticket_options.id
-    where language = 'en';
+    FROM tickets
+    JOIN ticket_options ON tickets.ticket_option_id = ticket_options.id
+    JOIN ticket_translations ON ticket_translations.ticket_option_id = ticket_options.id
+    WHERE language = 'en';
   `
 
   const queryResult = await pool.query(getTicketsQuery)
@@ -114,8 +114,8 @@ export const findTicket = async (
       ticket_options.currency,
       ticket_translations.instructions
     FROM public.tickets
-      JOIN public.ticket_options on ticket_options.id = tickets.ticket_option_id
-      JOIN public.ticket_translations on ticket_translations.ticket_option_id = ticket_options.id
+      JOIN public.ticket_options ON ticket_options.id = tickets.ticket_option_id
+      JOIN public.ticket_translations ON ticket_translations.ticket_option_id = ticket_options.id
     WHERE uuid = $1 AND valid_to > now() AND ticket_translations.language = (CASE WHEN ($2 IN (SELECT * FROM validlanguages)) THEN $2 ELSE 'en' END)
     ;`
 
@@ -141,7 +141,7 @@ export const createTicket = async (optionId: number): Promise<TicketToSave> => {
 }
 
 export const saveTicket = async (ticket: TicketToSave): Promise<string> => {
-  const ticketOptionsQuery = `insert into public.tickets (
+  const ticketOptionsQuery = `INSERT INTO public.tickets (
     uuid,
     ticket_option_id,
     valid_from,
