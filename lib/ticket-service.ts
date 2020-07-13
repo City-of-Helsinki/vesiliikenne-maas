@@ -56,8 +56,7 @@ export const getTicketOptions = async (
     where ticket_options.id NOT IN (SELECT id FROM paramtable) AND language = 'en')
   SELECT * FROM entable
   UNION ALL
-  SELECT * from paramtable
-    ;`
+  SELECT * from paramtable;`
 
   const queryResult = await pool.query(ticketOptionsQuery, [language])
   const tickets = TicketOptionsType.decode(queryResult.rows)

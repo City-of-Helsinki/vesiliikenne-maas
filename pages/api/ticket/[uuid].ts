@@ -21,6 +21,13 @@ import { TicketNotFoundError } from 'lib/errors'
  *         description: ticket id
  *         schema:
  *           type: string
+ *       - name: locale
+ *         in: query
+ *         required: false
+ *         description: language used in tickets. Currently supported languages are 'fi' and 'en'. Defaults to english.
+ *         example: 'fi'
+ *         schema:
+ *           type: string
  *       - in: header
  *         name: x-api-key
  *         required: true
