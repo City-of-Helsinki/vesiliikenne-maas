@@ -74,11 +74,6 @@ export const TicketOptionsType = t.array(TicketOptionType)
 export type TicketOption = t.TypeOf<typeof TicketOptionType>
 export type TicketOptions = t.TypeOf<typeof TicketOptionsType>
 
-export type TicketInDB = Pick<
-  Ticket,
-  'uuid' | 'ticketOptionId' | 'validFrom' | 'validTo'
->
-
 export interface Station {
   id: string
   name: string

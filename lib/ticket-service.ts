@@ -69,18 +69,19 @@ const getTicketOption = async (
   language = 'en',
 ): Promise<TicketOption> => {
   const ticketOptionQuery = `
-  select ticket_options.id as id,
-  ticket_translations.description,
-  ticket_translations.name as "ticketName",
-  ticket_translations.discount_group "discountGroup",
-  to_char(ticket_options.amount / 100, 'FM9999.00') as amount,
-  currency,
-  agency,
-  logo_id as "logoId",
-  ticket_translations.instructions
-from public.ticket_options
-join public.ticket_translations on ticket_options.id = ticket_option_id
-where language = $1 AND ticket_options.id = $2;`
+  SELECT
+    ticket_options.id AS id,
+    ticket_translations.description,
+    ticket_translations.name AS "ticketName",
+    ticket_translations.discount_group "discountGroup",
+    to_char(ticket_options.amount / 100, 'FM9999.00') AS amount,
+    currency,
+    agency,
+    logo_id AS "logoId",
+    ticket_translations.instructions
+  FROM public.ticket_options
+  JOIN public.ticket_translations ON ticket_options.id = ticket_option_id
+  WHERE language = $1 AND ticket_options.id = $2;`
   const queryResult = await pool.query(ticketOptionQuery, [
     language,
     ticketOptionId,
@@ -96,17 +97,17 @@ where language = $1 AND ticket_options.id = $2;`
 export const getTickets = async () => {
   const getTicketsQuery = `
   SELECT
-      uuid,
-      valid_from AS "validFrom",
-      valid_to AS "validTo",
-      public.ticket_options.agency,
-      public.ticket_translations.discount_group as "discountGroup",
-      public.ticket_translations.name,
-      public.ticket_translations.description
-    FROM tickets
-    JOIN ticket_options ON tickets.ticket_option_id = ticket_options.id
-    JOIN ticket_translations ON ticket_translations.ticket_option_id = ticket_options.id
-    WHERE language = 'en';
+    uuid,
+    valid_from AS "validFrom",
+    valid_to AS "validTo",
+    public.ticket_options.agency,
+    public.ticket_translations.discount_group as "discountGroup",
+    public.ticket_translations.name,
+    public.ticket_translations.description
+  FROM tickets
+  JOIN ticket_options ON tickets.ticket_option_id = ticket_options.id
+  JOIN ticket_translations ON ticket_translations.ticket_option_id = ticket_options.id
+  WHERE language = 'en';
   `
 
   const queryResult = await pool.query(getTicketsQuery)
@@ -125,8 +126,8 @@ export const findTicket = async (
     WITH validlanguages AS (
       SELECT language 
       FROM public.tickets
-      JOIN public.ticket_options on ticket_options.id = tickets.ticket_option_id
-      JOIN public.ticket_translations on ticket_translations.ticket_option_id = ticket_options.id
+      JOIN public.ticket_options ON ticket_options.id = tickets.ticket_option_id
+      JOIN public.ticket_translations ON ticket_translations.ticket_option_id = ticket_options.id
       WHERE uuid = $1
     )
     SELECT 
@@ -143,9 +144,11 @@ export const findTicket = async (
       ticket_options.currency,
       ticket_translations.instructions
     FROM public.tickets
-      JOIN public.ticket_options ON ticket_options.id = tickets.ticket_option_id
-      JOIN public.ticket_translations ON ticket_translations.ticket_option_id = ticket_options.id
-    WHERE uuid = $1 AND valid_to > now() AND ticket_translations.language = (CASE WHEN ($2 IN (SELECT * FROM validlanguages)) THEN $2 ELSE 'en' END)
+    JOIN public.ticket_options ON ticket_options.id = tickets.ticket_option_id
+    JOIN public.ticket_translations ON ticket_translations.ticket_option_id = ticket_options.id
+    WHERE uuid = $1 
+      AND valid_to > now() 
+      AND ticket_translations.language = (CASE WHEN ($2 IN (SELECT * FROM validlanguages)) THEN $2 ELSE 'en' END)
     ;`
 
   const queryResult = await pool.query(findTicketQuery, [uuid, language])
@@ -158,15 +161,9 @@ export const findTicket = async (
   throw new TypeError(PathReporter.report(ticket).toString())
 }
 
-export const createTicket = async (
-  optionId: number,
-  language = 'en',
-): Promise<Ticket> => {
+export const createTicket = async (optionId: number): Promise<Ticket> => {
   const now = moment().tz('Europe/Helsinki')
-  const { id: ticketOptionId, ...rest } = await getTicketOption(
-    optionId,
-    language,
-  )
+  const { id: ticketOptionId, ...rest } = await getTicketOption(optionId)
   return {
     uuid: uuid(),
     ticketOptionId,
@@ -177,7 +174,8 @@ export const createTicket = async (
 }
 
 export const saveTicket = async (ticket: Ticket): Promise<string> => {
-  const ticketOptionsQuery = `INSERT INTO public.tickets (
+  const ticketOptionsQuery = `
+  INSERT INTO public.tickets (
     uuid,
     ticket_option_id,
     valid_from,

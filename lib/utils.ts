@@ -20,6 +20,9 @@ export const parseNumber = (num: any): number => {
   return Number(num)
 }
 
+export const parseLocale = (locale: string | string[]): string =>
+  locale ? locale.toString() : 'en'
+
 const base64decode = (input: string): string =>
   Buffer.from(input, 'base64').toString('utf-8')
 

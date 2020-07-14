@@ -5,7 +5,7 @@ import {
   calculateTicketValidTo,
   getTicketOptions,
 } from '../../../lib/ticket-service'
-import { parseNumber } from '../../../lib/utils'
+import { parseNumber, parseLocale } from '../../../lib/utils'
 
 /**
  * @swagger
@@ -25,7 +25,7 @@ import { parseNumber } from '../../../lib/utils'
  *       - name: locale
  *         in: query
  *         required: false
- *         description: language used in tickets. Currently supported languages are 'fi' and 'en'. Defaults to english.
+ *         description: Language used in tickets. Currently supported languages are 'fi' and 'en'. Defaults to english.
  *         example: 'fi'
  *         schema:
  *           type: string
@@ -66,7 +66,7 @@ import { parseNumber } from '../../../lib/utils'
  *                   instructions:
  *                     type: string
  *                     description: "Instructions how to use the ticket"
- *                     example: "show ticket to inspector when boarding the ferry"
+ *                     example: "Show ticket to inspector when boarding the ferry."
  *                   ticketName:
  *                     type: string
  *                     description: "Ticket name"
@@ -93,7 +93,7 @@ import { parseNumber } from '../../../lib/utils'
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let startTime
-  const language = req.query.locale ? req.query.locale.toString() : undefined
+  const language = parseLocale(req.query.locale)
   try {
     startTime = parseNumber(req.query.startTime)
   } catch (error) {

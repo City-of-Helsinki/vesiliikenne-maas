@@ -64,7 +64,7 @@ const handler = async (
   let ticket: Ticket
 
   try {
-    ticket = await createTicket(ticketOptionId, 'en')
+    ticket = await createTicket(ticketOptionId)
   } catch (error) {
     console.error(error)
     if (error instanceof TypeError) {

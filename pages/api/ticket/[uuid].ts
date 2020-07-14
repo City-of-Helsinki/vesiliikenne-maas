@@ -4,7 +4,7 @@ import TicketContainer from '../../../components/TicketContainer'
 import { findTicket } from '../../../lib/ticket-service'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { withApiKeyAuthentication } from '../../../lib/middleware'
-import { createJWT } from '../../../lib/utils'
+import { createJWT, parseLocale } from '../../../lib/utils'
 import { TicketNotFoundError } from 'lib/errors'
 
 /**
@@ -103,7 +103,7 @@ import { TicketNotFoundError } from 'lib/errors'
  */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { uuid, locale } = req.query
-  const language = locale ? locale.toString() : undefined
+  const language = parseLocale(locale)
   if (typeof uuid !== 'string')
     throw new Error('Argument uuid is not of type string')
   try {
