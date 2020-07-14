@@ -5,6 +5,9 @@ import { createJWT } from '../../../lib/utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    if (process.env.ALLOW_DEMO_FRONTEND !== 'allow')
+      return res.status(404).end()
+
     const tickets = await getTickets()
 
     const jwToken = await createJWT({ tickets })
