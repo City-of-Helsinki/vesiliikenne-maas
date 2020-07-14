@@ -22,7 +22,7 @@ interface props {
 
 interface TicketOption {
   amount: string
-  logoId: string
+  logoData: string
   currency: string
   description: string
   id: string
@@ -79,16 +79,23 @@ const FerryStations: NextPage<props> = ({
         paddingLeft: '12px',
       }}
       onClickCapture={() => {
+        const queryTicket = {
+          id: ticket.id,
+          name: ticket.name,
+          description: ticket.description,
+          amount: ticket.amount,
+          currency: ticket.currency,
+        }
         void Router.push({
           pathname: '/dev/demo-frontend/ticket-purchase',
-          query: { ...ticket },
+          query: queryTicket,
         }).then()
       }}
     >
       <div style={{ paddingRight: '12px', height: '100%' }}>
         <div
           style={{
-            background: `url(/images/${ticket.logoId})`,
+            background: `url(data:image/svg+xml;base64,${ticket.logoData})`,
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',

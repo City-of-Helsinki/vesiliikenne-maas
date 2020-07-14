@@ -84,10 +84,10 @@ import { TicketNotFoundError } from 'lib/errors'
  *                      type: string
  *                      description: The longer description of the ticket
  *                      example: Hop-on hop-off -style ticket at the islands Matinkylä, Porvoo, and Iisalmi.
- *                    logoId:
+ *                    logoData:
  *                      type: string
- *                      description: The logo path of the agency operating the waterbus line
- *                      example: waterbusoy.jpg
+ *                      description: Base64 encoded SVG of the logo.
+ *                      example: PHN2ZyB3aWR0aD0iNzExL...
  *                    qrCode:
  *                      type: string
  *                      description: QRCode as a base64 encoded PNG image

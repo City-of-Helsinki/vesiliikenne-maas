@@ -50,7 +50,11 @@ const TicketContainer = ({ ticket, qrCodeContents }: Props) => {
             </time>
           </div>
           <div>
-            <img width={'30%'} src="/images/jt-logo.jpg" alt="JT-logo" />
+            <img
+              src={`data:image/svg+xml;base64,${ticket.logoData}`}
+              alt="Ferry operator logo"
+              width="20%"
+            />
           </div>
           <p style={{ margin: '2em' }}>{ticket.instructions}</p>
         </div>
