@@ -24,7 +24,7 @@ import { TicketNotFoundError } from 'lib/errors'
  *       - name: locale
  *         in: query
  *         required: false
- *         description: language used in tickets. Currently supported languages are 'fi' and 'en'. Defaults to english.
+ *         description: Language used in tickets. Currently supported languages are 'fi' and 'en'. Defaults to english.
  *         example: 'fi'
  *         schema:
  *           type: string

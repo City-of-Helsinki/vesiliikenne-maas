@@ -116,7 +116,7 @@
             "name": "locale",
             "in": "query",
             "required": false,
-            "description": "language used in tickets. Currently supported languages are 'fi' and 'en'. Defaults to english.",
+            "description": "Language used in tickets. Currently supported languages are 'fi' and 'en'. Defaults to english.",
             "example": "fi",
             "schema": {
               "type": "string"
@@ -168,7 +168,7 @@
                       "instructions": {
                         "type": "string",
                         "description": "Instructions how to use the ticket",
-                        "example": "show ticket to inspector when boarding the ferry"
+                        "example": "Show ticket to inspector when boarding the ferry."
                       },
                       "ticketName": {
                         "type": "string",
@@ -237,7 +237,7 @@
             "name": "locale",
             "in": "query",
             "required": false,
-            "description": "language used in tickets. Currently supported languages are 'fi' and 'en'. Defaults to english.",
+            "description": "Language used in tickets. Currently supported languages are 'fi' and 'en'. Defaults to english.",
             "example": "fi",
             "schema": {
               "type": "string"
