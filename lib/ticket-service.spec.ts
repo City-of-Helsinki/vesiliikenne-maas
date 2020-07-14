@@ -74,7 +74,7 @@ describe('Ticketoptions query', () => {
     ) VALUES (
       1000,
       'DLR',
-      (select id from agencies where agencies.name = 'Cool Agency')
+      (SELECT id FROM agencies WHERE agencies.name = 'Cool Agency')
     );`)
 
     await pool.query(`
@@ -87,7 +87,7 @@ describe('Ticketoptions query', () => {
       language
     ) VALUES (
       'pihlaja island',
-      (select ticket_options.id from ticket_options join agencies on ticket_options.agency_id = agencies.id where agencies.name = 'Cool Agency'),
+      (SELECT ticket_options.id FROM ticket_options JOIN agencies ON ticket_options.agency_id = agencies.id WHERE agencies.name = 'Cool Agency'),
       'test ticket description',
       'test instructions',
       'adult',
@@ -98,7 +98,7 @@ describe('Ticketoptions query', () => {
   afterAll(async () => {
     await pool.query(`
     DELETE FROM agencies
-    WHERE id = (select id from agencies where agencies.name = 'Cool Agency');
+    WHERE id = (SELECT id FROM agencies WHERE agencies.name = 'Cool Agency');
     `)
   })
 
