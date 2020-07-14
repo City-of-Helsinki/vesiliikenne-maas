@@ -4,7 +4,7 @@ import TicketContainer from '../../../components/TicketContainer'
 import { findTicket } from '../../../lib/ticket-service'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { withApiKeyAuthentication } from '../../../lib/middleware'
-import { createJWT } from '../../../lib/utils'
+import { createJWT, parseLocale } from '../../../lib/utils'
 import { TicketNotFoundError } from 'lib/errors'
 
 /**
@@ -19,6 +19,13 @@ import { TicketNotFoundError } from 'lib/errors'
  *         in: path
  *         required: true
  *         description: ticket id
+ *         schema:
+ *           type: string
+ *       - name: locale
+ *         in: query
+ *         required: false
+ *         description: Language used in tickets. Currently supported languages are 'fi' and 'en'. Defaults to english.
+ *         example: 'fi'
  *         schema:
  *           type: string
  *       - in: header
@@ -95,11 +102,12 @@ import { TicketNotFoundError } from 'lib/errors'
  *         description: Internal server error
  */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { uuid } = req.query
+  const { uuid, locale } = req.query
+  const language = parseLocale(locale)
   if (typeof uuid !== 'string')
     throw new Error('Argument uuid is not of type string')
   try {
-    const ticket = await findTicket(uuid)
+    const ticket = await findTicket(uuid, language)
 
     const qrCode = await qrcode.toDataURL(ticket.uuid)
     const html = renderToString(

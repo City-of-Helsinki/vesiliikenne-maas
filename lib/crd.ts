@@ -43,7 +43,6 @@ export const postTicketToCRD = async (
     moment(ticket.validFrom).unix(),
     ticket.uuid,
   )
-  console.log(JSON.stringify(ticketToPost, null, 2))
   const res = await axios.post(crdUrl, ticketToPost)
   return (await res.data) as CrdResponse
 }

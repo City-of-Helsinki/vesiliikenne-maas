@@ -5,7 +5,7 @@ import {
   calculateTicketValidTo,
   getTicketOptions,
 } from '../../../lib/ticket-service'
-import { parseNumber } from '../../../lib/utils'
+import { parseNumber, parseLocale } from '../../../lib/utils'
 
 /**
  * @swagger
@@ -22,6 +22,13 @@ import { parseNumber } from '../../../lib/utils'
  *         description: POSIX time in milliseconds
  *         schema:
  *           type: integer
+ *       - name: locale
+ *         in: query
+ *         required: false
+ *         description: Language used in tickets. Currently supported languages are 'fi' and 'en'. Defaults to english.
+ *         example: 'fi'
+ *         schema:
+ *           type: string
  *       - in: header
  *         name: x-api-key
  *         required: true
@@ -59,7 +66,7 @@ import { parseNumber } from '../../../lib/utils'
  *                   instructions:
  *                     type: string
  *                     description: "Instructions how to use the ticket"
- *                     example: "show ticket to inspector when boarding the ferry"
+ *                     example: "Show ticket to inspector when boarding the ferry."
  *                   ticketName:
  *                     type: string
  *                     description: "Ticket name"
@@ -86,7 +93,7 @@ import { parseNumber } from '../../../lib/utils'
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let startTime
-
+  const language = parseLocale(req.query.locale)
   try {
     startTime = parseNumber(req.query.startTime)
   } catch (error) {
@@ -104,7 +111,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   )
 
   try {
-    const tickets = await getTicketOptions()
+    const tickets = await getTicketOptions(language)
 
     const ticketsWithSeconds = tickets.map(ticket => ({
       ...ticket,
