@@ -22,10 +22,6 @@ const Home: NextPage = () => {
       route: 'healthz',
     },
     {
-      name: 'Dev - Sample ticket',
-      route: 'dev/ticket/c9a5c85d-7d8a-4f8c-8424-ba7f6434d010',
-    },
-    {
       name: 'Dev - Buy ticket',
       route: 'dev/ticket/buy',
     },
