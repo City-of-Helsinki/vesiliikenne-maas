@@ -37,9 +37,9 @@ export const getTicketOptions = async (
       agencies.name AS "agency",
       agencies.logo_data AS "logoData",
       ticket_translations.instructions
-    FROM public.ticket_options
-    JOIN public.ticket_translations ON ticket_options.id = ticket_option_id
-    JOIN public.agencies ON ticket_options.agency_id = agencies.id
+    FROM ticket_options
+    JOIN ticket_translations ON ticket_options.id = ticket_option_id
+    JOIN agencies ON ticket_options.agency_id = agencies.id
     WHERE language = $1),
   entable AS (
     SELECT 
@@ -52,9 +52,9 @@ export const getTicketOptions = async (
       agencies.name AS "agency",
       agencies.logo_data AS "logoData",
       ticket_translations.instructions
-    FROM public.ticket_options
-    JOIN public.ticket_translations ON ticket_options.id = ticket_option_id
-    JOIN public.agencies ON ticket_options.agency_id = agencies.id
+    FROM ticket_options
+    JOIN ticket_translations ON ticket_options.id = ticket_option_id
+    JOIN agencies ON ticket_options.agency_id = agencies.id
     WHERE ticket_options.id NOT IN (SELECT id FROM paramtable) AND language = 'en')
   SELECT * FROM entable
   UNION ALL
@@ -81,9 +81,9 @@ const getTicketOption = async (
     agencies.name AS "agency",
     agencies.logo_data AS "logoData",
     ticket_translations.instructions
-  FROM public.ticket_options
-  JOIN public.ticket_translations ON ticket_options.id = ticket_option_id
-  JOIN public.agencies ON ticket_options.agency_id = agencies.id
+  FROM ticket_options
+  JOIN ticket_translations ON ticket_options.id = ticket_option_id
+  JOIN agencies ON ticket_options.agency_id = agencies.id
   WHERE language = $1 AND ticket_options.id = $2;`
   const queryResult = await pool.query(ticketOptionQuery, [
     language,
@@ -104,13 +104,13 @@ export const getTickets = async () => {
     valid_from AS "validFrom",
     valid_to AS "validTo",
     agencies.name AS "agency",
-    public.ticket_translations.discount_group as "discountGroup",
-    public.ticket_translations.name,
-    public.ticket_translations.description
+    ticket_translations.discount_group as "discountGroup",
+    ticket_translations.name,
+    ticket_translations.description
   FROM tickets
   JOIN ticket_options ON tickets.ticket_option_id = ticket_options.id
   JOIN ticket_translations ON ticket_translations.ticket_option_id = ticket_options.id
-  JOIN public.agencies ON ticket_options.agency_id = agencies.id
+  JOIN agencies ON ticket_options.agency_id = agencies.id
   WHERE language = 'en';
   `
 
@@ -129,9 +129,9 @@ export const findTicket = async (
   const findTicketQuery = `
     WITH validlanguages AS (
       SELECT language 
-      FROM public.tickets
-      JOIN public.ticket_options ON ticket_options.id = tickets.ticket_option_id
-      JOIN public.ticket_translations ON ticket_translations.ticket_option_id = ticket_options.id
+      FROM tickets
+      JOIN ticket_options ON ticket_options.id = tickets.ticket_option_id
+      JOIN ticket_translations ON ticket_translations.ticket_option_id = ticket_options.id
       WHERE uuid = $1
     )
     SELECT 
@@ -147,10 +147,10 @@ export const findTicket = async (
       ticket_translations.name AS "ticketName",
       ticket_options.currency,
       ticket_translations.instructions
-    FROM public.tickets
-    JOIN public.ticket_options ON ticket_options.id = tickets.ticket_option_id
-    JOIN public.ticket_translations ON ticket_translations.ticket_option_id = ticket_options.id
-    JOIN public.agencies ON ticket_options.agency_id = agencies.id
+    FROM tickets
+    JOIN ticket_options ON ticket_options.id = tickets.ticket_option_id
+    JOIN ticket_translations ON ticket_translations.ticket_option_id = ticket_options.id
+    JOIN agencies ON ticket_options.agency_id = agencies.id
     WHERE uuid = $1 
       AND valid_to > now() 
       AND ticket_translations.language = (CASE WHEN ($2 IN (SELECT * FROM validlanguages)) THEN $2 ELSE 'en' END)
@@ -180,7 +180,7 @@ export const createTicket = async (optionId: number): Promise<Ticket> => {
 
 export const saveTicket = async (ticket: Ticket): Promise<string> => {
   const ticketOptionsQuery = `
-  INSERT INTO public.tickets (
+  INSERT INTO tickets (
     uuid,
     ticket_option_id,
     valid_from,
