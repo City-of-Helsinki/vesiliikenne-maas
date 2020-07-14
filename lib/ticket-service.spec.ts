@@ -97,11 +97,6 @@ describe('Ticketoptions query', () => {
 
   afterAll(async () => {
     await pool.query(`
-    DELETE FROM ticket_options
-    WHERE agency_id = (select id from agencies where agencies.name = 'Cool Agency');
-    `)
-
-    await pool.query(`
     DELETE FROM agencies
     WHERE id = (select id from agencies where agencies.name = 'Cool Agency');
     `)

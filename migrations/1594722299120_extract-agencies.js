@@ -25,7 +25,7 @@ exports.up = pgm => {
   ALTER TABLE ticket_options
     DROP COLUMN agency,
     DROP COLUMN logo_id,
-    ADD COLUMN agency_id INTEGER REFERENCES agencies(id);
+    ADD COLUMN agency_id INTEGER REFERENCES agencies(id) ON DELETE CASCADE;
   `)
 
   pgm.sql(`
