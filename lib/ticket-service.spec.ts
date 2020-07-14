@@ -58,14 +58,23 @@ describe('Ticket purchase flow', () => {
 describe('Ticketoptions query', () => {
   beforeAll(async () => {
     await pool.query(`
+    INSERT INTO agencies(
+      name,
+      logo_data
+    ) VALUES (
+      'Cool Agency',
+      'Even cooler logo'
+    );`)
+
+    await pool.query(`
     INSERT INTO ticket_options(
       amount,
       currency,
-      agency
+      agency_id
     ) VALUES (
       1000,
       'DLR',
-      'waterbus'
+      (select id from agencies where agencies.name = 'Cool Agency')
     );`)
 
     await pool.query(`
@@ -78,7 +87,7 @@ describe('Ticketoptions query', () => {
       language
     ) VALUES (
       'pihlaja island',
-      (select id from ticket_options where agency = 'waterbus'),
+      (select ticket_options.id from ticket_options join agencies on ticket_options.agency_id = agencies.id where agencies.name = 'Cool Agency'),
       'test ticket description',
       'test instructions',
       'adult',
@@ -89,7 +98,12 @@ describe('Ticketoptions query', () => {
   afterAll(async () => {
     await pool.query(`
     DELETE FROM ticket_options
-    WHERE agency = 'waterbus';
+    WHERE agency_id = (select id from agencies where agencies.name = 'Cool Agency');
+    `)
+
+    await pool.query(`
+    DELETE FROM agencies
+    WHERE id = (select id from agencies where agencies.name = 'Cool Agency');
     `)
   })
 

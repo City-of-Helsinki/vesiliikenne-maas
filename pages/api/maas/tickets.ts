@@ -49,10 +49,10 @@ import { parseNumber, parseLocale } from '../../../lib/utils'
  *                     type: number
  *                     description: "Ticket id"
  *                     example: 1
- *                   logoId:
+ *                   logoData:
  *                     type: string
- *                     description: "Id of the logo to display"
- *                     example: "waterbus.png"
+ *                     description: Base64 encoded SVG of the logo.
+ *                     example: PHN2ZyB3aWR0aD0iNzExL...
  *                   agency:
  *                     type: string
  *                     example: waterbusOY

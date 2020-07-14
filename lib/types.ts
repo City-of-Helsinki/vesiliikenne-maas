@@ -29,7 +29,7 @@ interface Agency {
 export const TicketType = t.strict({
   uuid: t.string,
   ticketOptionId: t.number,
-  logoId: t.union([t.string, t.undefined, t.null]),
+  logoData: t.union([t.string, t.undefined, t.null]),
   description: t.string,
   ticketName: t.string,
   amount: t.string,
@@ -58,7 +58,7 @@ export interface CrdResponse {
 
 export const TicketOptionType = t.strict({
   id: t.number,
-  logoId: t.union([t.string, t.undefined, t.null]),
+  logoData: t.union([t.string, t.undefined, t.null]),
   description: t.string,
   ticketName: t.string,
   amount: t.string,

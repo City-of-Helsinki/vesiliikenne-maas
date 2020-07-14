@@ -10,8 +10,8 @@ exports.up = pgm => {
     logo_data TEXT,
     PRIMARY KEY (id)
   );
-  `)
 
+  `)
   pgm.sql(`
   INSERT INTO agencies(
     "name",

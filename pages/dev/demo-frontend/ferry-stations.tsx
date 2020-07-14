@@ -22,7 +22,7 @@ interface props {
 
 interface TicketOption {
   amount: string
-  logoId: string
+  logoData: string
   currency: string
   description: string
   id: string
@@ -88,7 +88,7 @@ const FerryStations: NextPage<props> = ({
       <div style={{ paddingRight: '12px', height: '100%' }}>
         <div
           style={{
-            background: `url(/images/${ticket.logoId})`,
+            background: `url(data:image/svg+xml;base64,${ticket.logoData})`,
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
