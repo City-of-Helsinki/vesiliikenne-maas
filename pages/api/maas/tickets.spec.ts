@@ -1,10 +1,11 @@
 import { handler } from './tickets'
 import moment from 'moment-timezone'
+import { withErrorHandler } from '../../../lib/middleware'
 import { performRequest } from '../../../lib/http-test-helpers'
 
 const makeFetch = async (date: moment.Moment | undefined) => {
   const startTime = date ? date.utc().valueOf() : undefined
-  return performRequest(handler, { startTime })
+  return performRequest(withErrorHandler(handler), { startTime })
 }
 
 describe('/api/maas/tickets', () => {

@@ -2,6 +2,7 @@ import { handler as jtlineStations } from './index'
 import { pool } from '../../../../lib/db'
 import { performRequest } from '../../../../lib/http-test-helpers'
 import { AxiosResponse } from 'axios'
+import { withErrorHandler } from '../../../../lib/middleware'
 
 afterAll(async () => {
   return await pool.end()
@@ -12,7 +13,9 @@ describe('/api/jtline/stations', () => {
     let response: AxiosResponse
 
     beforeAll(async () => {
-      response = await performRequest(jtlineStations, { agencyId: 'jtline' })
+      response = await performRequest(withErrorHandler(jtlineStations), {
+        agencyId: 'jtline',
+      })
     })
 
     it('should produce response', () => {
@@ -24,7 +27,9 @@ describe('/api/jtline/stations', () => {
     })
 
     it('should have error message as body', () => {
-      expect(response?.data).toBe("Required query parameter 'location' is missing.")
+      expect(response?.data.message).toBe(
+        "Required query parameter 'location' is missing.",
+      )
     })
   })
 
@@ -32,7 +37,11 @@ describe('/api/jtline/stations', () => {
     let response: AxiosResponse
 
     beforeAll(async () => {
-      response = await performRequest(jtlineStations, { agencyId: 'jtline', location: "60.1676,24.9552", radius: "10000" })
+      response = await performRequest(jtlineStations, {
+        agencyId: 'jtline',
+        location: '60.1676,24.9552',
+        radius: '10000',
+      })
     })
 
     it('responds with status code 200', () => {

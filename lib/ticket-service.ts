@@ -88,7 +88,7 @@ const getTicketOption = async (
     ticketOptionId,
   ])
   if (queryResult.rows.length === 0) {
-    throw new TicketNotFoundError()
+    throw new TicketNotFoundError('Invalid ticketOptionId')
   }
   const ticketOption = validate(TicketOptionType, queryResult.rows[0])
   return ticketOption
@@ -155,7 +155,7 @@ export const findTicket = async (
 
   const queryResult = await pool.query(findTicketQuery, [uuid, language])
   if (queryResult.rows.length === 0) {
-    throw new TicketNotFoundError()
+    throw new TicketNotFoundError('Invalid ticket UUID')
   }
   const ticket = validate(TicketType, queryResult.rows[0])
   return ticket

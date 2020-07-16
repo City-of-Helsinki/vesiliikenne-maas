@@ -1,7 +1,7 @@
 import http, { IncomingMessage, ServerResponse } from 'http'
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import listen from 'test-listen'
-import axios, {  AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios'
 
 const dummyApiContext = {
   previewModeEncryptionKey: '',
@@ -9,7 +9,10 @@ const dummyApiContext = {
   previewModeSigningKey: '',
 }
 
-export const performRequest = async (handler: any, params: any): Promise<AxiosResponse> => {
+export const performRequest = async (
+  handler: any,
+  params: any,
+): Promise<AxiosResponse> => {
   const requestHandler = (req: IncomingMessage, res: ServerResponse) => {
     return apiResolver(req, res, params, handler, dummyApiContext)
   }
@@ -21,7 +24,7 @@ export const performRequest = async (handler: any, params: any): Promise<AxiosRe
     try {
       response = await axios.get(url)
     } catch (e) {
-      response = e.response;
+      response = e.response
     }
     return response
   } finally {

@@ -1,5 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { withApiKeyAuthentication } from '../../../../lib/middleware'
+import {
+  withApiKeyAuthentication,
+  withErrorHandler,
+} from '../../../../lib/middleware'
 import { isString } from '../../../../lib/utils'
 import { TicketRequestValidationError } from '../../../../lib/errors'
 import { pool } from '../../../../lib/db'
@@ -143,30 +146,22 @@ export const handler = async (
   }
   const agencyName = agencyIdToAgencyName[agencyId]
   if (!agencyName) {
-    return res.status(404).json({ message: 'Unknown agencyId: ${agencyId}' })
+    return res.status(404).json({ message: `Unknown agencyId: ${agencyId}` })
   }
 
-  try {
-    const {
-      location: { latitude, longitude },
-      distanceInMeters,
-    } = parseQuery(req.query)
-    const queryResult = await pool.query(stopsQuery, [
-      agencyId,
-      agencyName,
-      longitude,
-      latitude,
-      distanceInMeters,
-    ])
-    res.json(queryResult.rows[0]['aggregated_out'])
-  } catch (error) {
-    console.error(error.message)
-    if (error instanceof TicketRequestValidationError) {
-      res.status(400).send(error.message)
-    } else {
-      res.status(500).send('Internal server error')
-    }
-  }
+  const {
+    location: { latitude, longitude },
+    distanceInMeters,
+  } = parseQuery(req.query)
+
+  const queryResult = await pool.query(stopsQuery, [
+    agencyId,
+    agencyName,
+    longitude,
+    latitude,
+    distanceInMeters,
+  ])
+  res.json(queryResult.rows[0]['aggregated_out'])
 }
 
-export default withApiKeyAuthentication(handler)
+export default withApiKeyAuthentication(withErrorHandler(handler))

@@ -16,9 +16,9 @@ export const parseString = (string: any, objectKey: string): string => {
   return string
 }
 
-export const parseNumber = (num: any): number => {
+export const parseNumber = (objectKey: string, num: any): number => {
   if (isNaN(num) || !num) {
-    throw new TypeError(`${num} is not a number`)
+    throw new TypeError(`${objectKey} is not a number: ${num}`)
   }
   return Number(num)
 }
