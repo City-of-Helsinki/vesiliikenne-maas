@@ -88,7 +88,7 @@ const getTicketOption = async (
     ticketOptionId,
   ])
   if (queryResult.rows.length === 0) {
-    throw new TicketNotFoundError('Invalid ticketOptionId')
+    throw new TicketNotFoundError('ticket option with given ID was not found ')
   }
   const ticketOption = validate(TicketOptionType, queryResult.rows[0])
   return ticketOption

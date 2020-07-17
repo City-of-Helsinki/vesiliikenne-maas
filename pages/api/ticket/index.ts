@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTicket, saveTicket } from '../../../lib/ticket-service'
-import { isString } from '../../../lib/utils'
-import { Ticket } from '../../../lib/types'
+import { isString, parseNumber } from '../../../lib/utils'
 import { postTicketToCRD } from '../../../lib/crd'
 import {
   withApiKeyAuthentication,
@@ -51,19 +50,14 @@ import {
  *       '500':
  *         description: Server error
  */
-const handler = async (
+export const handler = async (
   req: NextApiRequest,
   res: NextApiResponse,
 ): Promise<void> => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Cannot GET' })
   }
-  const ticketOptionId = req.body.ticketOptionId
-  if (isNaN(ticketOptionId)) {
-    return res.status(400).json({
-      error: `Invalid parameter ticketOptionId: ${ticketOptionId} is not a number`,
-    })
-  }
+  const ticketOptionId = parseNumber('ticketOptionId', req.body.ticketOptionId)
 
   const ticket = await createTicket(ticketOptionId)
 

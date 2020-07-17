@@ -109,14 +109,14 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .asSeconds(),
   )
 
-  const tickets = await getTicketOptions(language)
+  const ticketOptions = await getTicketOptions(language)
 
-  const ticketsWithSeconds = tickets.map(ticket => ({
+  const ticketOptionsWithSeconds = ticketOptions.map(ticket => ({
     ...ticket,
     validityseconds,
   }))
 
-  res.json(ticketsWithSeconds)
+  res.json(ticketOptionsWithSeconds)
 }
 
 export default withApiKeyAuthentication(withErrorHandler(handler))
