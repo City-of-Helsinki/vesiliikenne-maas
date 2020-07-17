@@ -7,7 +7,7 @@ import {
   withApiKeyAuthentication,
   withErrorHandler,
 } from '../../../lib/middleware'
-import { createJWT, parseLocale } from '../../../lib/utils'
+import { createJWT, parseLocale, readPrivateKeyData } from '../../../lib/utils'
 
 /**
  * @swagger
@@ -117,7 +117,10 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       qrCodeContents: qrCode,
     }),
   )
-  const jwToken = await createJWT({ ...ticket, ticket: html, qrCode })
+  const jwToken =
+    process.env.NODE_ENV === 'test'
+      ? { ...ticket, html }
+      : createJWT({ ...ticket, ticket: html, qrCode }, readPrivateKeyData())
   res.json({ ticketdata: jwToken })
 }
 

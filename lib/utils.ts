@@ -48,11 +48,10 @@ export const readPublicKeyData = (): string => {
   return base64decode(process.env.GWT_SIGNING_PUBLIC_KEY_BASE64 || '')
 }
 
-const readPrivateKeyData = (): string => {
+export const readPrivateKeyData = (): string => {
   return base64decode(process.env.GWT_SIGNING_PRIVATE_KEY_BASE64 || '')
 }
 
-export const createJWT = async (object: any): Promise<string> => {
-  const privatekey = readPrivateKeyData()
-  return jsonwebtoken.sign(object, privatekey, { algorithm: 'RS256' })
+export const createJWT = (object: any, privateKey: string): string => {
+  return jsonwebtoken.sign(object, privateKey, { algorithm: 'RS256' })
 }
