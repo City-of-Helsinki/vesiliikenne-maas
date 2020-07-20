@@ -10,7 +10,7 @@ export class TicketNotFoundError extends Error {
   }
 }
 
-export class IotsError extends Error {
+export class TypeValidationError extends Error {
   constructor(message?: string) {
     super(message)
   }

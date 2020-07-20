@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 import {
   TicketNotFoundError,
   TicketRequestValidationError,
-  IotsError,
+  TypeValidationError,
 } from '../lib/errors'
 
 const MAAS_API_KEY_HASH = process.env.MAAS_API_KEY_HASH || ''
@@ -44,10 +44,6 @@ export const withErrorHandler = (
       return res.status(400).json({ message: error.message })
     if (error instanceof TicketNotFoundError)
       return res.status(404).json({ message: error.message })
-    if (error instanceof IotsError)
-      return res
-        .status(400)
-        .json({ message: 'Io-ts runtime type validation error' })
 
     return res.status(500).send('internal server error')
   }

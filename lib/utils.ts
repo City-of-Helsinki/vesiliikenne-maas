@@ -3,7 +3,7 @@ import jsonwebtoken from 'jsonwebtoken'
 import * as t from 'io-ts'
 import { PathReporter } from 'io-ts/lib/PathReporter'
 import { isLeft } from 'fp-ts/lib/Either'
-import { IotsError } from './errors'
+import { TypeValidationError } from './errors'
 
 export const isString = (text: any): text is string => {
   return typeof text === 'string' || text instanceof String
@@ -33,7 +33,7 @@ export const validate = <A, I, O>(
 ): A => {
   const errorOrResult = runtimeType.decode(inputToValidate)
   if (isLeft(errorOrResult)) {
-    throw new IotsError(PathReporter.report(errorOrResult).toString())
+    throw new TypeValidationError(PathReporter.report(errorOrResult).toString())
   } else {
     return errorOrResult.right
   }
