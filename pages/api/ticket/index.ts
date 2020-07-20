@@ -1,9 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTicket, saveTicket } from '../../../lib/ticket-service'
-import { isString } from '../../../lib/utils'
-import { Ticket } from '../../../lib/types'
+import { isString, parseNumber } from '../../../lib/utils'
 import { postTicketToCRD } from '../../../lib/crd'
-import { withApiKeyAuthentication } from '../../../lib/middleware'
+import {
+  withApiKeyAuthentication,
+  withErrorHandler,
+} from '../../../lib/middleware'
 
 /**
  * @swagger
@@ -48,39 +50,23 @@ import { withApiKeyAuthentication } from '../../../lib/middleware'
  *       '500':
  *         description: Server error
  */
-const handler = async (
+export const handler = async (
   req: NextApiRequest,
   res: NextApiResponse,
 ): Promise<void> => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Cannot GET' })
   }
-  const ticketOptionId = req.body.ticketOptionId
-  if (isNaN(ticketOptionId)) {
-    return res.status(400).json({
-      error: `Invalid parameter ticketOptionId: ${ticketOptionId} is not a number`,
-    })
-  }
-  let ticket: Ticket
+  const ticketOptionId = parseNumber('ticketOptionId', req.body.ticketOptionId)
 
-  try {
-    ticket = await createTicket(ticketOptionId)
-  } catch (error) {
-    console.error(error)
-    if (error instanceof TypeError) {
-      return res.status(400).json({ error: 'Invalid ticketOptionId' })
-    }
-
-    return res.status(500).send('Failed creating ticket')
-  }
-
-  const crdUrl = process.env.CRD_URL
-  const apiToken = process.env.CRD_TOKEN
-  if (!isString(crdUrl) || !isString(apiToken)) {
-    return res.status(500).send('Server configuration error')
-  }
+  const ticket = await createTicket(ticketOptionId)
 
   if (process.env.ALLOW_CRD === 'allow') {
+    const crdUrl = process.env.CRD_URL
+    const apiToken = process.env.CRD_TOKEN
+    if (!isString(crdUrl) || !isString(apiToken)) {
+      return res.status(500).send('Server configuration error')
+    }
     const crdResponse = await postTicketToCRD(crdUrl, apiToken, ticket)
 
     if (crdResponse.failed) {
@@ -92,4 +78,4 @@ const handler = async (
   res.json({ uuid })
 }
 
-export default withApiKeyAuthentication(handler)
+export default withApiKeyAuthentication(withErrorHandler(handler))

@@ -9,3 +9,9 @@ export class TicketNotFoundError extends Error {
     super(message)
   }
 }
+
+export class TypeValidationError extends Error {
+  constructor(message?: string) {
+    super(message)
+  }
+}

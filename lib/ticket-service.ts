@@ -2,10 +2,9 @@ import moment from 'moment-timezone'
 import { uuid } from 'uuidv4'
 import { Ticket, TicketOptions, TicketOption } from './types'
 import { pool } from './db'
-import { isRight } from 'fp-ts/lib/Either'
-import { PathReporter } from 'io-ts/lib/PathReporter'
 import { TicketOptionsType, TicketType, TicketOptionType } from './types'
 import { TicketNotFoundError } from './errors'
+import { validate } from './utils'
 
 export const calculateTicketValidTo = (validFrom: moment.Moment) => {
   // If ticket purchased between 00:00 and 03:00, it ends within the same day
@@ -61,9 +60,8 @@ export const getTicketOptions = async (
   SELECT * from paramtable;`
 
   const queryResult = await pool.query(ticketOptionsQuery, [language])
-  const tickets = TicketOptionsType.decode(queryResult.rows)
-  if (isRight(tickets)) return tickets.right
-  throw new Error(PathReporter.report(tickets).toString())
+  const ticketOptions = validate(TicketOptionsType, queryResult.rows)
+  return ticketOptions
 }
 
 const getTicketOption = async (
@@ -90,11 +88,10 @@ const getTicketOption = async (
     ticketOptionId,
   ])
   if (queryResult.rows.length === 0) {
-    throw new TicketNotFoundError()
+    throw new TicketNotFoundError('ticket option with given ID was not found ')
   }
-  const ticket = TicketOptionType.decode(queryResult.rows[0])
-  if (isRight(ticket)) return ticket.right
-  throw new TypeError(PathReporter.report(ticket).toString())
+  const ticketOption = validate(TicketOptionType, queryResult.rows[0])
+  return ticketOption
 }
 
 export const getTickets = async () => {
@@ -158,12 +155,10 @@ export const findTicket = async (
 
   const queryResult = await pool.query(findTicketQuery, [uuid, language])
   if (queryResult.rows.length === 0) {
-    throw new TicketNotFoundError()
+    throw new TicketNotFoundError('Invalid ticket UUID or ticket is expired')
   }
-
-  const ticket = TicketType.decode(queryResult.rows[0])
-  if (isRight(ticket)) return ticket.right
-  throw new TypeError(PathReporter.report(ticket).toString())
+  const ticket = validate(TicketType, queryResult.rows[0])
+  return ticket
 }
 
 export const createTicket = async (optionId: number): Promise<Ticket> => {
@@ -185,7 +180,7 @@ export const saveTicket = async (ticket: Ticket): Promise<string> => {
     ticket_option_id,
     valid_from,
     valid_to
-  ) values (
+  ) VALUES (
     $1,
     $2,
     $3,

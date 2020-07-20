@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getTickets } from '../../../lib/ticket-service'
 import { withApiKeyAuthentication } from '../../../lib/middleware'
-import { createJWT } from '../../../lib/utils'
+import { createJWT, readPrivateKeyData } from '../../../lib/utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const tickets = await getTickets()
 
-    const jwToken = await createJWT({ tickets })
+    const jwToken = createJWT({ tickets }, readPrivateKeyData())
     res.json(jwToken)
   } catch (error) {
     res.status(500).send({ error })

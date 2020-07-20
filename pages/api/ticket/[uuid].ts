@@ -3,9 +3,11 @@ import qrcode from 'qrcode'
 import TicketContainer from '../../../components/TicketContainer'
 import { findTicket } from '../../../lib/ticket-service'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { withApiKeyAuthentication } from '../../../lib/middleware'
-import { createJWT, parseLocale } from '../../../lib/utils'
-import { TicketNotFoundError } from 'lib/errors'
+import {
+  withApiKeyAuthentication,
+  withErrorHandler,
+} from '../../../lib/middleware'
+import { createJWT, parseLocale, readPrivateKeyData } from '../../../lib/utils'
 
 /**
  * @swagger
@@ -101,32 +103,25 @@ import { TicketNotFoundError } from 'lib/errors'
  *       '500':
  *         description: Internal server error
  */
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { uuid, locale } = req.query
   const language = parseLocale(locale)
   if (typeof uuid !== 'string')
-    throw new Error('Argument uuid is not of type string')
-  try {
-    const ticket = await findTicket(uuid, language)
+    throw new TypeError('Argument uuid is not of type string')
 
-    const qrCode = await qrcode.toDataURL(ticket.uuid)
-    const html = renderToString(
-      TicketContainer({
-        ticket,
-        qrCodeContents: qrCode,
-      }),
-    )
-    const jwToken = await createJWT({ ...ticket, ticket: html, qrCode })
-    res.json({ ticketdata: jwToken })
-  } catch (error) {
-    console.error(error.message)
-
-    if (error instanceof TicketNotFoundError) {
-      return res.status(404).json({ error: 'Ticket UUID incorrect' })
-    }
-
-    res.status(500).send('Internal server error')
-  }
+  const ticket = await findTicket(uuid, language)
+  const qrCode = await qrcode.toDataURL(ticket.uuid)
+  const html = renderToString(
+    TicketContainer({
+      ticket,
+      qrCodeContents: qrCode,
+    }),
+  )
+  const jwToken =
+    process.env.NODE_ENV === 'test'
+      ? { ...ticket, html }
+      : createJWT({ ...ticket, ticket: html, qrCode }, readPrivateKeyData())
+  res.json({ ticketdata: jwToken })
 }
 
-export default withApiKeyAuthentication(handler)
+export default withApiKeyAuthentication(withErrorHandler(handler))

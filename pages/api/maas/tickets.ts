@@ -1,6 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import moment from 'moment-timezone'
-import { withApiKeyAuthentication } from '../../../lib/middleware'
+import {
+  withApiKeyAuthentication,
+  withErrorHandler,
+} from '../../../lib/middleware'
 import {
   calculateTicketValidTo,
   getTicketOptions,
@@ -92,13 +95,9 @@ import { parseNumber, parseLocale } from '../../../lib/utils'
  */
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let startTime
   const language = parseLocale(req.query.locale)
-  try {
-    startTime = parseNumber(req.query.startTime)
-  } catch (error) {
-    return res.status(400).send(`Invalid parameter startTime: ${error.message}`)
-  }
+
+  const startTime = parseNumber('startTime', req.query.startTime)
 
   const endTimeInMilliseconds = calculateTicketValidTo(
     moment.tz(startTime, 'Europe/Helsinki'),
@@ -110,19 +109,14 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .asSeconds(),
   )
 
-  try {
-    const tickets = await getTicketOptions(language)
+  const ticketOptions = await getTicketOptions(language)
 
-    const ticketsWithSeconds = tickets.map(ticket => ({
-      ...ticket,
-      validityseconds,
-    }))
+  const ticketOptionsWithSeconds = ticketOptions.map(ticket => ({
+    ...ticket,
+    validityseconds,
+  }))
 
-    res.json(ticketsWithSeconds)
-  } catch (error) {
-    console.error(error)
-    return res.status(500).send('Failed getting ticket options')
-  }
+  res.json(ticketOptionsWithSeconds)
 }
 
-export default withApiKeyAuthentication(handler)
+export default withApiKeyAuthentication(withErrorHandler(handler))
