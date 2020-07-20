@@ -155,7 +155,7 @@ export const findTicket = async (
 
   const queryResult = await pool.query(findTicketQuery, [uuid, language])
   if (queryResult.rows.length === 0) {
-    throw new TicketNotFoundError('Invalid ticket UUID')
+    throw new TicketNotFoundError('Invalid ticket UUID or ticket is expired')
   }
   const ticket = validate(TicketType, queryResult.rows[0])
   return ticket

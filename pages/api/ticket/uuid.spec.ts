@@ -56,7 +56,9 @@ describe('GET /api/ticket/[uuid]', () => {
       const url = await listen(server)
       const response = await performGet(`${url}?uuid=abc123`)
       expect(response.status).toBe(404)
-      expect(response.data.message).toBe('Invalid ticket UUID')
+      expect(response.data.message).toBe(
+        'Invalid ticket UUID or ticket is expired',
+      )
     })
   })
   describe('UUID is valid but ticket is expired', () => {
@@ -64,7 +66,9 @@ describe('GET /api/ticket/[uuid]', () => {
       const url = await listen(server)
       const response = await performGet(`${url}?uuid=oldticket`)
       expect(response.status).toBe(404)
-      expect(response.data.message).toBe('Invalid ticket UUID')
+      expect(response.data.message).toBe(
+        'Invalid ticket UUID or ticket is expired',
+      )
     })
   })
   describe('UUID is valid and ticket is not expired', () => {
