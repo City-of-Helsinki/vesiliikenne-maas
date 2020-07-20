@@ -1,6 +1,6 @@
 # Vesiliikenne MaaS
 
-Building a Proof of Concept to connect MaaS apps to ferry operators via a common integration platform.
+Next.js app that acts as an integration layer that mediates the connection between ticket sales platforms and MaaS providers. It is kept as platform-agnostic as possible so that multiple platforms and MaaS app providers can be supported and swapped out if needed.
 
 ## Requirements
 
