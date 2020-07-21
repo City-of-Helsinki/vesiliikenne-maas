@@ -4,6 +4,6 @@ build:
 release:
   image: web
   command:
-    - 'PGSSLMODE=require yarn run node-pg-migrate up'
+    - 'PGSSLMODE=no-verify yarn run node-pg-migrate up'
 run:
   web: yarn run next start -p $PORT
