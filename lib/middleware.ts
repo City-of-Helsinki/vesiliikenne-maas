@@ -37,7 +37,7 @@ export const withErrorHandler = (
     const response = await handler(req, res)
     return response
   } catch (error) {
-    console.log(error)
+    console.error(error)
     if (error instanceof TypeError)
       return res.status(400).json({ message: error.message })
     if (error instanceof TicketRequestValidationError)
