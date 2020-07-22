@@ -103,7 +103,10 @@ import { createJWT, parseLocale, readPrivateKeyData } from '../../../lib/utils'
  *       '500':
  *         description: Internal server error
  */
-export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+export const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+): Promise<void> => {
   const { uuid, locale } = req.query
   const language = parseLocale(locale)
   if (typeof uuid !== 'string')

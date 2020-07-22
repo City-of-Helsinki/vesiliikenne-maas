@@ -94,7 +94,10 @@ import { parseNumber, parseLocale } from '../../../lib/utils'
  *         description: Server error
  */
 
-export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+export const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+): Promise<void> => {
   const language = parseLocale(req.query.locale)
 
   const startTime = parseNumber('startTime', req.query.startTime)
