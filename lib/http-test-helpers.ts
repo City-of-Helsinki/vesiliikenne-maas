@@ -2,7 +2,6 @@ import http, { IncomingMessage, ServerResponse } from 'http'
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import listen from 'test-listen'
 import axios, { AxiosResponse } from 'axios'
-import { any } from 'io-ts'
 
 const dummyApiContext = {
   previewModeEncryptionKey: '',
