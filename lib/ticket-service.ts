@@ -1,4 +1,4 @@
-import moment from 'moment-timezone'
+import moment, { Moment } from 'moment-timezone'
 import { uuid } from 'uuidv4'
 import { Ticket, TicketOptions, TicketOption } from './types'
 import { pool } from './db'
@@ -6,7 +6,7 @@ import { TicketOptionsType, TicketType, TicketOptionType } from './types'
 import { TicketNotFoundError } from './errors'
 import { validate } from './utils'
 
-export const calculateTicketValidTo = (validFrom: moment.Moment) => {
+export const calculateTicketValidTo = (validFrom: Moment): Moment => {
   // If ticket purchased between 00:00 and 03:00, it ends within the same day
   if (validFrom.hour() < 3) {
     return moment(validFrom).hour(3).minute(0).second(0).milliseconds(0)
@@ -155,7 +155,9 @@ export const findTicket = async (
 
   const queryResult = await pool.query(findTicketQuery, [uuid, language])
   if (queryResult.rows.length === 0) {
-    throw new TicketNotFoundError('Invalid ticket UUID or ticket is expired')
+    throw new TicketNotFoundError(
+      `Invalid ticket UUID or ticket is expired: ${uuid}`,
+    )
   }
   const ticket = validate(TicketType, queryResult.rows[0])
   return ticket
