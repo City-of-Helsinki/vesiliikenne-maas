@@ -10,6 +10,12 @@ export class TicketNotFoundError extends Error {
   }
 }
 
+export class TicketOptionNotFoundError extends Error {
+  constructor(message?: string) {
+    super(message)
+  }
+}
+
 export class TypeValidationError extends Error {
   constructor(message?: string) {
     super(message)
