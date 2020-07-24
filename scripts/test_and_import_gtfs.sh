@@ -15,6 +15,7 @@ export PGUSER=$(sed -r "s/$DATABASE_REGEX/\1/" <<< "$DATABASE_URL")
 export PGPASSWORD=$(sed -r "s/$DATABASE_REGEX/\2/" <<< "$DATABASE_URL")
 export PGHOST=$(sed -r "s/$DATABASE_REGEX/\3/" <<< "$DATABASE_URL")
 export PGDATABASE=$(sed -r "s/$DATABASE_REGEX/\4/" <<< "$DATABASE_URL")
+export PGSSLMODE=require
 
 cleanup() {
   echo "Cleaning up created directories"
