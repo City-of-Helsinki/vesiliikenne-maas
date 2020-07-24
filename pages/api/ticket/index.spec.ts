@@ -31,7 +31,7 @@ describe('POST /api/ticket', () => {
       const response = await performPost(url, { ticketOptionId })
       expect(response.status).toBe(404)
       expect(response.data.message).toBe(
-        `ticket option with given ID was not found. ID: ${ticketOptionId}`,
+        `Ticket option with given ID was not found. ID: ${ticketOptionId}`,
       )
     })
   })
