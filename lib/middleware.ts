@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs'
 import {
   TicketNotFoundError,
   TicketRequestValidationError,
+  TicketOptionNotFoundError,
 } from '../lib/errors'
 
 const MAAS_API_KEY_HASH = process.env.MAAS_API_KEY_HASH || ''
@@ -36,13 +37,18 @@ export const withErrorHandler = (
     const response = await handler(req, res)
     return response
   } catch (error) {
-    req.url && console.error(`Request URL: ${req.url}`)
-    console.error(error)
+    if (process.env.NODE_ENV !== 'test') {
+      req.url && console.error(`Request URL: ${req.url}`)
+      console.error(error)
+    }
+
     if (error instanceof TypeError)
       return res.status(400).json({ message: error.message })
     if (error instanceof TicketRequestValidationError)
       return res.status(400).json({ message: error.message })
     if (error instanceof TicketNotFoundError)
+      return res.status(404).json({ message: error.message })
+    if (error instanceof TicketOptionNotFoundError)
       return res.status(404).json({ message: error.message })
 
     return res.status(500).json({ message: 'internal server error' })

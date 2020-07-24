@@ -26,11 +26,12 @@ describe('POST /api/ticket', () => {
     })
 
     it('should return 404 if ticketOption is not found', async () => {
+      const ticketOptionId = 9999
       const url = await listen(server)
-      const response = await performPost(url, { ticketOptionId: 9999 })
+      const response = await performPost(url, { ticketOptionId })
       expect(response.status).toBe(404)
       expect(response.data.message).toBe(
-        'ticket option with given ID was not found ',
+        `Ticket option with given ID was not found. ID: ${ticketOptionId}`,
       )
     })
   })

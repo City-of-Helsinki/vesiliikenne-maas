@@ -25,7 +25,7 @@ export const parseNumber = (objectKey: string, num: any): number => {
 }
 
 export const parseLocale = (locale: string | string[]): string =>
-  locale ? locale.toString() : 'en'
+  locale ? locale.toString().toLowerCase() : 'en'
 
 export const validate = <A, I, O>(
   runtimeType: t.Type<A, O, I>,

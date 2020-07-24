@@ -3,7 +3,7 @@ import { uuid } from 'uuidv4'
 import { Ticket, TicketOptions, TicketOption } from './types'
 import { pool } from './db'
 import { TicketOptionsType, TicketType, TicketOptionType } from './types'
-import { TicketNotFoundError } from './errors'
+import { TicketNotFoundError, TicketOptionNotFoundError } from './errors'
 import { validate } from './utils'
 
 export const calculateTicketValidTo = (validFrom: Moment): Moment => {
@@ -88,7 +88,9 @@ const getTicketOption = async (
     ticketOptionId,
   ])
   if (queryResult.rows.length === 0) {
-    throw new TicketNotFoundError('ticket option with given ID was not found ')
+    throw new TicketOptionNotFoundError(
+      `Ticket option with given ID was not found. ID: ${ticketOptionId}`,
+    )
   }
   const ticketOption = validate(TicketOptionType, queryResult.rows[0])
   return ticketOption
