@@ -23,7 +23,7 @@ To set up the development environment:
 
 ### Api documentation
 
-[Link](https://vesiliikenne-maas.herokuapp.com/specs/redoc.html) to api dodumentation
+[Link](https://vesiliikenne-maas.herokuapp.com/specs/redoc.html) to api documentation
 
 ### Architecture diagram
 
