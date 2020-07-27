@@ -336,8 +336,14 @@
               }
             }
           },
+          "400": {
+            "description": "Uuid is not string"
+          },
+          "401": {
+            "description": "Invalid api key"
+          },
           "404": {
-            "description": "A ticket with the ticketId was not found"
+            "description": "A ticket with the ticketId was not found or ticket is expired."
           },
           "500": {
             "description": "Internal server error"
@@ -396,8 +402,20 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Invalid api key"
+          },
+          "404": {
+            "description": "TicketOptionId is invalid"
+          },
+          "405": {
+            "desciption": "Method not allowed"
+          },
           "500": {
             "description": "Server error"
+          },
+          "502": {
+            "description": "Bad Gateway"
           }
         }
       }

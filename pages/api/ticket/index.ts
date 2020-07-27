@@ -47,8 +47,16 @@ import {
  *                    example: 20ca08a3-dfd9-4b74-97bf-eb414e143def
  *       '400':
  *         description: Bad Request
+ *       '401':
+ *         description: Invalid api key
+ *       '404':
+ *         description: TicketOptionId is invalid
+ *       '405':
+ *         desciption: Method not allowed
  *       '500':
  *         description: Server error
+ *       '502':
+ *         description: Bad Gateway
  */
 export const handler = async (
   req: NextApiRequest,
