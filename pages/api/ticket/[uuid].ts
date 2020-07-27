@@ -98,8 +98,12 @@ import { createJWT, parseLocale, readPrivateKeyData } from '../../../lib/utils'
  *                     type: string
  *                     description: "Instructions how to use the ticket"
  *                     example: "Show ticket to inspector when boarding the ferry."
+ *       '400':
+ *         description: Uuid is not string
+ *       '401':
+ *         description: Invalid api key
  *       '404':
- *         description: A ticket with the ticketId was not found
+ *         description: A ticket with the ticketId was not found or ticket is expired.
  *       '500':
  *         description: Internal server error
  */
@@ -124,6 +128,7 @@ export const handler = async (
     process.env.NODE_ENV === 'test'
       ? { ...ticket, html }
       : createJWT({ ...ticket, ticket: html, qrCode }, readPrivateKeyData())
+
   res.json({ ticketdata: jwToken })
 }
 

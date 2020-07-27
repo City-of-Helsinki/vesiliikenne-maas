@@ -19,9 +19,15 @@ To set up the development environment:
 1. `yarn run-migrations-dev up`
 1. Navigate to http://localhost:3000/
 
-## Architecture diagram
+## Documentation
 
-The architecture diagram can be found under `doc/`.
+### Api documentation
+
+[Link](https://vesiliikenne-maas.herokuapp.com/specs/redoc.html) to the api documentation
+
+### Architecture diagram
+
+[Link](doc/Vesiliikenne%20MaaS%20Architecture.pdf) to the architecture diagram
 
 ## Configuration
 
