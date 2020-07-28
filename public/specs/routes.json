@@ -89,8 +89,14 @@
               }
             }
           },
+          "400": {
+            "description": "Invalid query parameter"
+          },
           "401": {
             "description": "Invalid api key"
+          },
+          "404": {
+            "description": "Unknown agencyId"
           },
           "500": {
             "description": "Server error"
