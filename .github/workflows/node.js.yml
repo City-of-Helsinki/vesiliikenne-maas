@@ -40,12 +40,12 @@ jobs:
           postgres-port: 5432
           postgres-user: postgres
           postgres-password: postgres
-      - run: npm i
-      - run: npm run build --if-present
-      - run: npm run ci-migrate-up
+      - run: yarn
+      - run: yarn run build --if-present
+      - run: yarn run ci-migrate-up
       - name: Run tests
-        run: npm run ci-test
+        run: yarn run ci-test
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
-      - run: npm run doc
+      - run: yarn run doc
       - run: ./scripts/check_dirty_wc.sh
