@@ -5,71 +5,48 @@ import {
 } from '../../../../lib/middleware'
 import { isString } from '../../../../lib/utils'
 import { TicketRequestValidationError } from '../../../../lib/errors'
-import { pool } from '../../../../lib/db'
+import { getNearbyStations } from '../../../../lib/station-service'
 
 // Mapping from supported agencyIds to their name in GTFS
 const agencyIdToAgencyName: { [key: string]: string } = {
   jtline: 'JT-Line Oy',
 }
 
-// language=PostgreSQL
-const stopsQuery = `with result_tops as
-       (select distinct stop_id,
-                        stop_lat,
-                        stop_lon,
-                        stop_name
-        from gtfs.trips
-               join gtfs.routes using (route_id)
-               join gtfs.agency using (agency_id)
-               join gtfs.stop_times using (trip_id)
-               join gtfs.stops using (stop_id)
-               join gtfs.calendar using (service_id)
-        where agency_name = $2
-          and now()::date between start_date and end_date
-          and ST_Distance(
-                  the_geom::geography,
-                  ST_SetSRID(ST_Point($3, $4), 4326)::geography
-                ) <= cast($5 as integer))
-select jsonb_agg(
-           json_build_object(
-               'id', stop_id,
-               'location', concat(stop_lat, ',', stop_lon),
-               'agencyId', $1::text,
-               'name', stop_name,
-               'services', jsonb_build_array('FERRY')
-             )
-         ) as aggregated_out
-from result_tops;
-`
-
 const parseQuery = (query: { [key: string]: string | string[] }) => {
-  const parseLocation = (locationString: string | string[]) => {
-    if (!isString(locationString)) {
-      throw new TicketRequestValidationError(
-        "Required query parameter 'location' is missing.",
-      )
-    }
-
-    const [latitude, longitude] = locationString.split(',')
-    return { latitude, longitude }
-  }
-
-  const parseRadius = (radius: string | string[]) => {
-    if (!isString(radius)) {
-      throw new TicketRequestValidationError(
-        "Required query parameter 'radius' is missing.",
-      )
-    }
-    return radius
-  }
-
-  const { location, radius } = query
+  const { location, radius, agencyId } = query
   return {
+    agencyId: parseAgencyId(agencyId),
     location: parseLocation(location),
     distanceInMeters: parseRadius(radius),
   }
 }
 
+const parseAgencyId = (agencyId: string | string[]) => {
+  if (!isString(agencyId)) {
+    throw new TypeError('AgencyId is not string')
+  }
+  return agencyId
+}
+
+const parseLocation = (locationString: string | string[]) => {
+  if (!isString(locationString)) {
+    throw new TicketRequestValidationError(
+      "Required query parameter 'location' is missing.",
+    )
+  }
+
+  const [latitude, longitude] = locationString.split(',')
+  return { latitude, longitude }
+}
+
+const parseRadius = (radius: string | string[]) => {
+  if (!isString(radius)) {
+    throw new TicketRequestValidationError(
+      "Required query parameter 'radius' is missing.",
+    )
+  }
+  return radius
+}
 /**
  * @swagger
  *
@@ -131,8 +108,12 @@ const parseQuery = (query: { [key: string]: string | string[] }) => {
  *                     description: "Service types, currently only 'FERRY'"
  *                     items:
  *                       type: string
+ *       '400':
+ *         description: Invalid query parameter
  *       '401':
  *         description: Invalid api key
+ *       '404':
+ *         description: Unknown agencyId
  *       '500':
  *         description: Server error
  */
@@ -140,28 +121,25 @@ export const handler = async (
   req: NextApiRequest,
   res: NextApiResponse,
 ): Promise<void> => {
-  const agencyId = req.query['agencyId']
-  if (!isString(agencyId)) {
-    return res.status(400).json({ message: 'Invalid agencyId' })
-  }
+  const {
+    location: { latitude, longitude },
+    distanceInMeters,
+    agencyId,
+  } = parseQuery(req.query)
+
   const agencyName = agencyIdToAgencyName[agencyId]
   if (!agencyName) {
     return res.status(404).json({ message: `Unknown agencyId: ${agencyId}` })
   }
 
-  const {
-    location: { latitude, longitude },
-    distanceInMeters,
-  } = parseQuery(req.query)
-
-  const queryResult = await pool.query(stopsQuery, [
+  const stations = await getNearbyStations(
     agencyId,
     agencyName,
     longitude,
     latitude,
     distanceInMeters,
-  ])
-  res.json(queryResult.rows[0]['aggregated_out'])
+  )
+  res.json(stations)
 }
 
 export default withApiKeyAuthentication(withErrorHandler(handler))
