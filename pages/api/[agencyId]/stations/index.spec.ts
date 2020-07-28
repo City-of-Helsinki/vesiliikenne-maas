@@ -3,6 +3,7 @@ import { pool } from '../../../../lib/db'
 import { performRequest } from '../../../../lib/http-test-helpers'
 import { AxiosResponse } from 'axios'
 import { withErrorHandler } from '../../../../lib/middleware'
+import { Station } from '../../../../lib/types'
 
 afterAll(async () => {
   return await pool.end()
@@ -51,6 +52,19 @@ describe('/api/jtline/stations', () => {
     it('response body is a JSON array', async () => {
       expect.assertions(1)
       expect(Array.isArray(response.data)).toBe(true)
+    })
+
+    it('response contains Kauppatori', () => {
+      const kauppatori = response.data.find(
+        (station: Station) => station.name === 'Kauppatori (Kolera-allas)',
+      )
+      expect(kauppatori).toEqual({
+        id: '9571',
+        name: 'Kauppatori (Kolera-allas)',
+        agencyId: 'jtline',
+        location: '60.167408,24.95325',
+        services: ['FERRY'],
+      })
     })
   })
 })

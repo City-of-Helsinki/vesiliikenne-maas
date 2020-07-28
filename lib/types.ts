@@ -74,10 +74,12 @@ export const TicketOptionsType = t.array(TicketOptionType)
 export type TicketOption = t.TypeOf<typeof TicketOptionType>
 export type TicketOptions = t.TypeOf<typeof TicketOptionsType>
 
-export interface Station {
-  id: string
-  name: string
-  agencyId: string
-  location: string
-  services: string[]
-}
+export const StationType = t.strict({
+  id: t.string,
+  name: t.string,
+  agencyId: t.string,
+  location: t.string,
+  services: t.array(t.string),
+})
+
+export type Station = t.TypeOf<typeof StationType>
