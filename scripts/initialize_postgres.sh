@@ -26,4 +26,3 @@ make load GTFS=../gtfs.zip
 echo "Cleaning up created directories"
 cd ..
 rm -rf gtfs-sql-importer gtfs.zip
-unset PGUSER PGPASSWORD PGHOST PGDATABASE
