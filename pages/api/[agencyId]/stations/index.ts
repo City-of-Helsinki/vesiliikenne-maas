@@ -93,20 +93,25 @@ const parseRadius = (radius: string | string[]) => {
  *                 properties:
  *                   id:
  *                     type: string
+ *                     example: "152"
  *                     description: "Station id"
  *                   name:
  *                     type: string
+ *                     example: Long pier
  *                     description: "Station name"
  *                   agencyId:
  *                     type: string
+ *                     example: waterbusoy
  *                     description: "Agency id: the same as specified in the path"
  *                   location:
  *                     type: string
+ *                     example: 60.17,24.94
  *                     description: "Location in 'lat,lon' format"
  *                   services:
  *                     type: array
  *                     description: "Service types, currently only 'FERRY'"
  *                     items:
+ *                       example: FERRY
  *                       type: string
  *       '400':
  *         description: Invalid query parameter
