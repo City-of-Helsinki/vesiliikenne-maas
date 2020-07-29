@@ -40,8 +40,6 @@ cd gtfs-sql-importer
 make init SCHEMA=gtfs_test
 make load GTFS=../gtfs.zip SCHEMA=gtfs_test
 
-psql -h "$PGHOST" -U "$PGUSER" -c 'ALTER SCHEMA gtfs RENAME TO gtfs_old;'
-psql -h "$PGHOST" -U "$PGUSER" -c 'ALTER SCHEMA gtfs_test RENAME TO gtfs;'
-psql -h "$PGHOST" -U "$PGUSER" -c 'DROP SCHEMA IF EXISTS gtfs_old CASCADE;'
+psql -h "$PGHOST" -U "$PGUSER" -c 'ALTER SCHEMA gtfs RENAME TO gtfs_old; ALTER SCHEMA gtfs_test RENAME TO gtfs; DROP SCHEMA IF EXISTS gtfs_old CASCADE;'
 echo "Importing the GTFS data succeeded."
 cleanup
