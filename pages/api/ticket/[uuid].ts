@@ -122,6 +122,7 @@ export const handler = async (
     TicketContainer({
       ticket,
       qrCodeContents: qrCode,
+      locale: language,
     }),
   )
   const jwToken =

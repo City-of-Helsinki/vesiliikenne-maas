@@ -1,17 +1,16 @@
 import * as React from 'react'
 import moment from 'moment-timezone'
+import 'moment/locale/fi'
 import { Ticket } from '../lib/types'
 
 interface Props {
   ticket: Ticket
   qrCodeContents: string
+  locale: string
 }
 
 const bodyStyle = {
-  margin: 0,
-  display: 'grid',
-  gridTemplateRows: '8% 92%',
-  height: '90vh',
+  margin: '30px 0px',
   textAlign: 'center' as const, // https://github.com/typestyle/typestyle/issues/281
 }
 
@@ -28,7 +27,7 @@ const ticketInfoStyle = {
   fontWeight: 600,
 }
 
-const TicketContainer = ({ ticket, qrCodeContents }: Props) => {
+const TicketContainer = ({ ticket, qrCodeContents, locale }: Props) => {
   return (
     <main style={bodyStyle}>
       <div style={ticketContainerStyle}>
@@ -40,20 +39,19 @@ const TicketContainer = ({ ticket, qrCodeContents }: Props) => {
               {ticket.agency}, {ticket.discountGroup}
             </p>
             <time>
-              {moment(ticket.validFrom)
-                .tz('Europe/Helsinki')
-                .format('Do MMMM HH:mm')}{' '}
-              –{' '}
+              {locale === 'fi' ? 'Voimassa ' : 'Valid until '}
               {moment(ticket.validTo)
+                .locale(locale)
                 .tz('Europe/Helsinki')
-                .format('Do MMMM HH:mm')}
+                .format('LLL')}
+              {locale === 'fi' && ' asti'}
             </time>
           </div>
           <div>
             <img
               src={`data:image/svg+xml;base64,${ticket.logoData}`}
               alt="Ferry operator logo"
-              width="20%"
+              width="200px"
             />
           </div>
           <p style={{ margin: '2em' }}>{ticket.instructions}</p>
