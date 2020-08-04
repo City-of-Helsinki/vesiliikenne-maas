@@ -22,18 +22,6 @@ const Home: NextPage = () => {
       route: 'healthz',
     },
     {
-      name: 'Dev - Buy ticket',
-      route: 'dev/ticket/buy',
-    },
-    {
-      name: 'Dev - List available ticket options',
-      route: 'dev/tickets',
-    },
-    {
-      name: 'Dev - List available stations',
-      route: 'dev/stations',
-    },
-    {
       name: 'HSL route visualization',
       route: 'hsl-routes.html',
     },
