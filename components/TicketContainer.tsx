@@ -9,7 +9,7 @@ interface Props {
 }
 
 const bodyStyle = {
-  margin: '30px 0px',
+  margin: '30px 0',
   textAlign: 'center' as const, // https://github.com/typestyle/typestyle/issues/281
 }
 
