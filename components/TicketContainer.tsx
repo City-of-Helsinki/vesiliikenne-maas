@@ -1,6 +1,5 @@
 import * as React from 'react'
 import moment from 'moment-timezone'
-import 'moment/locale/fi'
 import { Ticket } from '../lib/types'
 
 interface Props {
