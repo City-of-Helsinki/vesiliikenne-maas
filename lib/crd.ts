@@ -27,7 +27,7 @@ const generateObject = (token: string, unixTime: number, uuid: string) => ({
         },
       ],
       routeInfo: {
-        route: 'ISLAND HOPPING 2020',
+        route: 'ISLAND HOPPING MAAS',
       },
     },
   ],
