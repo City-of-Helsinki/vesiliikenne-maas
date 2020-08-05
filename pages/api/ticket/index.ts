@@ -6,7 +6,7 @@ import {
   withApiKeyAuthentication,
   withErrorHandler,
 } from '../../../lib/middleware'
-import { BarTraceError } from 'lib/errors'
+import { BarTraceError } from '../../../lib/errors'
 
 /**
  * @swagger
