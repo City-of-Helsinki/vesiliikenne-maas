@@ -57,7 +57,7 @@ import { BarTraceError } from '../../../lib/errors'
  *       '500':
  *         description: Server error
  *       '502':
- *         description: Bad Gateway
+ *         description: Failed to send ticket information to CRD
  */
 export const handler = async (
   req: NextApiRequest,

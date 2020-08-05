@@ -426,7 +426,7 @@
             "description": "Server error"
           },
           "502": {
-            "description": "Bad Gateway"
+            "description": "Failed to send ticket information to CRD"
           }
         }
       }
