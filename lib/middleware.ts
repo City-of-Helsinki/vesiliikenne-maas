@@ -5,6 +5,7 @@ import {
   TicketNotFoundError,
   TicketRequestValidationError,
   TicketOptionNotFoundError,
+  BarTraceError,
 } from '../lib/errors'
 
 const MAAS_API_KEY_HASH = process.env.MAAS_API_KEY_HASH || ''
@@ -50,6 +51,8 @@ export const withErrorHandler = (
       return res.status(404).json({ message: error.message })
     if (error instanceof TicketOptionNotFoundError)
       return res.status(404).json({ message: error.message })
+    if (error instanceof BarTraceError)
+      return res.status(502).json({ message: error.message })
 
     return res.status(500).json({ message: 'internal server error' })
   }
