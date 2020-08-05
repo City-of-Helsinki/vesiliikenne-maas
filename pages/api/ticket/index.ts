@@ -6,6 +6,7 @@ import {
   withApiKeyAuthentication,
   withErrorHandler,
 } from '../../../lib/middleware'
+import { BarTraceError } from '../../../lib/errors'
 
 /**
  * @swagger
@@ -56,7 +57,7 @@ import {
  *       '500':
  *         description: Server error
  *       '502':
- *         description: Bad Gateway
+ *         description: Failed to send ticket information to CRD
  */
 export const handler = async (
   req: NextApiRequest,
@@ -77,8 +78,8 @@ export const handler = async (
     }
     const crdResponse = await postTicketToCRD(crdUrl, apiToken, ticket)
 
-    if (crdResponse.failed) {
-      return res.status(502).send('bartrace response failed')
+    if (crdResponse.success === 0) {
+      throw new BarTraceError('Unable to send ticket to CRD')
     }
   }
 

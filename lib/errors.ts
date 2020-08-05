@@ -21,3 +21,9 @@ export class TypeValidationError extends Error {
     super(message)
   }
 }
+
+export class BarTraceError extends Error {
+  constructor(message?: string) {
+    super(message)
+  }
+}
