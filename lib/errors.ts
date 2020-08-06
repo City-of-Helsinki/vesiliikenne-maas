@@ -1,3 +1,5 @@
+import { CrdResponse } from './types'
+
 export class TicketRequestValidationError extends Error {
   constructor(message?: string) {
     super(message)
@@ -23,7 +25,10 @@ export class TypeValidationError extends Error {
 }
 
 export class BarTraceError extends Error {
-  constructor(message?: string) {
+  crdResponse: CrdResponse
+
+  constructor(crdResponse: CrdResponse, message?: string) {
     super(message)
+    this.crdResponse = crdResponse
   }
 }

@@ -51,8 +51,10 @@ export const withErrorHandler = (
       return res.status(404).json({ message: error.message })
     if (error instanceof TicketOptionNotFoundError)
       return res.status(404).json({ message: error.message })
-    if (error instanceof BarTraceError)
+    if (error instanceof BarTraceError) {
+      console.error(error.crdResponse)
       return res.status(502).json({ message: error.message })
+    }
 
     return res.status(500).json({ message: 'internal server error' })
   }

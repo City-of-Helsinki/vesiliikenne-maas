@@ -79,7 +79,7 @@ export const handler = async (
     const crdResponse = await postTicketToCRD(crdUrl, apiToken, ticket)
 
     if (crdResponse.success === 0) {
-      throw new BarTraceError('Unable to send ticket to CRD')
+      throw new BarTraceError(crdResponse, 'Unable to send ticket to CRD')
     }
   }
 
