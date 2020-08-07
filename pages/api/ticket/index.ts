@@ -81,7 +81,7 @@ export const handler = async (
     if (crdResponse.success === 0) {
       throw new BarTraceError(
         crdResponse,
-        'Unable to send ticket to the ticket backend',
+        'Unable to send ticket to the ticket provider backend',
       )
     }
   }
