@@ -124,12 +124,11 @@ export const handler = async (
   const campaignStart = moment('2020-08-20 00:00')
   const campaignEnd = moment('2020-08-21 00:00')
   if (dateBetween(campaignStart, campaignEnd, moment())) {
-    const ticketsWithReducedPrice = ticketOptionsWithSeconds.map((ticketOption) => {
-      if (ticketOption.id === 1) {
-        ticketOption.amount = '9.00'
-      }
-    })
-
+    const ticketsWithReducedPrice = ticketOptionsWithSeconds.map(ticketOption =>
+      ticketOption.id === 1
+        ? { ...ticketOption, amount: '9.00' }
+        : ticketOption,
+    )
     return res.json(ticketsWithReducedPrice)
   }
 

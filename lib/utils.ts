@@ -4,7 +4,7 @@ import * as t from 'io-ts'
 import { PathReporter } from 'io-ts/lib/PathReporter'
 import { isLeft } from 'fp-ts/lib/Either'
 import { TypeValidationError } from './errors'
-import {Moment } from 'moment-timezone'
+import { Moment } from 'moment-timezone'
 
 export const isString = (text: any): text is string => {
   return typeof text === 'string' || text instanceof String
@@ -40,9 +40,11 @@ export const validate = <A, I, O>(
   }
 }
 
-export const dateBetween = (startDate: Moment, endDate: Moment, date: Moment): boolean => 
-  date.isBetween(startDate, endDate)  
-
+export const dateBetween = (
+  startDate: Moment,
+  endDate: Moment,
+  date: Moment,
+): boolean => date.isBetween(startDate, endDate)
 
 const base64decode = (input: string): string =>
   Buffer.from(input, 'base64').toString('utf-8')
