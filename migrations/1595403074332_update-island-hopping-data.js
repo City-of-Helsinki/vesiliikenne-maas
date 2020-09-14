@@ -22,7 +22,7 @@ exports.down = pgm => {
   pgm.sql(`
   UPDATE ticket_translations
   SET 
-    description = 'The vessels serving the Island Hopping route will stop at three attractive island destinations (Vallisaari, Suomenlinna and Lonna). You can stop offand continue your trip as you please. Departures from Helsinki Market Square and Hakaniemi.',
+    description = 'The vessels serving the Island Hopping route will stop at three attractive island destinations (Vallisaari, Suomenlinna and Lonna). You can stop offand continue your trip as you please. Departures from Helsinki Market Square and Hakaniemi.'
   WHERE name = 'Island Hopping' AND language = 'en';
   `)
 
