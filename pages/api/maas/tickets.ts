@@ -8,7 +8,7 @@ import {
   calculateTicketValidTo,
   getTicketOptions,
 } from '../../../lib/ticket-service'
-import { parseNumber, parseLocale } from '../../../lib/utils'
+import { parseNumber, parseLocale, dateBetween } from '../../../lib/utils'
 
 /**
  * @swagger
@@ -118,6 +118,19 @@ export const handler = async (
     ...ticket,
     validityseconds,
   }))
+
+  // TODO: This block is for the launch campaign discount.
+  // TODO: Remove after launch campaign is done.
+  const campaignStart = moment('2020-09-19 00:00')
+  const campaignEnd = moment('2020-09-21 00:00')
+  if (dateBetween(campaignStart, campaignEnd, moment())) {
+    const ticketsWithReducedPrice = ticketOptionsWithSeconds.map(ticketOption =>
+      ticketOption.id === 1
+        ? { ...ticketOption, amount: '10.00' }
+        : ticketOption,
+    )
+    return res.json(ticketsWithReducedPrice)
+  }
 
   res.json(ticketOptionsWithSeconds)
 }
