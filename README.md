@@ -27,7 +27,7 @@ To set up the development environment:
 
 ### Architecture diagram
 
-[Link](doc/Vesiliikenne%20MaaS%20Architecture.pdf) to the architecture diagram
+[Link](doc/Vesiliikenne-MaaS-Architecture.pdf) to the architecture diagram
 
 ## Configuration
 
