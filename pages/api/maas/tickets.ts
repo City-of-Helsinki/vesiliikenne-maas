@@ -121,8 +121,8 @@ export const handler = async (
 
   // TODO: This block is for the launch campaign discount.
   // TODO: Remove after launch campaign is done.
-  const campaignStart = moment('2020-09-19 00:00')
-  const campaignEnd = moment('2020-09-21 00:00')
+  const campaignStart = moment('2020-09-26 00:00')
+  const campaignEnd = moment('2020-09-28 00:00')
   if (dateBetween(campaignStart, campaignEnd, moment())) {
     const ticketsWithReducedPrice = ticketOptionsWithSeconds.map(ticketOption =>
       ticketOption.id === 1
