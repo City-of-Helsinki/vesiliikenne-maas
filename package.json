@@ -23,7 +23,7 @@
     "ci-migrate-up": "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres node-pg-migrate up"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "fp-ts": "^2.6.7",
     "io-ts": "^2.2.7",
