@@ -40,12 +40,6 @@ export const validate = <A, I, O>(
   }
 }
 
-export const dateBetween = (
-  startDate: Moment,
-  endDate: Moment,
-  date: Moment,
-): boolean => date.isBetween(startDate, endDate)
-
 const base64decode = (input: string): string =>
   Buffer.from(input, 'base64').toString('utf-8')
 
