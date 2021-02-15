@@ -14,6 +14,10 @@ env:
   DATABASE_USER: user
   DATABASE_PASSWORD: testing-password
   SERVICE_PORT: '8080'
+  K8S_REQUEST_CPU: 1m
+  K8S_REQUEST_RAM: 60Mi
+  K8S_LIMIT_CPU: 50m
+  K8S_LIMIT_RAM: 100Mi
 
 jobs:
   build:
