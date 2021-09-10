@@ -1,3 +1,7 @@
+# Warning: this project as been deprecated
+
+This pilot project has been depreacted. [Maritime MaaaS](https://github.com/City-of-Helsinki/maritime-maas) continues the work with same functionality and beyond. More information and technical documentation about the project can be found [here](https://maritime-maas.atlassian.net/wiki/spaces/MM/overview)
+
 # Vesiliikenne MaaS
 
 Next.js app that acts as an integration layer that mediates the connection between ticket sales platforms and MaaS providers. It is kept as platform-agnostic as possible so that multiple platforms and MaaS app providers can be supported and swapped out if needed.
