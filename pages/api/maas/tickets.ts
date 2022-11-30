@@ -8,7 +8,7 @@ import {
   calculateTicketValidTo,
   getTicketOptions,
 } from '../../../lib/ticket-service'
-import { parseNumber, parseLocale, dateBetween } from '../../../lib/utils'
+import { parseNumber, parseLocale } from '../../../lib/utils'
 
 /**
  * @swagger
